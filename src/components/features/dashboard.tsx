@@ -57,7 +57,7 @@ const translations = {
     tryNow: "ሕጂ ፈትን →",
     empoweringMinds: "ንኤርትራዊ ኣእምሮ ምብቃዕ",
     mentorship: "ምምሃርን ትምህርታዊ ምትሕግጋዝን",
-    youthOpportunities: "ንመንእሰያት ዕድላትን ክእለታትን",
+    youthOpportunities: "ንመንእሰያت ዕድላትን ክእለታትን",
     wellBeing: "ጥዕናን ኣወንታዊ ህይወትን",
     localResources: "ከባቢያዊ ጸጋታትን ሓገዝን",
     recommendations: "ንዓኻ ዝተመደበ"
@@ -158,7 +158,7 @@ export default function Dashboard({ language = 'ti' }: { language?: 'ti' | 'en' 
       {/* Main Action Panel */}
       <Card className="border-0 shadow-lg bg-gradient-to-br from-card to-background/50">
         <CardHeader className="text-center">
-            <h1 className="text-5xl font-bold font-headline text-primary">AnAi Hub</h1>
+            <h1 className="text-5xl font-bold font-headline text-primary">መምህረይ</h1>
             <CardDescription className="text-lg">
                 {language === 'ti' ? "ንኤርትራዊ ፍልጠት ብኣእምሮኣዊ ቴክኖሎጂ ምዕባይ" : "Empowering Eritrean Knowledge with AI"}
             </CardDescription>

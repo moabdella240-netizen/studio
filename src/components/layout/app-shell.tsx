@@ -91,11 +91,11 @@ const translations = {
     recipes: "ጥዕና ዝሓለወ መግቢ",
     coach: "AI ናይ ስፖርት ኣማኻሪ",
     browser: "መረብ ሓበሬታ",
-    tasks: "መቆጻጸሪ ዕማማት",
+    tasks: "መቆጻጸרי ዕማማት",
     voice: "ሓጋዚ ድምጺ",
     user: "ተጠቃሚ",
     freePlan: "ነጻ ኣገልግሎት",
-    appName: "AnAi Hub",
+    appName: "መምህረይ",
   },
   en: {
     dashboard: "Dashboard",
@@ -111,7 +111,7 @@ const translations = {
     voice: "Voice Assistant",
     user: "User",
     freePlan: "Free Plan",
-    appName: "AnAi Hub",
+    appName: "Memhrey",
   },
 };
 

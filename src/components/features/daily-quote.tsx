@@ -81,9 +81,9 @@ export default function DailyQuote({ language = 'ti' }: { language?: 'ti' | 'en'
 
     const handleShare = () => {
         if (quoteData) {
-            const text = `"${quoteData.quote}" - AnAi Hub`;
+            const text = `"${quoteData.quote}" - መምህረይ`;
             if (navigator.share) {
-                navigator.share({ title: 'Quote from AnAi Hub', text })
+                navigator.share({ title: 'Quote from መምህረይ', text })
                     .catch(err => console.error("Share failed", err));
             } else {
                 navigator.clipboard.writeText(text);
