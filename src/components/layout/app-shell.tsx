@@ -33,7 +33,6 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import {
   MessageSquare,
@@ -48,16 +47,12 @@ import {
   Soup,
   Dumbbell,
   UserCircle,
-  LogOut,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Button } from "@/components/ui/button";
-import { useUser } from "@/firebase";
-import { getAuth, signOut } from "firebase/auth";
-import { useRouter } from "next/navigation";
 
 import Dashboard from "@/components/features/dashboard";
 import MultilingualChat from "@/components/features/multilingual-chat";
@@ -140,18 +135,10 @@ export default function AppShell() {
   const [language, setLanguage] = useState<'ti' | 'en'>('ti');
   const [isMounted, setIsMounted] = useState(false);
   const isMobile = useIsMobile();
-  const { user } = useUser();
-  const router = useRouter();
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
-
-  const handleLogout = async () => {
-    const auth = getAuth();
-    await signOut(auth);
-    router.push('/login');
-  };
 
   const currentTexts = translations[language];
 
@@ -276,28 +263,7 @@ export default function AppShell() {
           </SidebarMenu>
         </SidebarContent>
         <SidebarFooter>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-                <Card className="bg-sidebar-accent m-2 cursor-pointer hover:bg-sidebar-accent/80">
-                  <CardHeader className="p-3 flex-row items-center gap-3">
-                    <Avatar>
-                      <AvatarImage src={user?.photoURL || userAvatar?.imageUrl} alt={user?.displayName || "User"} data-ai-hint={userAvatar?.imageHint} />
-                      <AvatarFallback>{user?.displayName?.charAt(0) || 'U'}</AvatarFallback>
-                    </Avatar>
-                    <div className="overflow-hidden">
-                      <CardTitle className="text-sm font-medium truncate">{user?.displayName || currentTexts.user}</CardTitle>
-                      <CardDescription className="text-xs truncate">{user?.email}</CardDescription>
-                    </div>
-                  </CardHeader>
-              </Card>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent side="right" align="end" className="w-56">
-                <DropdownMenuItem onClick={handleLogout}>
-                    <LogOut className="mr-2 h-4 w-4" />
-                    <span>{currentTexts.logout}</span>
-                </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          {/* User profile section removed */}
         </SidebarFooter>
       </Sidebar>
       <SidebarInset>
