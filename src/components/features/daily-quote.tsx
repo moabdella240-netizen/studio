@@ -47,13 +47,14 @@ export default function DailyQuote({ language = 'ti' }: { language?: 'ti' | 'en'
     const [answer, setAnswer] = useState<string | null>(null);
     const { toast } = useToast();
     const t = translations[language];
+    const langKey = language === 'ti' ? 'Tigrinya' : 'English';
 
     const fetchQuote = async () => {
         setIsLoadingQuote(true);
         setAnswer(null);
         setQuoteData(null);
         try {
-            const result = await generateQuote({ language: 'Tigrinya' });
+            const result = await generateQuote({ language: langKey });
             setQuoteData(result);
         } catch (error) {
             console.error("AI Error:", error);
@@ -69,7 +70,7 @@ export default function DailyQuote({ language = 'ti' }: { language?: 'ti' | 'en'
         setIsLoadingAnswer(true);
         setAnswer(null);
         try {
-            const result = await answerQuestion({ language: 'Tigrinya', question });
+            const result = await answerQuestion({ language: langKey, question });
             setAnswer(result.answer);
         } catch (error) {
             console.error("AI Error:", error);
@@ -98,23 +99,25 @@ export default function DailyQuote({ language = 'ti' }: { language?: 'ti' | 'en'
     };
 
     return (
-        <Card className="w-full shadow-lg border-primary/20 bg-gradient-to-br from-background to-card">
+        <Card className="w-full shadow-lg border-primary/20 bg-gradient-to-br from-card to-background">
             <CardContent className="p-6 space-y-6">
                 {isLoadingQuote ? (
                     <div className="space-y-4 animate-fade-in-fast">
-                        <Skeleton className="h-8 w-3/4" />
+                        <Skeleton className="h-8 w-3/4 mx-auto" />
                         <Skeleton className="h-4 w-full" />
-                        <Skeleton className="h-4 w-5/6" />
+                        <Skeleton className="h-4 w-5/6 mx-auto" />
                     </div>
                 ) : quoteData ? (
                     <div className="text-center space-y-4 animate-fade-in">
-                        <h2 className={`text-3xl font-headline text-primary`}>"{quoteData.quote}"</h2>
-                        <p className="text-foreground/80">{quoteData.explanation}</p>
+                        <blockquote className="text-2xl md:text-3xl font-headline text-primary italic">
+                          "{quoteData.quote}"
+                        </blockquote>
+                        <p className="text-foreground/80 leading-relaxed">{quoteData.explanation}</p>
                     </div>
                 ) : null}
 
                 {answer && (
-                    <div className="p-4 bg-muted rounded-lg text-center animate-fade-in">
+                    <div className="p-4 bg-muted rounded-lg text-center animate-fade-in border border-primary/20">
                         <p>{answer}</p>
                     </div>
                 )}

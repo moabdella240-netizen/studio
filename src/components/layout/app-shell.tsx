@@ -101,6 +101,8 @@ const translations = {
     portfolio: "ሥራይ",
     quote: "ዕለታዊ ጥቕስን መልስን",
     assistant: "ሓጋዚ AI",
+    more: "ተጨማሪ",
+    language: "Language",
   },
   en: {
     dashboard: "Dashboard",
@@ -115,6 +117,8 @@ const translations = {
     portfolio: "Portfolio",
     quote: "Quote & Answer",
     assistant: "AI Assistant",
+    more: "More",
+    language: "ቋንቋ",
   },
 };
 
@@ -251,11 +255,11 @@ export default function AppShell() {
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                    <SidebarMenuButton
-                    tooltip={{ children: '...' }}
+                    tooltip={{ children: currentTexts.more }}
                     className="w-full"
                     >
                     <Sparkles />
-                    <span>ተጨማሪ</span>
+                    <span>{currentTexts.more}</span>
                   </SidebarMenuButton>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent side="right" align="start">
@@ -274,7 +278,7 @@ export default function AppShell() {
         </SidebarFooter>
       </Sidebar>
       <SidebarInset>
-        <header className="flex items-center justify-between p-4 border-b bg-transparent sticky top-0 z-10 h-16">
+        <header className="flex items-center justify-between p-4 border-b bg-background/80 backdrop-blur-sm sticky top-0 z-10 h-16">
           <SidebarTrigger className="md:hidden"/>
           <h1 className="text-xl font-semibold font-headline hidden md:block text-primary">
             {navigationItems.find(item => item.id === activeFeatureKey)?.label}
@@ -297,7 +301,7 @@ export default function AppShell() {
             </DropdownMenuContent>
            </DropdownMenu>
         </header>
-        <main className="p-4 md:p-6">
+        <main className="p-4 md:p-6 lg:p-8">
           <ActiveComponent language={language} />
         </main>
       </SidebarInset>

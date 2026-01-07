@@ -36,7 +36,8 @@ import {
   Users,
   GraduationCap,
   Soup,
-  Dumbbell
+  Dumbbell,
+  ChevronRight
 } from "lucide-react";
 
 const translations = {
@@ -52,7 +53,7 @@ const translations = {
     iqTraining: "IQን ምህዞን ምፍታን",
     languageSupport: "ሓገዝ ቋንቋን ትርጉምን",
     productivityTools: "መሳርሒታት ፍርያምን ህይወትን",
-    tryNow: "ሕጂ ፈትን →",
+    tryNow: "ሕጂ ፈትን",
     empoweringMinds: "ንኤርትራዊ ኣእምሮ ምብቃዕ",
     mentorship: "ምምሃርን ትምህርታዊ ምትሕግጋዝን",
     youthOpportunities: "ንመንእሰያት ዕድላትን ክእለታትን",
@@ -74,7 +75,7 @@ const translations = {
     iqTraining: "IQ & Brain Training",
     languageSupport: "Language & Translation Support",
     productivityTools: "Productivity & Life Tools",
-    tryNow: "Try Now →",
+    tryNow: "Try Now",
     empoweringMinds: "Empowering Eritrean Minds",
     mentorship: "Mentorship & Education Support",
     youthOpportunities: "Youth Opportunities & Skills",
@@ -156,121 +157,121 @@ export default function Dashboard({ language = 'ti' }: { language?: 'ti' | 'en' 
   const t = translations[language];
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-12 animate-fade-in-slow">
       {/* Main Action Panel */}
-      <Card className="border-0 shadow-lg bg-gradient-to-br from-card to-background/50">
-        <CardHeader className="text-center">
+      <Card className="border-0 shadow-lg bg-gradient-to-br from-card to-background/30 dark:from-card dark:to-background/30">
+        <CardHeader className="text-center pb-4">
             <h1 className="text-5xl font-bold font-headline text-primary">መምህረይ</h1>
-            <CardDescription className="text-lg">
+            <CardDescription className="text-lg text-foreground/70">
                 {"ንኤርትራዊ ፍልጠት ብኣእምሮኣዊ ቴክኖሎጂ ምዕባይ"}
             </CardDescription>
         </CardHeader>
-        <CardContent className="flex flex-wrap items-center justify-center gap-4">
+        <CardContent className="flex flex-wrap items-center justify-center gap-3">
             <FeatureDialog featureKey="assistant" language={language}>
-                <Button variant="outline" size="lg" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/20"><Mic className="mr-2"/>{t.askAssistant}</Button>
+                <Button variant="outline" size="lg" className="border-primary/50 text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/20"><Mic className="mr-2"/>{t.askAssistant}</Button>
             </FeatureDialog>
             <FeatureDialog featureKey="quote" language={language}>
-                <Button variant="outline" size="lg" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/20"><Sparkles className="mr-2"/>{t.quoteAnswer}</Button>
+                <Button variant="outline" size="lg" className="border-primary/50 text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/20"><Sparkles className="mr-2"/>{t.quoteAnswer}</Button>
             </FeatureDialog>
             <FeatureDialog featureKey="teasers" language={language}>
-                <Button variant="outline" size="lg" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/20"><Brain className="mr-2"/>{t.brainTeasers}</Button>
+                <Button variant="outline" size="lg" className="border-primary/50 text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/20"><Brain className="mr-2"/>{t.brainTeasers}</Button>
             </FeatureDialog>
             <FeatureDialog featureKey="recipes" language={language}>
-                 <Button variant="outline" size="lg" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/20"><Soup className="mr-2"/>{t.healthyRecipes}</Button>
+                 <Button variant="outline" size="lg" className="border-primary/50 text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/20"><Soup className="mr-2"/>{t.healthyRecipes}</Button>
             </FeatureDialog>
              <FeatureDialog featureKey="music" language={language}>
-                <Button variant="outline" size="lg" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/20"><Music className="mr-2"/>{t.musicFinder}</Button>
+                <Button variant="outline" size="lg" className="border-primary/50 text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/20"><Music className="mr-2"/>{t.musicFinder}</Button>
             </FeatureDialog>
             <FeatureDialog featureKey="coach" language={language}>
-                <Button variant="outline" size="lg" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/20"><Dumbbell className="mr-2"/>{t.gymCoach}</Button>
+                <Button variant="outline" size="lg" className="border-primary/50 text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/20"><Dumbbell className="mr-2"/>{t.gymCoach}</Button>
             </FeatureDialog>
         </CardContent>
       </Card>
       
       {/* Smart Recommendation Carousel Placeholder */}
-      <div>
+      <div className="space-y-6">
         <h2 className="text-3xl font-bold font-headline mb-4 text-center">{t.recommendations}</h2>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-             <Card className="hover:shadow-lg hover:-translate-y-1 transition-transform duration-300"><CardContent className="p-6 text-center"><p>ዕለታዊ ጥቕሲ</p></CardContent></Card>
-             <Card className="hover:shadow-lg hover:-translate-y-1 transition-transform duration-300"><CardContent className="p-6 text-center"><p>ናይ ሎሚ ሕንቅልሕንቅሊተይ</p></CardContent></Card>
-             <Card className="hover:shadow-lg hover:-translate-y-1 transition-transform duration-300"><CardContent className="p-6 text-center"><p>ኣዝዩ ዝስማዕ ዘሎ ደርፊ</p></CardContent></Card>
-             <Card className="hover:shadow-lg hover:-translate-y-1 transition-transform duration-300"><CardContent className="p-6 text-center"><p>ምኽሪ ንትምህርቲ</p></CardContent></Card>
+             <Card className="hover:shadow-xl hover:-translate-y-1 transition-transform duration-300 group"><CardContent className="p-6 text-center"><p className="font-semibold text-lg">ዕለታዊ ጥቕሲ</p><p className="text-sm text-muted-foreground group-hover:text-primary transition-colors">ናይ ሎሚ መሪሕ ቃል</p></CardContent></Card>
+             <Card className="hover:shadow-xl hover:-translate-y-1 transition-transform duration-300 group"><CardContent className="p-6 text-center"><p className="font-semibold text-lg">ናይ ሎሚ ሕንቅልሕንቅሊተይ</p><p className="text-sm text-muted-foreground group-hover:text-primary transition-colors">ኣእምሮኻ ፈትን</p></CardContent></Card>
+             <Card className="hover:shadow-xl hover:-translate-y-1 transition-transform duration-300 group"><CardContent className="p-6 text-center"><p className="font-semibold text-lg">ኣዝዩ ዝስማዕ ዘሎ ደርፊ</p><p className="text-sm text-muted-foreground group-hover:text-primary transition-colors">ሓድሽ ሙዚቃ ስማዕ</p></CardContent></Card>
+             <Card className="hover:shadow-xl hover:-translate-y-1 transition-transform duration-300 group"><CardContent className="p-6 text-center"><p className="font-semibold text-lg">ምኽሪ ንትምህርቲ</p><p className="text-sm text-muted-foreground group-hover:text-primary transition-colors">ቀጻሊ ክእለትካ ኣማዕብል</p></CardContent></Card>
         </div>
       </div>
 
       {/* AI Feature Grid */}
-       <div>
+       <div className="space-y-6">
             <h2 className="text-3xl font-bold font-headline mb-6 text-center">{t.featureGridTitle}</h2>
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-2">
                 <FeatureDialog featureKey="learning" language={language}>
-                    <Card className="hover:shadow-lg hover:-translate-y-1 transition-transform duration-300 border-border bg-card cursor-pointer">
+                    <Card className="hover:shadow-xl hover:-translate-y-1 transition-transform duration-300 border-border bg-card cursor-pointer group">
                         <CardHeader className="flex-row items-center gap-4">
                             <div className="p-3 bg-primary/10 rounded-lg"><BookOpen className="h-8 w-8 text-primary"/></div>
                             <div>
-                                <CardTitle>{t.learningHub}</CardTitle>
+                                <CardTitle className="text-xl">{t.learningHub}</CardTitle>
                                 <CardDescription>ብ AI ዝተደገፈ ናይ ትምህርቲ መደባት</CardDescription>
                             </div>
                         </CardHeader>
-                        <CardContent><Button variant="link" className="p-0">{t.tryNow}</Button></CardContent>
+                        <CardContent><Button variant="link" className="p-0 text-primary group-hover:underline">{t.tryNow} <ChevronRight className="h-4 w-4 ml-1" /></Button></CardContent>
                     </Card>
                 </FeatureDialog>
                  <FeatureDialog featureKey="teasers" language={language}>
-                    <Card className="hover:shadow-lg hover:-translate-y-1 transition-transform duration-300 border-border bg-card cursor-pointer">
+                    <Card className="hover:shadow-xl hover:-translate-y-1 transition-transform duration-300 border-border bg-card cursor-pointer group">
                         <CardHeader className="flex-row items-center gap-4">
                              <div className="p-3 bg-primary/10 rounded-lg"><Brain className="h-8 w-8 text-primary"/></div>
                             <div>
-                                <CardTitle>{t.iqTraining}</CardTitle>
+                                <CardTitle className="text-xl">{t.iqTraining}</CardTitle>
                                 <CardDescription>ሕንቅልሕንቅሊተይን ኣእምሮኻ ዘፈትኑ ጸወታታትን</CardDescription>
                             </div>
                         </CardHeader>
-                        <CardContent><Button variant="link" className="p-0">{t.tryNow}</Button></CardContent>
+                        <CardContent><Button variant="link" className="p-0 text-primary group-hover:underline">{t.tryNow} <ChevronRight className="h-4 w-4 ml-1" /></Button></CardContent>
                     </Card>
                  </FeatureDialog>
                 <FeatureDialog featureKey="chat" language={language}>
-                    <Card className="hover:shadow-lg hover:-translate-y-1 transition-transform duration-300 border-border bg-card cursor-pointer">
+                    <Card className="hover:shadow-xl hover:-translate-y-1 transition-transform duration-300 border-border bg-card cursor-pointer group">
                         <CardHeader className="flex-row items-center gap-4">
                              <div className="p-3 bg-primary/10 rounded-lg"><MessageSquare className="h-8 w-8 text-primary"/></div>
                             <div>
-                                <CardTitle>{t.languageSupport}</CardTitle>
+                                <CardTitle className="text-xl">{t.languageSupport}</CardTitle>
                                 <CardDescription>ትርጉምን ቻትን</CardDescription>
                             </div>
                         </CardHeader>
-                        <CardContent><Button variant="link" className="p-0">{t.tryNow}</Button></CardContent>
+                        <CardContent><Button variant="link" className="p-0 text-primary group-hover:underline">{t.tryNow} <ChevronRight className="h-4 w-4 ml-1" /></Button></CardContent>
                     </Card>
                 </FeatureDialog>
                  <FeatureDialog featureKey="image" language={language}>
-                     <Card className="hover:shadow-lg hover:-translate-y-1 transition-transform duration-300 border-border bg-card cursor-pointer">
+                     <Card className="hover:shadow-xl hover:-translate-y-1 transition-transform duration-300 border-border bg-card cursor-pointer group">
                         <CardHeader className="flex-row items-center gap-4">
                              <div className="p-3 bg-primary/10 rounded-lg"><ImageIcon className="h-8 w-8 text-primary"/></div>
                             <div>
-                                <CardTitle>{t.imageGenerator}</CardTitle>
+                                <CardTitle className="text-xl">{t.imageGenerator}</CardTitle>
                                 <CardDescription>ብ AI ምስሊ ፍጠር</CardDescription>
                             </div>
                         </CardHeader>
-                        <CardContent><Button variant="link" className="p-0">{t.tryNow}</Button></CardContent>
+                        <CardContent><Button variant="link" className="p-0 text-primary group-hover:underline">{t.tryNow} <ChevronRight className="h-4 w-4 ml-1" /></Button></CardContent>
                     </Card>
                 </FeatureDialog>
             </div>
       </div>
 
        {/* Community & Culture Section */}
-      <div>
+      <div className="space-y-6">
         <h2 className="text-3xl font-bold font-headline mb-6 text-center">{t.empoweringMinds}</h2>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          <Card className="text-center p-6 bg-card hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-            <GraduationCap className="mx-auto h-10 w-10 text-primary mb-3"/>
+          <Card className="text-center p-6 bg-card hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
+            <GraduationCap className="mx-auto h-10 w-10 text-primary mb-3 transition-transform group-hover:scale-110"/>
             <CardTitle className="text-lg">{t.mentorship}</CardTitle>
           </Card>
-           <Card className="text-center p-6 bg-card hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-            <Users className="mx-auto h-10 w-10 text-primary mb-3"/>
+           <Card className="text-center p-6 bg-card hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
+            <Users className="mx-auto h-10 w-10 text-primary mb-3 transition-transform group-hover:scale-110"/>
             <CardTitle className="text-lg">{t.youthOpportunities}</CardTitle>
           </Card>
-           <Card className="text-center p-6 bg-card hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-            <HeartPulse className="mx-auto h-10 w-10 text-primary mb-3"/>
+           <Card className="text-center p-6 bg-card hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
+            <HeartPulse className="mx-auto h-10 w-10 text-primary mb-3 transition-transform group-hover:scale-110"/>
             <CardTitle className="text-lg">{t.wellBeing}</CardTitle>
           </Card>
-           <Card className="text-center p-6 bg-card hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-            <Globe className="mx-auto h-10 w-10 text-primary mb-3"/>
+           <Card className="text-center p-6 bg-card hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
+            <Globe className="mx-auto h-10 w-10 text-primary mb-3 transition-transform group-hover:scale-110"/>
             <CardTitle className="text-lg">{t.localResources}</CardTitle>
           </Card>
         </div>
