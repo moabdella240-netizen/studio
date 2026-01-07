@@ -1,44 +1,244 @@
 {
   "entities": {
-    "UserProfile": {
-      "title": "User Profile",
-      "description": "Represents a user's public profile information.",
+    "User": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "User",
       "type": "object",
+      "description": "Represents a user of the AnAi Hub application.",
       "properties": {
-        "uid": {
+        "id": {
           "type": "string",
-          "description": "The user's unique ID."
+          "description": "Unique identifier for the user entity."
+        },
+        "username": {
+          "type": "string",
+          "description": "The user's username."
         },
         "email": {
           "type": "string",
-          "format": "email",
-          "description": "The user's email address."
+          "description": "The user's email address.",
+          "format": "email"
         },
-        "displayName": {
+        "profilePictureUrl": {
           "type": "string",
-          "description": "The user's display name."
+          "description": "URL to the user's profile picture.",
+          "format": "uri"
         },
-        "photoURL": {
+        "preferredLanguage": {
           "type": "string",
-          "format": "uri",
-          "description": "URL of the user's profile picture."
-        },
-        "createdAt": {
-          "type": "string",
-          "format": "date-time",
-          "description": "The timestamp when the user account was created."
+          "description": "The user's preferred language (Tigrinya or Saho)."
         }
       },
-      "required": ["uid", "email"]
+      "required": [
+        "id",
+        "username",
+        "email"
+      ]
+    },
+    "EducationalResource": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "EducationalResource",
+      "type": "object",
+      "description": "Represents an educational resource available in the database.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the educational resource."
+        },
+        "title": {
+          "type": "string",
+          "description": "The title of the educational resource."
+        },
+        "description": {
+          "type": "string",
+          "description": "A description of the educational resource."
+        },
+        "url": {
+          "type": "string",
+          "description": "URL to the educational resource.",
+          "format": "uri"
+        },
+        "category": {
+          "type": "string",
+          "description": "The category of the educational resource."
+        },
+        "tags": {
+          "type": "array",
+          "description": "Tags associated with the educational resource.",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "url",
+        "category"
+      ]
+    },
+    "Task": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Task",
+      "type": "object",
+      "description": "Represents a task managed by the user within the app.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the task."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to User. (Relationship: User 1:N Task)"
+        },
+        "title": {
+          "type": "string",
+          "description": "The title of the task."
+        },
+        "description": {
+          "type": "string",
+          "description": "A description of the task."
+        },
+        "dueDate": {
+          "type": "string",
+          "description": "The due date of the task.",
+          "format": "date-time"
+        },
+        "completed": {
+          "type": "boolean",
+          "description": "Indicates whether the task is completed."
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "title",
+        "dueDate",
+        "completed"
+      ]
+    },
+    "PersonalizedLearningModule": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "PersonalizedLearningModule",
+      "type": "object",
+      "description": "Represents a personalized learning module tailored to the user.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the learning module."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to User. (Relationship: User 1:N PersonalizedLearningModule)"
+        },
+        "title": {
+          "type": "string",
+          "description": "The title of the learning module."
+        },
+        "content": {
+          "type": "string",
+          "description": "The content of the learning module."
+        },
+        "contentType": {
+          "type": "string",
+          "description": "The content type of the learning module (e.g., text, video, interactive exercise)."
+        },
+        "lastAccessed": {
+          "type": "string",
+          "description": "The last accessed date of the learning module.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "title",
+        "content",
+        "contentType"
+      ]
     }
   },
   "auth": {
-    "providers": ["anonymous", "google.com", "password"]
+    "providers": [
+      "password",
+      "anonymous"
+    ]
   },
   "firestore": {
-    "/users/{userId}": {
-      "schema": { "$ref": "#/entities/UserProfile" },
-      "description": "Stores public information for each user."
-    }
+    "structure": [
+      {
+        "path": "/users/{userId}",
+        "definition": {
+          "entityName": "User",
+          "schema": {
+            "$ref": "#/backend/entities/User"
+          },
+          "description": "Stores user profile information.  Uses path-based ownership for simple security rules.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/tasks/{taskId}",
+        "definition": {
+          "entityName": "Task",
+          "schema": {
+            "$ref": "#/backend/entities/Task"
+          },
+          "description": "Stores tasks associated with a specific user. Uses path-based ownership for simple security rules.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user."
+            },
+            {
+              "name": "taskId",
+              "description": "The unique identifier for the task."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/learningModules/{moduleId}",
+        "definition": {
+          "entityName": "PersonalizedLearningModule",
+          "schema": {
+            "$ref": "#/backend/entities/PersonalizedLearningModule"
+          },
+          "description": "Stores personalized learning modules associated with a specific user. Uses path-based ownership for simple security rules.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user."
+            },
+            {
+              "name": "moduleId",
+              "description": "The unique identifier for the learning module."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/educationalResources/{resourceId}",
+        "definition": {
+          "entityName": "EducationalResource",
+          "schema": {
+            "$ref": "#/backend/entities/EducationalResource"
+          },
+          "description": "Stores educational resources available in the application.",
+          "params": [
+            {
+              "name": "resourceId",
+              "description": "The unique identifier for the educational resource."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "The Firestore structure is designed to securely manage user data, educational resources, tasks, and personalized learning modules, prioritizing authorization independence, clarity, and scalability. User-specific data is stored under the `/users/{userId}` path, ensuring clear ownership and simplified security rules. Tasks and personalized learning modules are stored as subcollections under users, maintaining a hierarchical structure that reflects the user's ownership. The educational resources are stored in the root collection for global accessibility. This design achieves authorization independence by relying on path-based ownership for user-specific data, eliminating the need for `get()` calls in security rules. QAPs (Rules are not Filters) are supported by segregating data based on ownership and using dedicated collections. For example, listing tasks is always scoped to a specific user, preventing unauthorized access. The structure facilitates simple, robust, and easily debuggable security rules by aligning with the core design principles."
   }
 }

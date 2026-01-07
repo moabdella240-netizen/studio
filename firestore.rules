@@ -1,24 +1,151 @@
+/**
+ * Core Philosophy: This ruleset enforces a strict user-ownership model. All user-generated content,
+ * such as tasks and learning modules, is nested within that user's private data tree, making it
+ * inaccessible to any other user. This path-based security approach is simple, performant, and
+ * easy to reason about.
+ *
+ * Data Structure: The data is organized into a main `/users/{userId}` collection which contains all
+ * private user data. Each user document acts as a root for their own subcollections like `/tasks`
+ * and `/learningModules`. Publicly accessible data, like `/educationalResources`, is stored in a
+ * separate top-level collection.
+ *
+ * Key Security Decisions:
+ * - User Listing Disabled: To protect user privacy, it is not possible to list all documents in
+ *   the `/users` collection. Clients can only fetch specific user documents they have the ID for
+ *   (and are the owner of).
+ * - Read-Only Public Data: The `/educationalResources` collection is globally readable by anyone,
+ *   including unauthenticated users, to allow for public browsing. Writes to this collection are
+ *   disabled entirely within these rules, making it effectively read-only. Content management for
+ *   this collection should be handled by a trusted backend service or through the Firebase Console.
+ * - Strict Ownership: All writes are gated behind an ownership check, ensuring users can only
+ *   modify their own data.
+ *
+ * Denormalization for Authorization: Security is based on the document's path (`/users/{userId}/...`).
+ * For subcollections like `tasks`, we also enforce that a `userId` field within the document data
+ * matches the `userId` from the path. This provides a clear and robust link of ownership that doesn't
+ * require extra database reads (`get()` calls) to verify.
+ *
+ * Structural Segregation: Private user data (like tasks) is structurally separated from public data
+ * (educational resources) by placing them in different collections. This prevents accidental data
+* leakage and makes list queries on public data safe and efficient.
+ */
 rules_version = '2';
-
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Helper functions
-    function isOwner(userId) {
-      return request.auth.uid == userId;
+    // Helper Functions for Reusability and Clarity
+
+    /**
+     * Checks if the user is authenticated.
+     */
+    function isSignedIn() {
+      return request.auth != null;
     }
 
-    // Collection: users
-    // Description: Stores public information for each user.
-    match /users/{userId} {
-      // Who can read a user document?
-      // - Any authenticated user can read any user's profile.
-      // - The owner of the document can read their own profile.
-      allow read: if request.auth != null || isOwner(userId);
+    /**
+     * Checks if the currently authenticated user's UID matches the provided userId.
+     * This is the primary function for verifying document ownership.
+     */
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
 
-      // Who can write to a user document?
-      // - Only the owner of the document can create or update their own profile.
-      allow write: if isOwner(userId);
+    /**
+     * Checks if the user is the owner AND the document already exists.
+     * Crucial for preventing updates or deletes on non-existent documents.
+     */
+    function isExistingOwner(userId) {
+      return isOwner(userId) && resource != null;
+    }
+
+    /**
+     * Validates that the user is creating their own user profile document.
+     * Enforces that the document's 'id' field matches the user's auth UID.
+     */
+    function isCreatingOwnProfile(userId) {
+      return isOwner(userId) && request.resource.data.id == userId;
+    }
+
+    /**
+     * Ensures the user profile's ID field cannot be changed after creation.
+     */
+    function isUpdatingOwnProfile() {
+      return request.resource.data.id == resource.data.id;
+    }
+
+    /**
+     * Validates a new subcollection document (e.g., Task, Module).
+     * Enforces that the internal 'userId' field matches the parent path's userId.
+     */
+    function isCreatingOwnSubcollectionDoc(userId) {
+      return isOwner(userId) && request.resource.data.userId == userId;
+    }
+
+    /**
+     * Ensures a subcollection document's 'userId' field cannot be changed after creation.
+     */
+    function isUpdatingOwnSubcollectionDoc() {
+      return request.resource.data.userId == resource.data.userId;
+    }
+
+    /**
+     * @description Controls access to user profile documents.
+     * @path /users/{userId}
+     * @allow (create) An authenticated user creating their own profile document for the first time.
+     * @deny (list) An authenticated user attempting to list all users in the system.
+     * @principle Restricts access to a user's own data tree and prevents enumeration of all users.
+     */
+    match /users/{userId} {
+      allow get: if isOwner(userId);
+      allow list: if false;
+      allow create: if isCreatingOwnProfile(userId);
+      allow update: if isExistingOwner(userId) && isUpdatingOwnProfile();
+      allow delete: if isExistingOwner(userId);
+
+      /**
+       * @description Controls access to a user's private tasks.
+       * @path /users/{userId}/tasks/{taskId}
+       * @allow (create) An authenticated user creating a task for themselves.
+       * @deny (get) An authenticated user trying to read another user's tasks.
+       * @principle Enforces document ownership for all operations within a user's private subcollection.
+       */
+      match /tasks/{taskId} {
+        allow get, list: if isOwner(userId);
+        allow create: if isCreatingOwnSubcollectionDoc(userId);
+        allow update: if isExistingOwner(userId) && isUpdatingOwnSubcollectionDoc();
+        allow delete: if isExistingOwner(userId);
+      }
+
+      /**
+       * @description Controls access to a user's personalized learning modules.
+       * @path /users/{userId}/learningModules/{moduleId}
+       * @allow (update) The document owner updating their own learning module.
+       * @deny (delete) Any user other than the owner trying to delete a module.
+       * @principle Enforces document ownership for all operations within a user's private subcollection.
+       */
+      match /learningModules/{moduleId} {
+        allow get, list: if isOwner(userId);
+        allow create: if isCreatingOwnSubcollectionDoc(userId);
+        allow update: if isExistingOwner(userId) && isUpdatingOwnSubcollectionDoc();
+        allow delete: if isExistingOwner(userId);
+      }
+    }
+
+    /**
+     * @description Controls access to the public collection of educational resources.
+     * @path /educationalResources/{resourceId}
+     * @allow (get) Any user (authenticated or not) reading a specific resource.
+     * @deny (create) Any user attempting to create a new educational resource.
+     * @principle Provides public read access while restricting writes to trusted server-side processes.
+     */
+    match /educationalResources/{resourceId} {
+      allow get: if true;
+      allow list: if true;
+      // CRITICAL: Cannot implement owner-only writes. The 'EducationalResource' entity is missing an 'ownerId' or 'authorId' field.
+      // Writes are disabled to prevent unauthorized data modification. Manage this collection from a trusted backend or the Firebase Console.
+      allow create: if false; // TODO: Add owner validation once the schema is updated with an ownership field.
+      allow update: if false; // TODO: Add owner validation once the schema is updated with an ownership field.
+      allow delete: if false; // TODO: Add owner validation once the schema is updated with an ownership field.
     }
   }
 }
