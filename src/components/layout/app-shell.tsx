@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useCallback } from "react";
@@ -38,6 +37,7 @@ import {
   LayoutDashboard,
   Music,
   Brain,
+  Soup
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -54,6 +54,7 @@ import TaskManager from "@/components/features/task-manager";
 import VoiceAssistant from "@/components/features/voice-assistant";
 import MusicFinder from "@/components/features/music-finder";
 import BrainTeasers from "@/components/features/brain-teasers";
+import HealthyRecipes from "@/components/features/healthy-recipes";
 
 type FeatureKey =
   | "dashboard"
@@ -62,6 +63,7 @@ type FeatureKey =
   | "learning"
   | "music"
   | "teasers"
+  | "recipes"
   | "browser"
   | "tasks"
   | "voice";
@@ -82,6 +84,7 @@ const translations = {
     learning: "ማእከል ትምህርቲ",
     music: "ሙዚቃ ድለ",
     teasers: "ሕንቅልሕንቅሊተይ",
+    recipes: "ጥዕና ዝሰመዖም መግቢታት",
     browser: "መረብ ሓበሬታ",
     tasks: "መቆጻጸሪ ዕማማት",
     voice: "ሓጋዚ ድምጺ",
@@ -96,6 +99,7 @@ const translations = {
     learning: "Learning Hub",
     music: "Eritrean Music Finder",
     teasers: "Brain Teasers",
+    recipes: "Healthy Recipes",
     browser: "Web Browser",
     tasks: "Task Manager",
     voice: "Voice Assistant",
@@ -120,6 +124,7 @@ export default function AppShell() {
     { id: "learning", label: currentTexts.learning, icon: BookOpen, component: LearningHub },
     { id: "music", label: currentTexts.music, icon: Music, component: MusicFinder },
     { id: "teasers", label: currentTexts.teasers, icon: Brain, component: BrainTeasers },
+    { id: "recipes", label: currentTexts.recipes, icon: Soup, component: HealthyRecipes },
     { id: "browser", label: currentTexts.browser, icon: Globe, component: WebBrowser },
     { id: "tasks", label: currentTexts.tasks, icon: ListTodo, component: TaskManager },
     { id: "voice", label: currentTexts.voice, icon: Mic, component: VoiceAssistant },
@@ -254,5 +259,3 @@ export default function AppShell() {
     </SidebarProvider>
   );
 }
-
-    

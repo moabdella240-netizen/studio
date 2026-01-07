@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState } from "react";
@@ -19,6 +18,7 @@ import TaskManager from "@/components/features/task-manager";
 import VoiceAssistant from "@/components/features/voice-assistant";
 import MusicFinder from "@/components/features/music-finder";
 import BrainTeasers from "@/components/features/brain-teasers";
+import HealthyRecipes from "@/components/features/healthy-recipes";
 
 import {
   MessageSquare,
@@ -33,7 +33,8 @@ import {
   Sparkles,
   HeartPulse,
   Users,
-  GraduationCap
+  GraduationCap,
+  Soup
 } from "lucide-react";
 
 const translations = {
@@ -41,6 +42,7 @@ const translations = {
     askAssistant: "ሓጋዚ AI ሕተት",
     quoteAnswer: "ጥቕስን መልስን",
     brainTeasers: "ሕንቅልሕንቅሊተይን ብልሓትን",
+    healthyRecipes: "ጥዕና ዝሰመዖም መግቢታት",
     musicFinder: "ኤርትራዊ ሙዚቃ ድለ",
     featureGridTitle: "መሳርሒታትካ ዳህስስ",
     learningHub: "ማእከል ትምህርትን ክእለትን",
@@ -59,6 +61,7 @@ const translations = {
     askAssistant: "Ask AI Assistant",
     quoteAnswer: "Quote & Answer",
     brainTeasers: "Brain Teasers",
+    healthyRecipes: "Healthy Recipes",
     musicFinder: "Eritrean Music Finder",
     featureGridTitle: "Explore Your AI Tools",
     learningHub: "Learning & Skills Hub",
@@ -79,6 +82,7 @@ const featureMap = {
   'assistant': VoiceAssistant,
   'quote': DailyQuote,
   'teasers': BrainTeasers,
+  'recipes': HealthyRecipes,
   'music': MusicFinder,
   'learning': LearningHub,
   'chat': MultilingualChat,
@@ -96,6 +100,7 @@ const FeatureDialog = ({ featureKey, language, children }: { featureKey: Feature
     'assistant': { title: t.askAssistant },
     'quote': { title: t.quoteAnswer },
     'teasers': { title: t.brainTeasers },
+    'recipes': { title: t.healthyRecipes },
     'music': { title: t.musicFinder },
     'learning': { title: t.learningHub },
     'chat': { title: "Chat" },
@@ -158,7 +163,10 @@ export default function Dashboard({ language = 'ti' }: { language?: 'ti' | 'en' 
                 <Button variant="outline" size="lg" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-105 hover:shadow-lg"><Sparkles className="mr-2"/>{t.quoteAnswer}</Button>
             </FeatureDialog>
             <FeatureDialog featureKey="teasers" language={language}>
-                <Button variant="outline" size="lg" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-1_05 hover:shadow-lg"><Brain className="mr-2"/>{t.brainTeasers}</Button>
+                <Button variant="outline" size="lg" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-105 hover:shadow-lg"><Brain className="mr-2"/>{t.brainTeasers}</Button>
+            </FeatureDialog>
+            <FeatureDialog featureKey="recipes" language={language}>
+                 <Button variant="outline" size="lg" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-105 hover:shadow-lg"><Soup className="mr-2"/>{t.healthyRecipes}</Button>
             </FeatureDialog>
              <FeatureDialog featureKey="music" language={language}>
                 <Button variant="outline" size="lg" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-105 hover:shadow-lg"><Music className="mr-2"/>{t.musicFinder}</Button>
@@ -249,6 +257,3 @@ export default function Dashboard({ language = 'ti' }: { language?: 'ti' | 'en' 
     </div>
   );
 }
-
-
-    
