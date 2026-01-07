@@ -1,7 +1,7 @@
 
 "use client";
 
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import {
   SidebarProvider,
   Sidebar,
@@ -138,9 +138,14 @@ const translations = {
 export default function AppShell() {
   const [activeFeatureKey, setActiveFeatureKey] = useState<FeatureKey>("dashboard");
   const [language, setLanguage] = useState<'ti' | 'en'>('ti');
+  const [isMounted, setIsMounted] = useState(false);
   const isMobile = useIsMobile();
   const { user } = useUser();
   const router = useRouter();
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const handleLogout = async () => {
     const auth = getAuth();
@@ -174,6 +179,19 @@ export default function AppShell() {
   
   const renderFeature = (feature: Feature) => {
     const Component = feature.component;
+    if (!isMounted) {
+      return (
+         <SidebarMenuButton
+              tooltip={{ children: feature.label }}
+              className="w-full"
+              disabled
+          >
+              <feature.icon />
+              <span>{feature.label}</span>
+          </SidebarMenuButton>
+      );
+    }
+    
     if (isMobile) {
       return (
         <Sheet>
