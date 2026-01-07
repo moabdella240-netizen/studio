@@ -18,7 +18,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Abyssinica+SIL&family=Ethiopic+Washra:wght@700&family=Noto+Sans+Arabic:wght@400;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Noto+Sans+Ethiopic:wght@400;700&family=Ethiopic+Washra:wght@700&family=Noto+Sans+Arabic:wght@400;700&display=swap"
           rel="stylesheet"
         />
       </head>
