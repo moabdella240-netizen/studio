@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import {
   SidebarProvider,
   Sidebar,
@@ -35,44 +35,81 @@ import WebBrowser from "@/components/features/web-browser";
 import TaskManager from "@/components/features/task-manager";
 import VoiceAssistant from "@/components/features/voice-assistant";
 import MusicFinder from "@/components/features/music-finder";
+import { Button } from "@/components/ui/button";
 
 type Feature =
   | "dashboard"
   | "chat"
   | "image"
   | "learning"
+  | "music"
   | "browser"
   | "tasks"
-  | "voice"
-  | "music";
+  | "voice";
 
-const featureComponents: Record<Feature, React.ComponentType> = {
+const featureComponents: Record<Feature, React.ComponentType<{ language: 'ti' | 'en' }>> = {
   dashboard: Dashboard,
   chat: MultilingualChat,
   image: ImageGenerator,
   learning: LearningHub,
+  music: MusicFinder,
   browser: WebBrowser,
   tasks: TaskManager,
   voice: VoiceAssistant,
-  music: MusicFinder,
 };
 
-const navigationItems = [
-  { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { id: "chat", label: "Multilingual Chat", icon: MessageSquare },
-  { id: "image", label: "Image Generation", icon: ImageIcon },
-  { id: "learning", label: "Learning Hub", icon: BookOpen },
-  { id: "music", label: "Eritrean Music Finder", icon: Music },
-  { id: "browser", label: "Web Browser", icon: Globe },
-  { id: "tasks", label: "Task Manager", icon: ListTodo },
-  { id: "voice", label: "Voice Assistant", icon: Mic },
-] as const;
+const translations = {
+  ti: {
+    dashboard: "ዳሽቦርድ",
+    chat: "ብብዙሕ ቋንቋ ዝሰርሕ ቻት",
+    image: "ምስሊ ምፍጣር",
+    learning: "መምሃሪ ማእከል",
+    music: "ኤርትራዊ ሙዚቃ ድለ",
+    browser: "መረብ ሓበሬታ",
+    tasks: "መቆጻጸሪ ዕማማት",
+    voice: "ናይ ድምጺ ሓጋዚ",
+    user: "ተጠቃሚ",
+    freePlan: "ነጻ ኣገልግሎት",
+    appName: "ኣንአይ ማእከል",
+  },
+  en: {
+    dashboard: "Dashboard",
+    chat: "Multilingual Chat",
+    image: "Image Generation",
+    learning: "Learning Hub",
+    music: "Eritrean Music Finder",
+    browser: "Web Browser",
+    tasks: "Task Manager",
+    voice: "Voice Assistant",
+    user: "User",
+    freePlan: "Free Plan",
+    appName: "AnAi Hub",
+  },
+};
 
 
 export default function AppShell() {
   const [activeFeature, setActiveFeature] = useState<Feature>("dashboard");
+  const [language, setLanguage] = useState<'ti' | 'en'>('ti');
+
   const ActiveComponent = featureComponents[activeFeature];
   const userAvatar = PlaceHolderImages.find(p => p.id === 'user-avatar');
+  const currentTexts = translations[language];
+
+  const toggleLanguage = useCallback(() => {
+    setLanguage(prev => (prev === 'ti' ? 'en' : 'ti'));
+  }, []);
+
+  const navigationItems = [
+    { id: "dashboard", label: currentTexts.dashboard, icon: LayoutDashboard },
+    { id: "chat", label: currentTexts.chat, icon: MessageSquare },
+    { id: "image", label: currentTexts.image, icon: ImageIcon },
+    { id: "learning", label: currentTexts.learning, icon: BookOpen },
+    { id: "music", label: currentTexts.music, icon: Music },
+    { id: "browser", label: currentTexts.browser, icon: Globe },
+    { id: "tasks", label: currentTexts.tasks, icon: ListTodo },
+    { id: "voice", label: currentTexts.voice, icon: Mic },
+  ] as const;
 
   return (
     <SidebarProvider>
@@ -81,7 +118,7 @@ export default function AppShell() {
           <Card className="bg-transparent border-0 shadow-none">
             <CardHeader className="flex flex-row items-center gap-3 p-2">
               <div className="flex flex-col">
-                <CardTitle className="text-xl font-headline text-sidebar-primary">AnAi Hub</CardTitle>
+                <CardTitle className="text-xl font-headline text-sidebar-primary">{currentTexts.appName}</CardTitle>
               </div>
             </CardHeader>
           </Card>
@@ -111,8 +148,8 @@ export default function AppShell() {
                 <AvatarFallback>U</AvatarFallback>
               </Avatar>
               <div>
-                <CardTitle className="text-sm font-medium">User</CardTitle>
-                <CardDescription className="text-xs">Free Plan</CardDescription>
+                <CardTitle className="text-sm font-medium">{currentTexts.user}</CardTitle>
+                <CardDescription className="text-xs">{currentTexts.freePlan}</CardDescription>
               </div>
              </CardHeader>
           </Card>
@@ -126,11 +163,15 @@ export default function AppShell() {
           </h1>
           <div className="flex-grow md:hidden"/>
           <h1 className="text-xl font-semibold font-headline md:hidden text-primary">
-            AnAi Hub
+            {currentTexts.appName}
           </h1>
+           <div className="flex-grow hidden md:block"/>
+           <Button variant="ghost" size="icon" onClick={toggleLanguage} aria-label="Toggle Language">
+            <Globe className="h-5 w-5 text-primary" />
+          </Button>
         </header>
         <main className="p-4 md:p-6">
-          <ActiveComponent />
+          <ActiveComponent language={language} />
         </main>
       </SidebarInset>
     </SidebarProvider>
