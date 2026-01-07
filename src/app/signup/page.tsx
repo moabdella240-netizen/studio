@@ -91,10 +91,14 @@ export default function SignupPage() {
       router.push('/');
     } catch (error: any) {
       console.error(error);
+      let description = 'An unknown error occurred.';
+      if (error.code === 'auth/email-already-in-use') {
+        description = 'This email is already in use. Please try another one or sign in.';
+      }
       toast({
         variant: 'destructive',
         title: 'Sign Up Failed',
-        description: error.message || 'An unknown error occurred.',
+        description: description,
       });
     } finally {
       setIsLoading(false);

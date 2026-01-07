@@ -54,10 +54,14 @@ export default function ForgotPasswordPage() {
       });
     } catch (error: any) {
       console.error(error);
+      let description = 'Failed to send password reset email.';
+      if (error.code === 'auth/user-not-found') {
+        description = 'No user found with this email address.';
+      }
       toast({
         variant: 'destructive',
         title: 'Error',
-        description: error.message || 'Failed to send password reset email.',
+        description: description,
       });
     } finally {
       setIsLoading(false);
