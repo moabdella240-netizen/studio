@@ -39,8 +39,6 @@ import {
   Image as ImageIcon,
   BookOpen,
   Globe,
-  ListTodo,
-  Mic,
   LayoutDashboard,
   Music,
   Brain,
@@ -48,9 +46,7 @@ import {
   Dumbbell,
   UserCircle,
 } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { PlaceHolderImages } from "@/lib/placeholder-images";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Button } from "@/components/ui/button";
 
@@ -58,9 +54,6 @@ import Dashboard from "@/components/features/dashboard";
 import MultilingualChat from "@/components/features/multilingual-chat";
 import ImageGenerator from "@/components/features/image-generator";
 import LearningHub from "@/components/features/learning-hub";
-import WebBrowser from "@/components/features/web-browser";
-import TaskManager from "@/components/features/task-manager";
-import VoiceAssistant from "@/components/features/voice-assistant";
 import MusicFinder from "@/components/features/music-finder";
 import BrainTeasers from "@/components/features/brain-teasers";
 import HealthyRecipes from "@/components/features/healthy-recipes";
@@ -77,9 +70,6 @@ type FeatureKey =
   | "teasers"
   | "recipes"
   | "coach"
-  | "browser"
-  | "tasks"
-  | "voice"
   | "portfolio";
   
 type Feature = {
@@ -100,14 +90,8 @@ const translations = {
     teasers: "ሕንቅልሕንቅሊተይ",
     recipes: "ጥዕና ዝሓለወ መግቢ",
     coach: "AI ናይ ስፖርት ኣማኻሪ",
-    browser: "መረብ ሓበሬታ",
-    tasks: "መቆጻጸሪ ዕማማት",
-    voice: "ሓጋዚ ድምጺ",
-    user: "ተጠቃሚ",
-    freePlan: "ነጻ ኣገልግሎት",
     appName: "መምህረይ",
     portfolio: "ሥራይ",
-    logout: "ውጻእ",
   },
   en: {
     dashboard: "Dashboard",
@@ -118,14 +102,8 @@ const translations = {
     teasers: "Brain Teasers",
     recipes: "Healthy Recipes",
     coach: "AI Gym Coach",
-    browser: "Web Browser",
-    tasks: "Task Manager",
-    voice: "Voice Assistant",
-    user: "User",
-    freePlan: "Free Plan",
     appName: "Memhrey",
     portfolio: "Portfolio",
-    logout: "Log Out",
   },
 };
 
@@ -152,13 +130,9 @@ export default function AppShell() {
     { id: "teasers", label: currentTexts.teasers, icon: Brain, component: BrainTeasers },
     { id: "recipes", label: currentTexts.recipes, icon: Soup, component: HealthyRecipes },
     { id: "coach", label: currentTexts.coach, icon: Dumbbell, component: GymCoach },
-    { id: "browser", label: currentTexts.browser, icon: Globe, component: WebBrowser },
-    { id: "tasks", label: currentTexts.tasks, icon: ListTodo, component: TaskManager },
-    { id: "voice", label: currentTexts.voice, icon: Mic, component: VoiceAssistant },
   ];
 
   const ActiveComponent = navigationItems.find(item => item.id === activeFeatureKey)?.component || Dashboard;
-  const userAvatar = PlaceHolderImages.find(p => p.id === 'user-avatar');
 
   const handleLanguageChange = (lang: 'ti' | 'en') => {
     setLanguage(lang);
