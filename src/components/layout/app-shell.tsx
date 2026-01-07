@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useCallback, useEffect } from "react";
@@ -164,8 +163,8 @@ export default function AppShell() {
 
   const navigationItems: Feature[] = [
     { id: "dashboard", label: currentTexts.dashboard, icon: LayoutDashboard, component: Dashboard, mainNav: true },
-    { id: "portfolio", label: currentTexts.portfolio, icon: UserCircle, component: Portfolio, mainNav: true },
     { id: "q-and-a", label: currentTexts["q-and-a"], icon: HelpCircle, component: QandA, mainNav: true },
+    { id: "portfolio", label: currentTexts.portfolio, icon: UserCircle, component: Portfolio, mainNav: true },
     { id: "assistant", label: currentTexts.assistant, icon: Mic, component: VoiceAssistant, mainNav: false },
     { id: "quote", label: currentTexts.quote, icon: Sparkles, component: DailyQuote, mainNav: false },
     { id: "chat", label: currentTexts.chat, icon: MessageSquare, component: MultilingualChat, mainNav: false },
