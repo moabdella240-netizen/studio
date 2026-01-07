@@ -8,3 +8,4 @@ import '@/ai/flows/summarize-webpage-content.ts';
 import '@/ai/flows/translate-and-chat.ts';
 import '@/ai/flows/find-eritrean-music.ts';
 import '@/ai/flows/generate-brain-teasers.ts';
+import '@/ai/flows/generate-quote.ts';

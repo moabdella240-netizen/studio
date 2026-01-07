@@ -2,6 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
+import DailyQuote from "./daily-quote";
 
 const translations = {
   ti: {
@@ -17,7 +18,7 @@ const translations = {
     imageAction: "ንፈጥረት ናብ ምስሊ መፍጠሪ ኺድ።",
     learningTitle: "ብሕታዊ ትምህርቲ",
     learningDescription: "ብ AI ዝምራሕ፡ ንዕላማኻ ዝተዳለወ መንገድታት ትምህርቲ ርኸብ።",
-    learningAction: "ንሀብትታት መምሃרי מאַ켄 ዳህסס።",
+    learningAction: "ንሀብትታት መምሃሪ מאַcken ዳህסס።",
   },
   en: {
     title: "Empowering Eritrean Knowledge with AI",
@@ -42,7 +43,7 @@ export default function Dashboard({ language = 'ti' }: { language?: 'ti' | 'en' 
   const t = translations[language];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <Card className="overflow-hidden border-0 shadow-lg">
         <div className="relative h-96 w-full">
           {heroImage && (
@@ -68,6 +69,8 @@ export default function Dashboard({ language = 'ti' }: { language?: 'ti' | 'en' 
         </div>
       </Card>
       
+      <DailyQuote language={language} />
+
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         <Card className="hover:shadow-lg hover:-translate-y-1 transition-transform duration-300 border-border bg-card">
           <CardHeader>
