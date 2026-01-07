@@ -29,6 +29,12 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
   MessageSquare,
   Image as ImageIcon,
   BookOpen,
@@ -147,9 +153,9 @@ export default function AppShell() {
   const ActiveComponent = navigationItems.find(item => item.id === activeFeatureKey)?.component || Dashboard;
   const userAvatar = PlaceHolderImages.find(p => p.id === 'user-avatar');
 
-  const toggleLanguage = useCallback(() => {
-    setLanguage(prev => (prev === 'ti' ? 'en' : 'ti'));
-  }, []);
+  const handleLanguageChange = (lang: 'ti' | 'en') => {
+    setLanguage(lang);
+  };
   
   const renderFeature = (feature: Feature) => {
     const Component = feature.component;
@@ -262,10 +268,18 @@ export default function AppShell() {
             {currentTexts.appName}
           </h1>
            <div className="flex-grow hidden md:block"/>
-           <Button variant="ghost" onClick={toggleLanguage} aria-label="Toggle Language">
-            <Globe className="h-5 w-5 text-primary" />
-             <span className="ml-2 md:hidden">{language === 'ti' ? 'English' : 'Tigrinya'}</span>
-          </Button>
+           <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" aria-label="Toggle Language">
+                <Globe className="h-5 w-5 text-primary" />
+                <span className="ml-2 md:hidden">{language === 'ti' ? 'English' : 'Tigrinya'}</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem onSelect={() => handleLanguageChange('en')}>English</DropdownMenuItem>
+              <DropdownMenuItem onSelect={() => handleLanguageChange('ti')}>ትግርኛ</DropdownMenuItem>
+            </DropdownMenuContent>
+           </DropdownMenu>
         </header>
         <main className="p-4 md:p-6">
           <ActiveComponent language={language} />
