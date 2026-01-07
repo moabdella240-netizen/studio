@@ -22,6 +22,7 @@ import {
   Mic,
   LayoutDashboard,
   Music,
+  Brain,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -35,6 +36,7 @@ import WebBrowser from "@/components/features/web-browser";
 import TaskManager from "@/components/features/task-manager";
 import VoiceAssistant from "@/components/features/voice-assistant";
 import MusicFinder from "@/components/features/music-finder";
+import BrainTeasers from "@/components/features/brain-teasers";
 import { Button } from "@/components/ui/button";
 
 type Feature =
@@ -43,6 +45,7 @@ type Feature =
   | "image"
   | "learning"
   | "music"
+  | "teasers"
   | "browser"
   | "tasks"
   | "voice";
@@ -53,6 +56,7 @@ const featureComponents: Record<Feature, React.ComponentType<{ language: 'ti' | 
   image: ImageGenerator,
   learning: LearningHub,
   music: MusicFinder,
+  teasers: BrainTeasers,
   browser: WebBrowser,
   tasks: TaskManager,
   voice: VoiceAssistant,
@@ -65,6 +69,7 @@ const translations = {
     image: "ምስሊ ምፍጣር",
     learning: "መምሃሪ ማእከል",
     music: "ኤርትራዊ ሙዚቃ ድለ",
+    teasers: "ሕንቅልሕንቅሊተይን ሜላታትን",
     browser: "መረብ ሓበሬታ",
     tasks: "መቆጻጸሪ ዕማማት",
     voice: "ናይ ድምጺ ሓጋዚ",
@@ -78,6 +83,7 @@ const translations = {
     image: "Image Generation",
     learning: "Learning Hub",
     music: "Eritrean Music Finder",
+    teasers: "Brain Teasers",
     browser: "Web Browser",
     tasks: "Task Manager",
     voice: "Voice Assistant",
@@ -106,6 +112,7 @@ export default function AppShell() {
     { id: "image", label: currentTexts.image, icon: ImageIcon },
     { id: "learning", label: currentTexts.learning, icon: BookOpen },
     { id: "music", label: currentTexts.music, icon: Music },
+    { id: "teasers", label: currentTexts.teasers, icon: Brain },
     { id: "browser", label: currentTexts.browser, icon: Globe },
     { id: "tasks", label: currentTexts.tasks, icon: ListTodo },
     { id: "voice", label: currentTexts.voice, icon: Mic },
