@@ -62,6 +62,14 @@ const translations = {
     recommendations: "ንዓኻ ዝተመደበ",
     chat: "ትርጉምን ቻትን",
     imageGenerator: "ምስሊ ምፍጣር",
+    quoteOfTheDay: "ዕለታዊ ጥቕሲ",
+    wisdomOfTheDay: "ናይ ሎሚ መሪሕ ቃል",
+    riddleOfTheDay: "ናይ ሎሚ ሕንቅልሕንቅሊተይ",
+    challengeYourMind: "ኣእምሮኻ ፈትን",
+    popularSong: "ኣዝዩ ዝስማዕ ዘሎ ደርፊ",
+    listenToNewMusic: "ሓድሽ ሙዚቃ ስማዕ",
+    learningTip: "ምኽሪ ንትምህርቲ",
+    developYourSkills: "ቀጻሊ ክእለትካ ኣማዕብል",
   },
   en: {
     askAssistant: "Ask AI Assistant",
@@ -84,6 +92,14 @@ const translations = {
     recommendations: "Recommended For You",
     chat: "Translate & Chat",
     imageGenerator: "Image Generator",
+    quoteOfTheDay: "Quote of the Day",
+    wisdomOfTheDay: "A word of wisdom for today",
+    riddleOfTheDay: "Riddle of the Day",
+    challengeYourMind: "Challenge your mind",
+    popularSong: "Popular Song",
+    listenToNewMusic: "Listen to new music",
+    learningTip: "Learning Tip",
+    developYourSkills: "Continuously develop your skills",
   },
   ar: {
     askAssistant: "اسأل المساعد الذكي",
@@ -106,6 +122,14 @@ const translations = {
     recommendations: "موصى به لك",
     chat: "ترجمة ودردشة",
     imageGenerator: "مولد الصور",
+    quoteOfTheDay: "اقتباس اليوم",
+    wisdomOfTheDay: "كلمة حكمة اليوم",
+    riddleOfTheDay: "لغز اليوم",
+    challengeYourMind: "تحدى عقلك",
+    popularSong: "أغنية شائعة",
+    listenToNewMusic: "استمع إلى موسيقى جديدة",
+    learningTip: "نصيحة تعليمية",
+    developYourSkills: "طور مهاراتك باستمرار",
   }
 };
 
@@ -231,10 +255,18 @@ export default function Dashboard({ language = 'ti' }: { language?: 'ti' | 'en' 
       <div className="space-y-6">
         <h2 className="text-3xl font-bold font-headline mb-4 text-center">{t.recommendations}</h2>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-             <Card className="hover:shadow-xl hover:-translate-y-1 transition-transform duration-300 group"><CardContent className="p-6 text-center"><p className="font-semibold text-lg">{language === 'ar' ? 'اقتباس اليوم' : 'ዕለታዊ ጥቕሲ'}</p><p className="text-sm text-muted-foreground group-hover:text-primary transition-colors">{language === 'ar' ? 'كلمة حكمة اليوم' : 'ናይ ሎሚ መሪሕ ቃል'}</p></CardContent></Card>
-             <Card className="hover:shadow-xl hover:-translate-y-1 transition-transform duration-300 group"><CardContent className="p-6 text-center"><p className="font-semibold text-lg">{language === 'ar' ? 'لغز اليوم' : 'ናይ ሎሚ ሕንቅልሕንቅሊተይ'}</p><p className="text-sm text-muted-foreground group-hover:text-primary transition-colors">{language === 'ar' ? 'تحدى عقلك' : 'ኣእምሮኻ ፈትን'}</p></CardContent></Card>
-             <Card className="hover:shadow-xl hover:-translate-y-1 transition-transform duration-300 group"><CardContent className="p-6 text-center"><p className="font-semibold text-lg">{language === 'ar' ? 'أغنية شائعة' : 'ኣዝዩ ዝስማዕ ዘሎ ደርፊ'}</p><p className="text-sm text-muted-foreground group-hover:text-primary transition-colors">{language === 'ar' ? 'استمع إلى موسيقى جديدة' : 'ሓድሽ ሙዚቃ ስማዕ'}</p></CardContent></Card>
-             <Card className="hover:shadow-xl hover:-translate-y-1 transition-transform duration-300 group"><CardContent className="p-6 text-center"><p className="font-semibold text-lg">{language === 'ar' ? 'نصيحة تعليمية' : 'ምኽሪ ንትምህርቲ'}</p><p className="text-sm text-muted-foreground group-hover:text-primary transition-colors">{language === 'ar' ? 'طور مهاراتك باستمرار' : 'ቀጻሊ ክእለትካ ኣማዕብል'}</p></CardContent></Card>
+            <FeatureDialog featureKey="quote" language={language}>
+                <Card className="hover:shadow-xl hover:-translate-y-1 transition-transform duration-300 group cursor-pointer"><CardContent className="p-6 text-center"><p className="font-semibold text-lg">{t.quoteOfTheDay}</p><p className="text-sm text-muted-foreground group-hover:text-primary transition-colors">{t.wisdomOfTheDay}</p></CardContent></Card>
+            </FeatureDialog>
+            <FeatureDialog featureKey="teasers" language={language}>
+                <Card className="hover:shadow-xl hover:-translate-y-1 transition-transform duration-300 group cursor-pointer"><CardContent className="p-6 text-center"><p className="font-semibold text-lg">{t.riddleOfTheDay}</p><p className="text-sm text-muted-foreground group-hover:text-primary transition-colors">{t.challengeYourMind}</p></CardContent></Card>
+            </FeatureDialog>
+            <FeatureDialog featureKey="music" language={language}>
+                <Card className="hover:shadow-xl hover:-translate-y-1 transition-transform duration-300 group cursor-pointer"><CardContent className="p-6 text-center"><p className="font-semibold text-lg">{t.popularSong}</p><p className="text-sm text-muted-foreground group-hover:text-primary transition-colors">{t.listenToNewMusic}</p></CardContent></Card>
+            </FeatureDialog>
+            <FeatureDialog featureKey="learning" language={language}>
+                <Card className="hover:shadow-xl hover:-translate-y-1 transition-transform duration-300 group cursor-pointer"><CardContent className="p-6 text-center"><p className="font-semibold text-lg">{t.learningTip}</p><p className="text-sm text-muted-foreground group-hover:text-primary transition-colors">{t.developYourSkills}</p></CardContent></Card>
+            </FeatureDialog>
         </div>
       </div>
 
@@ -318,3 +350,5 @@ export default function Dashboard({ language = 'ti' }: { language?: 'ti' | 'en' 
     </div>
   );
 }
+
+    
