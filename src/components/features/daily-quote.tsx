@@ -11,14 +11,14 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 const translations = {
     ti: {
-        generateNew: "ሓዱሽ ጥቕሲ ፍጠር",
-        askQuestion: "ቶ ሓትት",
+        generateNew: "ሓዱሽ ጥቕሲ",
+        askQuestion: "ሕቶታት ሕተት",
         asking: "ይሓትት ኣሎ...",
         generating: "ይፈጥር ኣሎ...",
-        questionPlaceholder: "ቶኻ ኣብዚ ጸሓፍ...",
-        errorTitle: "ጌጋ",
-        quoteError: "ጥቕሲ ክፈጥር ኣይከኣልኩን።",
-        answerError: "መልሲ ክህብ ኣይከኣልኩን።",
+        questionPlaceholder: "ሕቶኻ ኣብዚ ጸሓፍ...",
+        errorTitle: "ጌጋ ተፈጥሩ",
+        quoteError: "ጥቕሲ ምፍጣር ኣይተኻእለን።",
+        answerError: "መልሲ ምሃብ ኣይተኻእለን።",
     },
     en: {
         generateNew: "New Quote",
@@ -47,7 +47,7 @@ export default function DailyQuote({ language = 'ti' }: { language?: 'ti' | 'en'
         setAnswer(null);
         setQuoteData(null);
         try {
-            const result = await generateQuote({ language });
+            const result = await generateQuote({ language: language === 'ti' ? 'Tigrinya' : 'English' });
             setQuoteData(result);
         } catch (error) {
             console.error("AI Error:", error);
@@ -63,7 +63,7 @@ export default function DailyQuote({ language = 'ti' }: { language?: 'ti' | 'en'
         setIsLoadingAnswer(true);
         setAnswer(null);
         try {
-            const result = await answerQuestion({ language, question });
+            const result = await answerQuestion({ language: language === 'ti' ? 'Tigrinya' : 'English', question });
             setAnswer(result.answer);
         } catch (error) {
             console.error("AI Error:", error);

@@ -12,17 +12,17 @@ import { Separator } from "../ui/separator";
 
 const translations = {
     ti: {
-        title: "ሕንቅሕንቅታትን ሜላታትን",
-        description: "ኣእምሮኻ መሃዝ፣ ሓደሽቲ ነገራት ድማ መሃር።",
-        generate: "ሓደሽቲ ሕንቅሕንቅታትን ፍጠር",
+        title: "ሕንቅልሕንቅሊተይን ናይ ህይወት ብልሃትን",
+        description: "ኣእምሮኻ ፈትን፣ ሓድሽ ነገር ድማ ተምሃር።",
+        generate: "ሓደስቲ ሕንቅልሕንቅሊተይ ፍጠር",
         loading: "ይስራሕ ኣሎ...",
         footballTitle: "ሕቶታት ብዛዕባ ኩዕሶ እግሪ",
-        lifeTitle: "ሕንቅሕንቅታትን",
-        lifehacksTitle: "ናይ ህይወት ሜላታት",
+        lifeTitle: "ናይ ህይወት ሕንቅልሕንቅሊተይ",
+        lifehacksTitle: "ተግባራዊ ናይ ህይወት ብልሓት",
         showAnswer: "መልሲ ርአ",
-        errorTitle: "ጌጋ",
-        errorMessage: "ሕንቅሕንቅታትን ክፈጥር ኣይከኣልኩን። በጃኻ ጸኒሕካ ፈትን።",
-        initialMessage: "ንሓደሽቲ ሕንቅሕንቅታትን ናይ ህይወት ሜላታትን 'ፍጠር' ዝብል ቁልፊ ጽቐጥ።"
+        errorTitle: "ጌጋ ተፈጥሩ",
+        errorMessage: "ሕንቅልሕንቅሊተይ ምፍጣር ኣይተኻእለን። በጃኻ ደጊምካ ፈትን።",
+        initialMessage: "ሓድሽ ሕንቅልሕንቅሊተይን ናይ ህይወት ብልሓትን ንምርካብ 'ሓደስቲ ፍጠር' ዝብል ቁልፊ ጠውቕ።"
     },
     en: {
         title: "Brain Teasers & Lifehacks",
@@ -49,7 +49,7 @@ export default function BrainTeasers({ language = 'ti' }: { language?: 'ti' | 'e
         setIsLoading(true);
         setContent(null);
         try {
-            const result = await generateBrainTeasers({ language });
+            const result = await generateBrainTeasers({ language: language === 'ti' ? 'Tigrinya' : 'English' });
             setContent(result);
         } catch (error) {
             console.error("AI Error:", error);

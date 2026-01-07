@@ -76,18 +76,18 @@ type Feature = {
 
 const translations = {
   ti: {
-    dashboard: "ዳሽቦርድ",
-    chat: "ብብዙሕ ቋንቋ ዝሰርሕ ቻት",
+    dashboard: "መበገሲ",
+    chat: "ቻት",
     image: "ምስሊ ምፍጣር",
-    learning: "መምሃרי ማእከል",
-    music: "ኤርትራዊ ሙዚቃ ድለ",
-    teasers: "ሕንቅልሕንቅሊተይን ሜላታትን",
+    learning: "ማእከል ትምህርቲ",
+    music: "ሙዚቃ ድለ",
+    teasers: "ሕንቅልሕንቅሊተይ",
     browser: "መረብ ሓበሬታ",
     tasks: "መቆጻጸሪ ዕማማት",
-    voice: "ናይ ድምጺ ሓጋዚ",
+    voice: "ሓጋዚ ድምጺ",
     user: "ተጠቃሚ",
     freePlan: "ነጻ ኣገልግሎት",
-    appName: "ኣንአይ ማእከል",
+    appName: "AnAi Hub",
   },
   en: {
     dashboard: "Dashboard",

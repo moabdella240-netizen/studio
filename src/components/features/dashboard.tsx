@@ -39,21 +39,21 @@ import {
 const translations = {
   ti: {
     askAssistant: "ሓጋዚ AI ሕተት",
-    quoteAnswer: "ጥቕስታትን መልስታትን",
-    brainTeasers: "ሕንቅልሕንቅሊተይን ሜላታትን",
+    quoteAnswer: "ጥቕስን መልስን",
+    brainTeasers: "ሕንቅልሕንቅሊተይን ብልሓትን",
     musicFinder: "ኤርትራዊ ሙዚቃ ድለ",
-    featureGridTitle: "AI መሳርሒታትካ ዳህስስ",
-    learningHub: "መምሃሪ ማእከል",
+    featureGridTitle: "መሳርሒታትካ ዳህስስ",
+    learningHub: "ማእከል ትምህርትን ክእለትን",
     iqTraining: "IQን ኣእምሮኻን ምፍታን",
-    languageSupport: "ቋንቋን ትርጉምን ምትጋዝ",
-    productivityTools: "ፍርያትን ናብራን መሳርሒታት",
-    tryNow: "ሕጂ ፈትን",
+    languageSupport: "ሓገዝ ቋንቋን ትርጉምን",
+    productivityTools: "መሳርሒታት ፍርያምን ህይወትን",
+    tryNow: "ሕጂ ፈትን →",
     empoweringMinds: "ንኤርትራዊ ኣእምሮ ምብቃዕ",
-    mentorship: "ምምሃርን ትምህርታዊ ምትጋዝን",
-    youthOpportunities: "ንመንእሰያት 契ፍታታትን ክእለታትን",
-    wellBeing: "ደሓን ምንባርን ኣወንታዊ ህይወትን",
+    mentorship: "ምምሃርን ትምህርታዊ ምትሕግጋዝን",
+    youthOpportunities: "ንመንእሰያት ዕድላትን ክእለታትን",
+    wellBeing: "ጥዕናን ኣወንታዊ ህይወትን",
     localResources: "ከባቢያዊ ጸጋታትን ሓገዝን",
-    recommendations: "ንዓኻ ዝኸውን"
+    recommendations: "ንዓኻ ዝተመደበ"
   },
   en: {
     askAssistant: "Ask AI Assistant",
