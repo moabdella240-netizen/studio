@@ -14,3 +14,4 @@ import '@/ai/flows/get-portfolio-data.ts';
 import '@/ai/flows/generate-homepage-video.ts';
 import '@/ai/flows/q-and-a.ts';
 import '@/ai/flows/summarize-webpage-content';
+import '@/ai/flows/get-daily-recommendation';
