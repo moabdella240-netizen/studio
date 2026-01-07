@@ -46,7 +46,8 @@ import {
   UserCircle,
   Globe,
   Mic,
-  Sparkles
+  Sparkles,
+  HelpCircle,
 } from "lucide-react";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -63,11 +64,13 @@ import GymCoach from "@/components/features/gym-coach";
 import Portfolio from "@/components/features/portfolio";
 import DailyQuote from "@/components/features/daily-quote";
 import VoiceAssistant from "@/components/features/voice-assistant";
+import QandA from "@/components/features/q-and-a";
 
 
 type FeatureKey =
   | "dashboard"
   | "portfolio"
+  | "q-and-a"
   | "chat"
   | "image"
   | "learning"
@@ -101,6 +104,7 @@ const translations = {
     portfolio: "ሥራይ",
     quote: "ዕለታዊ ጥቕስን መልስን",
     assistant: "ሓጋዚ AI",
+    "q-and-a": "ማእከል ሕቶን መልስን",
     more: "ተጨማሪ",
     language: "Language",
   },
@@ -117,6 +121,7 @@ const translations = {
     portfolio: "Portfolio",
     quote: "Quote & Answer",
     assistant: "AI Assistant",
+    "q-and-a": "Q&A Hub",
     more: "More",
     language: "ቋንቋ",
   },
@@ -133,6 +138,7 @@ const translations = {
     portfolio: "ملفي الشخصي",
     quote: "اقتباس وإجابة اليوم",
     assistant: "مساعد ذكي",
+    "q-and-a": "مركز الأسئلة والأجوبة",
     more: "المزيد",
     language: "لغة",
   }
@@ -159,6 +165,7 @@ export default function AppShell() {
   const navigationItems: Feature[] = [
     { id: "dashboard", label: currentTexts.dashboard, icon: LayoutDashboard, component: Dashboard, mainNav: true },
     { id: "portfolio", label: currentTexts.portfolio, icon: UserCircle, component: Portfolio, mainNav: true },
+    { id: "q-and-a", label: currentTexts["q-and-a"], icon: HelpCircle, component: QandA, mainNav: true },
     { id: "assistant", label: currentTexts.assistant, icon: Mic, component: VoiceAssistant, mainNav: false },
     { id: "quote", label: currentTexts.quote, icon: Sparkles, component: DailyQuote, mainNav: false },
     { id: "chat", label: currentTexts.chat, icon: MessageSquare, component: MultilingualChat, mainNav: false },

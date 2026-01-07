@@ -12,3 +12,4 @@ import '@/ai/flows/generate-recipe.ts';
 import '@/ai/flows/generate-workout.ts';
 import '@/ai/flows/get-portfolio-data.ts';
 import '@/ai/flows/generate-homepage-video.ts';
+import '@/ai/flows/q-and-a.ts';
