@@ -6,7 +6,7 @@ import { ArrowRight } from "lucide-react";
 export default function Dashboard() {
   return (
     <div className="space-y-6">
-      <Card className="overflow-hidden border-0">
+      <Card className="overflow-hidden border-0 shadow-lg">
         <div className="relative h-96 w-full">
           <Image
             src="https://images.unsplash.com/photo-1626908013351-800ddd734b8a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8YWJzdHJhY3QlMjB0ZWNobm9sb2d5fGVufDB8fHx8MTc2Nzc0MjM0MHww&ixlib=rb-4.1.0&q=80&w=1080"
@@ -30,7 +30,7 @@ export default function Dashboard() {
       </Card>
       
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <Card className="hover:shadow-lg hover:-translate-y-1 transition-transform duration-300">
+        <Card className="hover:shadow-lg hover:-translate-y-1 transition-transform duration-300 border-border bg-card">
           <CardHeader>
             <CardTitle>Multilingual AI Chat</CardTitle>
             <CardDescription>Converse with our AI in Tigrinya and Saho.</CardDescription>
@@ -39,7 +39,7 @@ export default function Dashboard() {
             <p className="text-sm text-muted-foreground">Go to the chat feature to start.</p>
           </CardContent>
         </Card>
-        <Card className="hover:shadow-lg hover:-translate-y-1 transition-transform duration-300">
+        <Card className="hover:shadow-lg hover:-translate-y-1 transition-transform duration-300 border-border bg-card">
           <CardHeader>
             <CardTitle>AI Image Generation</CardTitle>
             <CardDescription>Turn your ideas into visuals with a simple prompt.</CardDescription>
@@ -48,7 +48,7 @@ export default function Dashboard() {
             <p className="text-sm text-muted-foreground">Visit the image generator to create.</p>
           </CardContent>
         </Card>
-        <Card className="hover:shadow-lg hover:-translate-y-1 transition-transform duration-300">
+        <Card className="hover:shadow-lg hover:-translate-y-1 transition-transform duration-300 border-border bg-card">
           <CardHeader>
             <CardTitle>Personalized Learning</CardTitle>
             <CardDescription>Get AI-driven learning paths tailored to your goals.</CardDescription>

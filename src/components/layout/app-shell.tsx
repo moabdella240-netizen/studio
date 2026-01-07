@@ -79,7 +79,7 @@ export default function AppShell() {
           <Card className="bg-transparent border-0 shadow-none">
             <CardHeader className="flex flex-row items-center gap-3 p-2">
               <div className="flex flex-col">
-                <CardTitle className="text-xl font-headline text-sidebar-foreground">AnAi Hub</CardTitle>
+                <CardTitle className="text-xl font-headline text-sidebar-primary">AnAi Hub</CardTitle>
               </div>
             </CardHeader>
           </Card>
@@ -119,11 +119,11 @@ export default function AppShell() {
       <SidebarInset>
         <header className="flex items-center justify-between p-4 border-b bg-transparent sticky top-0 z-10 h-16">
           <SidebarTrigger className="md:hidden"/>
-          <h1 className="text-xl font-semibold font-headline hidden md:block">
+          <h1 className="text-xl font-semibold font-headline hidden md:block text-primary">
             {navigationItems.find(item => item.id === activeFeature)?.label}
           </h1>
           <div className="flex-grow md:hidden"/>
-          <h1 className="text-xl font-semibold font-headline md:hidden">
+          <h1 className="text-xl font-semibold font-headline md:hidden text-primary">
             AnAi Hub
           </h1>
         </header>
