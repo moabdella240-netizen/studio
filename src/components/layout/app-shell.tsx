@@ -25,6 +25,7 @@ import {
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { PlaceHolderImages } from "@/lib/placeholder-images";
 
 import Dashboard from "@/components/features/dashboard";
 import MultilingualChat from "@/components/features/multilingual-chat";
@@ -71,6 +72,7 @@ const navigationItems = [
 export default function AppShell() {
   const [activeFeature, setActiveFeature] = useState<Feature>("dashboard");
   const ActiveComponent = featureComponents[activeFeature];
+  const userAvatar = PlaceHolderImages.find(p => p.id === 'user-avatar');
 
   return (
     <SidebarProvider>
@@ -105,7 +107,7 @@ export default function AppShell() {
           <Card className="bg-sidebar-accent m-2">
              <CardHeader className="p-3 flex-row items-center gap-3">
               <Avatar>
-                <AvatarImage src="https://picsum.photos/seed/user/40/40" alt="User" data-ai-hint="person" />
+                <AvatarImage src={userAvatar?.imageUrl} alt="User" data-ai-hint={userAvatar?.imageHint} />
                 <AvatarFallback>U</AvatarFallback>
               </Avatar>
               <div>

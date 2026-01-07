@@ -1,20 +1,25 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { ArrowRight } from "lucide-react";
+import { PlaceHolderImages } from "@/lib/placeholder-images";
+
 
 export default function Dashboard() {
+  const heroImage = PlaceHolderImages.find(p => p.id === 'hero');
+
   return (
     <div className="space-y-6">
       <Card className="overflow-hidden border-0 shadow-lg">
         <div className="relative h-96 w-full">
-          <Image
-            src="https://images.unsplash.com/photo-1626908013351-800ddd734b8a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8YWJzdHJhY3QlMjB0ZWNobm9sb2d5fGVufDB8fHx8MTc2Nzc0MjM0MHww&ixlib=rb-4.1.0&q=80&w=1080"
-            alt="AI-powered productivity"
-            fill
-            className="object-cover"
-            data-ai-hint="abstract technology"
-          />
+          {heroImage && (
+             <Image
+              src={heroImage.imageUrl}
+              alt={heroImage.description}
+              fill
+              className="object-cover"
+              data-ai-hint={heroImage.imageHint}
+            />
+          )}
           <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
           <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6">
             <h1 className="text-5xl font-bold font-headline text-primary">Empowering Eritrean Knowledge with AI</h1>
