@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useCallback, useEffect } from "react";
@@ -100,7 +101,7 @@ const translations = {
     recipes: "ጥዕና ዝሓለወ መግቢ",
     coach: "AI ናይ ስፖርት ኣማኻሪ",
     appName: "መምህረይ",
-    portfolio: "ሥራይ",
+    portfolio: "ብዛዕባይ",
     quote: "ዕለታዊ ጥቕስን መልስን",
     assistant: "ሓጋዚ AI",
     "q-and-a": "ማእከል ሕቶን መልስን",
