@@ -19,7 +19,7 @@ import { Separator } from "@/components/ui/separator";
 const musicFinderSchema = z.object({
   artist: z.string().optional(),
   genre: z.string().optional(),
-  language: z.enum(['Tigrinya', 'Saho', 'Tigre', 'Any']).optional(),
+  language: z.enum(['Tigrinya', 'Tigre', 'Any']).optional(),
   mood: z.string().optional(),
 });
 
@@ -127,7 +127,6 @@ export default function MusicFinder() {
                         <SelectContent>
                           <SelectItem value="Any">Any</SelectItem>
                           <SelectItem value="Tigrinya">Tigrinya</SelectItem>
-                          <SelectItem value="Saho">Saho</SelectItem>
                           <SelectItem value="Tigre">Tigre</SelectItem>
                         </SelectContent>
                       </Select>

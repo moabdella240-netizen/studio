@@ -56,7 +56,7 @@ export default function ImageGenerator() {
             <CardHeader>
               <CardTitle>AI Image Generation</CardTitle>
               <CardDescription>
-                Describe the image you want to create in Tigrinya or Saho. Be as detailed as possible.
+                Describe the image you want to create in Tigrinya. Be as detailed as possible.
               </CardDescription>
             </CardHeader>
             <CardContent className="flex-grow">

@@ -9,7 +9,6 @@ import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/componen
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Send, Bot, User, Loader2 } from "lucide-react";
@@ -17,7 +16,7 @@ import { useToast } from "@/hooks/use-toast";
 
 const chatSchema = z.object({
   message: z.string().min(1, "Message cannot be empty."),
-  targetLanguage: z.enum(["Tigrinya", "Saho"]),
+  targetLanguage: z.enum(["Tigrinya"]),
 });
 
 type ChatMessage = {
@@ -126,26 +125,7 @@ export default function MultilingualChat() {
       <CardFooter>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="flex items-start w-full gap-2">
-            <FormField
-              control={form.control}
-              name="targetLanguage"
-              render={({ field }) => (
-                <FormItem>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger className="w-[120px]">
-                        <SelectValue placeholder="Language" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="Tigrinya">Tigrinya</SelectItem>
-                      <SelectItem value="Saho">Saho</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </FormItem>
-              )}
-            />
-            <FormField
+             <FormField
               control={form.control}
               name="message"
               render={({ field }) => (

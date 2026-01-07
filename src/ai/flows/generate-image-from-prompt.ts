@@ -1,7 +1,7 @@
 'use server';
 
 /**
- * @fileOverview Image generation flow from a text prompt in Tigrinya or Saho.
+ * @fileOverview Image generation flow from a text prompt in Tigrinya.
  *
  * - generateImageFromPrompt - A function that generates an image based on the provided text prompt.
  * - GenerateImageFromPromptInput - The input type for the generateImageFromPrompt function.
@@ -14,7 +14,7 @@ import {z} from 'genkit';
 const GenerateImageFromPromptInputSchema = z.object({
   prompt: z
     .string()
-    .describe('The text prompt to generate the image from, in Tigrinya or Saho.'),
+    .describe('The text prompt to generate the image from, in Tigrinya.'),
 });
 export type GenerateImageFromPromptInput = z.infer<typeof GenerateImageFromPromptInputSchema>;
 
