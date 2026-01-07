@@ -21,6 +21,7 @@ import {
   ListTodo,
   Mic,
   LayoutDashboard,
+  Music,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -32,6 +33,7 @@ import LearningHub from "@/components/features/learning-hub";
 import WebBrowser from "@/components/features/web-browser";
 import TaskManager from "@/components/features/task-manager";
 import VoiceAssistant from "@/components/features/voice-assistant";
+import MusicFinder from "@/components/features/music-finder";
 
 type Feature =
   | "dashboard"
@@ -40,7 +42,8 @@ type Feature =
   | "learning"
   | "browser"
   | "tasks"
-  | "voice";
+  | "voice"
+  | "music";
 
 const featureComponents: Record<Feature, React.ComponentType> = {
   dashboard: Dashboard,
@@ -50,6 +53,7 @@ const featureComponents: Record<Feature, React.ComponentType> = {
   browser: WebBrowser,
   tasks: TaskManager,
   voice: VoiceAssistant,
+  music: MusicFinder,
 };
 
 const navigationItems = [
@@ -57,6 +61,7 @@ const navigationItems = [
   { id: "chat", label: "Multilingual Chat", icon: MessageSquare },
   { id: "image", label: "Image Generation", icon: ImageIcon },
   { id: "learning", label: "Learning Hub", icon: BookOpen },
+  { id: "music", label: "Eritrean Music Finder", icon: Music },
   { id: "browser", label: "Web Browser", icon: Globe },
   { id: "tasks", label: "Task Manager", icon: ListTodo },
   { id: "voice", label: "Voice Assistant", icon: Mic },
