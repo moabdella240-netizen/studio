@@ -37,6 +37,17 @@ const translations = {
     errorTitle: "Error",
     errorMessage: "The assistant is unavailable right now. Please try again later.",
     emptyMessage: "Message cannot be empty.",
+  },
+  ar: {
+    title: "مساعد صوتي ذكي",
+    description: "اطلب نصيحة حول نمط الحياة أو حل المشكلات. (إدخال نصي حاليًا)",
+    initialMessage: "اسألني أي شيء...",
+    placeholder: "اطلب نصيحة...",
+    askButton: "اسأل",
+    thinking: "يفكر...",
+    errorTitle: "خطأ",
+    errorMessage: "المساعد غير متوفر الآن. يرجى المحاولة مرة أخرى لاحقًا.",
+    emptyMessage: "لا يمكن أن تكون الرسالة فارغة.",
   }
 };
 
@@ -45,8 +56,10 @@ type ChatMessage = {
   content: string;
 };
 
-export default function VoiceAssistant({ language = 'ti' }: { language?: 'ti' | 'en' }) {
+export default function VoiceAssistant({ language = 'ti' }: { language?: 'ti' | 'en' | 'ar' }) {
   const t = translations[language];
+  const targetLang = language === 'ar' ? 'Arabic' : 'Tigrinya';
+
 
   const voiceSchema = z.object({
     message: z.string().min(1, t.emptyMessage),
@@ -80,7 +93,7 @@ export default function VoiceAssistant({ language = 'ti' }: { language?: 'ti' | 
     form.reset();
 
     try {
-      const result = await translateAndChat({ message: `Act as a helpful life-advice assistant and respond to this: ${values.message}`, targetLanguage: 'Tigrinya' });
+      const result = await translateAndChat({ message: `Act as a helpful life-advice assistant and respond to this: ${values.message}`, targetLanguage: targetLang });
       const assistantMessage: ChatMessage = { role: "assistant", content: result.response };
       setMessages((prev) => [...prev, assistantMessage]);
     } catch (error) {

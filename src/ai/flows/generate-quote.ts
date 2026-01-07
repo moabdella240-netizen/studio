@@ -12,7 +12,7 @@ import { z } from 'genkit';
 
 // Schema for generating a quote
 const GenerateQuoteInputSchema = z.object({
-  language: z.enum(['Tigrinya', 'English']).describe('The language for the quote.'),
+  language: z.enum(['Tigrinya', 'English', 'Arabic']).describe('The language for the quote.'),
   topic: z.string().optional().describe('An optional topic for the quote (e.g., motivation, life, humor).'),
 });
 export type GenerateQuoteInput = z.infer<typeof GenerateQuoteInputSchema>;
@@ -53,7 +53,7 @@ const generateQuoteFlow = ai.defineFlow(
 
 // Schema for answering a question
 const AnswerQuestionInputSchema = z.object({
-    language: z.enum(['Tigrinya', 'English']).describe('The language for the answer.'),
+    language: z.enum(['Tigrinya', 'English', 'Arabic']).describe('The language for the answer.'),
     question: z.string().describe('The user\'s question.'),
 });
 export type AnswerQuestionInput = z.infer<typeof AnswerQuestionInputSchema>;

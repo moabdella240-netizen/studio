@@ -82,7 +82,7 @@ type Feature = {
   id: FeatureKey;
   label: string;
   icon: React.ElementType;
-  component: React.ComponentType<{ language: 'ti' | 'en' }>;
+  component: React.ComponentType<{ language: 'ti' | 'en' | 'ar' }>;
   mainNav: boolean;
 };
 
@@ -120,14 +120,35 @@ const translations = {
     more: "More",
     language: "ቋንቋ",
   },
+  ar: {
+    dashboard: "لوحة التحكم",
+    chat: "الدردشة والترجمة",
+    image: "إنشاء الصور",
+    learning: "مركز التعلم",
+    music: "البحث عن موسيقى",
+    teasers: "ألغاز وألعاب ذهنية",
+    recipes: "وصفات صحية",
+    coach: "مدرب رياضي ذكي",
+    appName: "معلمي",
+    portfolio: "ملفي الشخصي",
+    quote: "اقتباس وإجابة اليوم",
+    assistant: "مساعد ذكي",
+    more: "المزيد",
+    language: "لغة",
+  }
 };
 
 
 export default function AppShell() {
   const [activeFeatureKey, setActiveFeatureKey] = useState<FeatureKey>("dashboard");
-  const [language, setLanguage] = useState<'ti' | 'en'>('ti');
+  const [language, setLanguage] = useState<'ti' | 'en' | 'ar'>('ti');
   const [isMounted, setIsMounted] = useState(false);
   const isMobile = useIsMobile();
+  
+  useEffect(() => {
+    document.documentElement.lang = language;
+    document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
+  }, [language]);
 
   useEffect(() => {
     setIsMounted(true);
@@ -151,7 +172,7 @@ export default function AppShell() {
 
   const ActiveComponent = navigationItems.find(item => item.id === activeFeatureKey)?.component || Dashboard;
 
-  const handleLanguageChange = (lang: 'ti' | 'en') => {
+  const handleLanguageChange = (lang: 'ti' | 'en' | 'ar') => {
     setLanguage(lang);
   };
   
@@ -292,12 +313,13 @@ export default function AppShell() {
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" aria-label="Toggle Language">
                 <Globe className="h-5 w-5 text-primary" />
-                <span className="ml-2 md:hidden">{language === 'ti' ? 'English' : 'ትግርኛ'}</span>
+                <span className="ml-2 md:hidden">{currentTexts.language}</span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuItem onSelect={() => handleLanguageChange('en')}>English</DropdownMenuItem>
               <DropdownMenuItem onSelect={() => handleLanguageChange('ti')}>ትግርኛ</DropdownMenuItem>
+              <DropdownMenuItem onSelect={() => handleLanguageChange('ar')}>العربية</DropdownMenuItem>
             </DropdownMenuContent>
            </DropdownMenu>
         </header>

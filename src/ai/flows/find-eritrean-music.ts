@@ -15,7 +15,7 @@ const FindEritreanMusicInputSchema = z.object({
   artist: z.string().optional().describe('The artist the user is interested in.'),
   genre: z.string().optional().describe('The genre of music the user likes.'),
   language: z
-    .enum(['Tigrinya', 'Tigre', 'Any'])
+    .enum(['Tigrinya', 'Tigre', 'Saho', 'Arabic', 'Any'])
     .optional()
     .describe('The language of the music.'),
   mood: z.string().optional().describe('The mood for the music (e.g., upbeat, relaxing, traditional).'),

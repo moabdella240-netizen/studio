@@ -9,7 +9,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Loader2, UserCircle, Code, Briefcase, Languages, Facebook } from 'lucide-react';
 import Link from 'next/link';
 
-export default function Portfolio({ language = 'en' }: { language?: 'ti' | 'en' }) {
+export default function Portfolio({ language = 'en' }: { language?: 'ti' | 'en' | 'ar' }) {
   const [data, setData] = useState<PortfolioData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -62,17 +62,46 @@ export default function Portfolio({ language = 'en' }: { language?: 'ti' | 'en' 
       </div>
     );
   }
+  
+  const translations = {
+      en: {
+          about: "About Me",
+          skills: "Skills",
+          experience: "Experience",
+          languages: "Languages",
+          contact: "Contact",
+          appName: "App Builder & Programmer"
+      },
+      ti: {
+          about: "ብዛዕባይ",
+          skills: "ክእለታት",
+          experience: "ተሞክሮ",
+          languages: "ቋንቋታት",
+          contact: "ተወከስ",
+          appName: "App Builder & Programmer"
+      },
+      ar: {
+          about: "عني",
+          skills: "مهارات",
+          experience: "خبرة",
+          languages: "لغات",
+          contact: "اتصل",
+          appName: "باني ومبرمج تطبيقات"
+      }
+  }
+  
+  const t = translations[language];
 
   return (
     <div className="max-w-4xl mx-auto space-y-8 animate-fade-in p-4">
       <header className="text-center space-y-2">
         <h1 className="text-4xl font-bold font-headline text-primary">{data.name}</h1>
-        <p className="text-xl text-muted-foreground">App Builder & Programmer</p>
+        <p className="text-xl text-muted-foreground">{t.appName}</p>
       </header>
 
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2"><UserCircle className="text-primary" /> About Me</CardTitle>
+          <CardTitle className="flex items-center gap-2"><UserCircle className="text-primary" /> {t.about}</CardTitle>
         </CardHeader>
         <CardContent>
           <p className="text-muted-foreground">{data.about}</p>
@@ -82,7 +111,7 @@ export default function Portfolio({ language = 'en' }: { language?: 'ti' | 'en' 
       <div className="grid md:grid-cols-2 gap-8">
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2"><Code className="text-primary" /> Skills</CardTitle>
+            <CardTitle className="flex items-center gap-2"><Code className="text-primary" /> {t.skills}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             {data.skills.map((skillSet, index) => (
@@ -99,7 +128,7 @@ export default function Portfolio({ language = 'en' }: { language?: 'ti' | 'en' 
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2"><Briefcase className="text-primary" /> Experience</CardTitle>
+            <CardTitle className="flex items-center gap-2"><Briefcase className="text-primary" /> {t.experience}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             {data.experience.map((exp, index) => (
@@ -115,7 +144,7 @@ export default function Portfolio({ language = 'en' }: { language?: 'ti' | 'en' 
        <div className="grid md:grid-cols-2 gap-8">
         <Card>
             <CardHeader>
-                <CardTitle className="flex items-center gap-2"><Languages className="text-primary" /> Languages</CardTitle>
+                <CardTitle className="flex items-center gap-2"><Languages className="text-primary" /> {t.languages}</CardTitle>
             </CardHeader>
             <CardContent>
                 <div className="flex flex-wrap gap-2">
@@ -127,7 +156,7 @@ export default function Portfolio({ language = 'en' }: { language?: 'ti' | 'en' 
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle>Contact</CardTitle>
+            <CardTitle>{t.contact}</CardTitle>
           </CardHeader>
           <CardContent>
             <Button asChild>

@@ -3,7 +3,7 @@
 /**
  * @fileOverview Implements a multilingual AI chat flow that translates English input to Tigrinya and responds accordingly.
  *
- * - translateAndChat - A function that takes English input and responds in the specified target language (Tigrinya).
+ * - translateAndChat - A function that takes English input and responds in the specified target language (Tigrinya or Arabic).
  * - TranslateAndChatInput - The input type for the translateAndChat function, including the English message and target language.
  * - TranslateAndChatOutput - The return type for the translateAndChat function, providing the AI's response in the target language.
  */
@@ -13,7 +13,7 @@ import {z} from 'genkit';
 
 const TranslateAndChatInputSchema = z.object({
   message: z.string().describe('The English message to be translated and responded to.'),
-  targetLanguage: z.enum(['Tigrinya']).describe('The target language for the AI response.'),
+  targetLanguage: z.enum(['Tigrinya', 'Arabic']).describe('The target language for the AI response.'),
 });
 export type TranslateAndChatInput = z.infer<typeof TranslateAndChatInputSchema>;
 

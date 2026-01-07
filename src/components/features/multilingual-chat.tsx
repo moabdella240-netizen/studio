@@ -34,15 +34,32 @@ const translations = {
     errorTitle: "Error",
     errorMessage: "Failed to get a response from the AI. Please try again.",
     emptyMessage: "Message cannot be empty.",
+  },
+  ar: {
+    title: "الدردشة متعددة اللغات",
+    initialMessage: "ابدأ محادثة بالكتابة أدناه.",
+    placeholder: "اكتب رسالتك باللغة الإنجليزية...",
+    send: "إرسال",
+    thinking: "يفكر...",
+    errorTitle: "خطأ",
+    errorMessage: "فشل في الحصول على استجابة من الذكاء الاصطناعي. يرجى المحاولة مرة أخرى.",
+    emptyMessage: "لا يمكن أن تكون الرسالة فارغة.",
   }
 };
 
-export default function MultilingualChat({ language = 'ti' }: { language?: 'ti' | 'en' }) {
+type ChatMessage = {
+  role: "user" | "assistant";
+  content: string;
+};
+
+
+export default function MultilingualChat({ language = 'ti' }: { language?: 'ti' | 'en' | 'ar' }) {
   const t = translations[language];
+  const targetLang = language === 'ar' ? 'Arabic' : 'Tigrinya';
 
   const chatSchema = z.object({
     message: z.string().min(1, t.emptyMessage),
-    targetLanguage: z.enum(["Tigrinya"]),
+    targetLanguage: z.enum(["Tigrinya", "Arabic"]),
   });
 
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -63,9 +80,13 @@ export default function MultilingualChat({ language = 'ti' }: { language?: 'ti' 
     resolver: zodResolver(chatSchema),
     defaultValues: {
       message: "",
-      targetLanguage: "Tigrinya",
+      targetLanguage: targetLang,
     },
   });
+
+   useEffect(() => {
+    form.setValue('targetLanguage', targetLang);
+  }, [language, form, targetLang]);
 
   const onSubmit = async (values: z.infer<typeof chatSchema>) => {
     setIsThinking(true);

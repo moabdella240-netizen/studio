@@ -37,20 +37,41 @@ const translations = {
         errorTitle: "Error",
         errorMessage: "Failed to generate teasers. Please try again.",
         initialMessage: "Press 'Generate' to get new brain teasers and lifehacks."
+    },
+    ar: {
+        title: "ألغاز ونصائح حياتية",
+        description: "تحدى عقلك وتعلم شيئًا جديدًا.",
+        generate: "أنشئ جديد",
+        loading: "جاري الإنشاء...",
+        footballTitle: "أسئلة خادعة في كرة القدم",
+        lifeTitle: "ألغاز منطقية من الحياة",
+        lifehacksTitle: "نصائح حياتية عملية",
+        showAnswer: "أظهر الإجابة",
+        errorTitle: "خطأ",
+        errorMessage: "فشل في إنشاء الألغاز. يرجى المحاولة مرة أخرى.",
+        initialMessage: "اضغط على 'أنشئ' للحصول على ألغاز ونصائح حياتية جديدة."
     }
 }
 
-export default function BrainTeasers({ language = 'ti' }: { language?: 'ti' | 'en' }) {
+export default function BrainTeasers({ language = 'ti' }: { language?: 'ti' | 'en' | 'ar' }) {
     const [content, setContent] = useState<GenerateBrainTeasersOutput | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const { toast } = useToast();
     const t = translations[language];
 
+    const getLangKey = () => {
+        switch (language) {
+            case 'ti': return 'Tigrinya';
+            case 'ar': return 'Arabic';
+            default: return 'English';
+        }
+    }
+
     const handleGenerate = async () => {
         setIsLoading(true);
         setContent(null);
         try {
-            const result = await generateBrainTeasers({ language: 'Tigrinya' });
+            const result = await generateBrainTeasers({ language: getLangKey() });
             setContent(result);
         } catch (error) {
             console.error("AI Error:", error);
@@ -98,7 +119,7 @@ export default function BrainTeasers({ language = 'ti' }: { language?: 'ti' | 'e
                     <>
                         {content.footballTrickQuestions?.length > 0 && (
                             <section>
-                                <h2 className="text-2xl font-semibold flex items-center mb-4"><Footprints className="mr-3 h-6 w-6 text-primary"/>{t.footballTitle}</h2>
+                                <h2 className="text-2xl font-semibold flex items-center mb-4"><Footprints className="mx-3 h-6 w-6 text-primary"/>{t.footballTitle}</h2>
                                 <Accordion type="single" collapsible className="w-full space-y-2">
                                     {content.footballTrickQuestions.map((item, index) => (
                                         <AccordionItem value={`football-${index}`} key={index} className="bg-card border rounded-lg px-4">
@@ -114,7 +135,7 @@ export default function BrainTeasers({ language = 'ti' }: { language?: 'ti' | 'e
                         
                         {content.lifeTrickQuestions?.length > 0 && (
                              <section>
-                                <h2 className="text-2xl font-semibold flex items-center mb-4"><BrainCircuit className="mr-3 h-6 w-6 text-primary"/>{t.lifeTitle}</h2>
+                                <h2 className="text-2xl font-semibold flex items-center mb-4"><BrainCircuit className="mx-3 h-6 w-6 text-primary"/>{t.lifeTitle}</h2>
                                 <Accordion type="single" collapsible className="w-full space-y-2">
                                     {content.lifeTrickQuestions.map((item, index) => (
                                         <AccordionItem value={`life-${index}`} key={index} className="bg-card border rounded-lg px-4">
@@ -130,7 +151,7 @@ export default function BrainTeasers({ language = 'ti' }: { language?: 'ti' | 'e
                         
                         {content.lifehacks?.length > 0 && (
                            <section>
-                                <h2 className="text-2xl font-semibold flex items-center mb-4"><Lightbulb className="mr-3 h-6 w-6 text-primary"/>{t.lifehacksTitle}</h2>
+                                <h2 className="text-2xl font-semibold flex items-center mb-4"><Lightbulb className="mx-3 h-6 w-6 text-primary"/>{t.lifehacksTitle}</h2>
                                 <div className="space-y-4">
                                     {content.lifehacks.map((item, index) => (
                                         <Card key={index} className="bg-card">

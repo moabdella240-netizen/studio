@@ -84,6 +84,28 @@ const translations = {
     recommendations: "Recommended For You",
     chat: "Translate & Chat",
     imageGenerator: "Image Generator",
+  },
+  ar: {
+    askAssistant: "اسأل المساعد الذكي",
+    quoteAnswer: "اقتباس وإجابة",
+    brainTeasers: "ألغاز ذهنية",
+    healthyRecipes: "وصفات صحية",
+    musicFinder: " مكتشف الموسيقى الإريترية",
+    gymCoach: "مدرب رياضي ذكي",
+    featureGridTitle: "استكشف أدوات الذكاء الاصطناعي",
+    learningHub: "مركز التعلم والمهارات",
+    iqTraining: "تدريب الذكاء والعقل",
+    languageSupport: "دعم اللغة والترجمة",
+    productivityTools: "أدوات الإنتاجية والحياة",
+    tryNow: "جرب الآن",
+    empoweringMinds: "تمكين العقول الإريترية",
+    mentorship: "الإرشاد والدعم التعليمي",
+    youthOpportunities: "فرص ومهارات الشباب",
+    wellBeing: "الرفاهية والحياة الإيجابية",
+    localResources: "الموارد المحلية والمساعدة",
+    recommendations: "موصى به لك",
+    chat: "ترجمة ودردشة",
+    imageGenerator: "مولد الصور",
   }
 };
 
@@ -101,7 +123,7 @@ const featureMap = {
 
 type FeatureKey = keyof typeof featureMap;
 
-const FeatureDialog = ({ featureKey, language, children }: { featureKey: FeatureKey, language: 'ti' | 'en', children: React.ReactNode }) => {
+const FeatureDialog = ({ featureKey, language, children }: { featureKey: FeatureKey, language: 'ti' | 'en' | 'ar', children: React.ReactNode }) => {
   const isMobile = useIsMobile();
   const Component = featureMap[featureKey];
   const t = translations[language];
@@ -152,7 +174,7 @@ const FeatureDialog = ({ featureKey, language, children }: { featureKey: Feature
 };
 
 
-export default function Dashboard({ language = 'ti' }: { language?: 'ti' | 'en' }) {
+export default function Dashboard({ language = 'ti' }: { language?: 'ti' | 'en' | 'ar' }) {
   const heroImage = PlaceHolderImages.find(p => p.id === 'hero');
   const t = translations[language];
 
@@ -163,7 +185,7 @@ export default function Dashboard({ language = 'ti' }: { language?: 'ti' | 'en' 
         <CardHeader className="text-center pb-4">
             <h1 className="text-5xl font-bold font-headline text-primary">መምህረይ</h1>
             <CardDescription className="text-lg text-foreground/70">
-                {"ንኤርትራዊ ፍልጠት ብኣእምሮኣዊ ቴክኖሎጂ ምዕባይ"}
+                {language === 'ar' ? 'تمكين العقول الإريترية بالذكاء الاصطناعي' : 'ንኤርትራዊ ፍልጠት ብኣእምሮኣዊ ቴክኖሎጂ ምዕባይ'}
             </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-wrap items-center justify-center gap-3">
@@ -192,10 +214,10 @@ export default function Dashboard({ language = 'ti' }: { language?: 'ti' | 'en' 
       <div className="space-y-6">
         <h2 className="text-3xl font-bold font-headline mb-4 text-center">{t.recommendations}</h2>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-             <Card className="hover:shadow-xl hover:-translate-y-1 transition-transform duration-300 group"><CardContent className="p-6 text-center"><p className="font-semibold text-lg">ዕለታዊ ጥቕሲ</p><p className="text-sm text-muted-foreground group-hover:text-primary transition-colors">ናይ ሎሚ መሪሕ ቃል</p></CardContent></Card>
-             <Card className="hover:shadow-xl hover:-translate-y-1 transition-transform duration-300 group"><CardContent className="p-6 text-center"><p className="font-semibold text-lg">ናይ ሎሚ ሕንቅልሕንቅሊተይ</p><p className="text-sm text-muted-foreground group-hover:text-primary transition-colors">ኣእምሮኻ ፈትን</p></CardContent></Card>
-             <Card className="hover:shadow-xl hover:-translate-y-1 transition-transform duration-300 group"><CardContent className="p-6 text-center"><p className="font-semibold text-lg">ኣዝዩ ዝስማዕ ዘሎ ደርፊ</p><p className="text-sm text-muted-foreground group-hover:text-primary transition-colors">ሓድሽ ሙዚቃ ስማዕ</p></CardContent></Card>
-             <Card className="hover:shadow-xl hover:-translate-y-1 transition-transform duration-300 group"><CardContent className="p-6 text-center"><p className="font-semibold text-lg">ምኽሪ ንትምህርቲ</p><p className="text-sm text-muted-foreground group-hover:text-primary transition-colors">ቀጻሊ ክእለትካ ኣማዕብል</p></CardContent></Card>
+             <Card className="hover:shadow-xl hover:-translate-y-1 transition-transform duration-300 group"><CardContent className="p-6 text-center"><p className="font-semibold text-lg">{language === 'ar' ? 'اقتباس اليوم' : 'ዕለታዊ ጥቕሲ'}</p><p className="text-sm text-muted-foreground group-hover:text-primary transition-colors">{language === 'ar' ? 'كلمة حكمة اليوم' : 'ናይ ሎሚ መሪሕ ቃል'}</p></CardContent></Card>
+             <Card className="hover:shadow-xl hover:-translate-y-1 transition-transform duration-300 group"><CardContent className="p-6 text-center"><p className="font-semibold text-lg">{language === 'ar' ? 'لغز اليوم' : 'ናይ ሎሚ ሕንቅልሕንቅሊተይ'}</p><p className="text-sm text-muted-foreground group-hover:text-primary transition-colors">{language === 'ar' ? 'تحدى عقلك' : 'ኣእምሮኻ ፈትን'}</p></CardContent></Card>
+             <Card className="hover:shadow-xl hover:-translate-y-1 transition-transform duration-300 group"><CardContent className="p-6 text-center"><p className="font-semibold text-lg">{language === 'ar' ? 'أغنية شائعة' : 'ኣዝዩ ዝስማዕ ዘሎ ደርፊ'}</p><p className="text-sm text-muted-foreground group-hover:text-primary transition-colors">{language === 'ar' ? 'استمع إلى موسيقى جديدة' : 'ሓድሽ ሙዚቃ ስማዕ'}</p></CardContent></Card>
+             <Card className="hover:shadow-xl hover:-translate-y-1 transition-transform duration-300 group"><CardContent className="p-6 text-center"><p className="font-semibold text-lg">{language === 'ar' ? 'نصيحة تعليمية' : 'ምኽሪ ንትምህርቲ'}</p><p className="text-sm text-muted-foreground group-hover:text-primary transition-colors">{language === 'ar' ? 'طور مهاراتك باستمرار' : 'ቀጻሊ ክእለትካ ኣማዕብል'}</p></CardContent></Card>
         </div>
       </div>
 
@@ -209,7 +231,7 @@ export default function Dashboard({ language = 'ti' }: { language?: 'ti' | 'en' 
                             <div className="p-3 bg-primary/10 rounded-lg"><BookOpen className="h-8 w-8 text-primary"/></div>
                             <div>
                                 <CardTitle className="text-xl">{t.learningHub}</CardTitle>
-                                <CardDescription>ብ AI ዝተደገፈ ናይ ትምህርቲ መደባት</CardDescription>
+                                <CardDescription>{language === 'ar' ? 'خطط تعليمية مدعومة بالذكاء الاصطناعي' : 'ብ AI ዝተደገፈ ናይ ትምህርቲ መደባት'}</CardDescription>
                             </div>
                         </CardHeader>
                         <CardContent><Button variant="link" className="p-0 text-primary group-hover:underline">{t.tryNow} <ChevronRight className="h-4 w-4 ml-1" /></Button></CardContent>
@@ -221,7 +243,7 @@ export default function Dashboard({ language = 'ti' }: { language?: 'ti' | 'en' 
                              <div className="p-3 bg-primary/10 rounded-lg"><Brain className="h-8 w-8 text-primary"/></div>
                             <div>
                                 <CardTitle className="text-xl">{t.iqTraining}</CardTitle>
-                                <CardDescription>ሕንቅልሕንቅሊተይን ኣእምሮኻ ዘፈትኑ ጸወታታትን</CardDescription>
+                                <CardDescription>{language === 'ar' ? 'ألغاز وألعاب لتمرين العقل' : 'ሕንቅልሕንቅሊተይን ኣእምሮኻ ዘፈትኑ ጸወታታትን'}</CardDescription>
                             </div>
                         </CardHeader>
                         <CardContent><Button variant="link" className="p-0 text-primary group-hover:underline">{t.tryNow} <ChevronRight className="h-4 w-4 ml-1" /></Button></CardContent>
@@ -233,7 +255,7 @@ export default function Dashboard({ language = 'ti' }: { language?: 'ti' | 'en' 
                              <div className="p-3 bg-primary/10 rounded-lg"><MessageSquare className="h-8 w-8 text-primary"/></div>
                             <div>
                                 <CardTitle className="text-xl">{t.languageSupport}</CardTitle>
-                                <CardDescription>ትርጉምን ቻትን</CardDescription>
+                                <CardDescription>{t.chat}</CardDescription>
                             </div>
                         </CardHeader>
                         <CardContent><Button variant="link" className="p-0 text-primary group-hover:underline">{t.tryNow} <ChevronRight className="h-4 w-4 ml-1" /></Button></CardContent>
@@ -245,7 +267,7 @@ export default function Dashboard({ language = 'ti' }: { language?: 'ti' | 'en' 
                              <div className="p-3 bg-primary/10 rounded-lg"><ImageIcon className="h-8 w-8 text-primary"/></div>
                             <div>
                                 <CardTitle className="text-xl">{t.imageGenerator}</CardTitle>
-                                <CardDescription>ብ AI ምስሊ ፍጠር</CardDescription>
+                                <CardDescription>{language === 'ar' ? 'أنشئ صورًا باستخدام الذكاء الاصطناعي' : 'ብ AI ምስሊ ፍጠር'}</CardDescription>
                             </div>
                         </CardHeader>
                         <CardContent><Button variant="link" className="p-0 text-primary group-hover:underline">{t.tryNow} <ChevronRight className="h-4 w-4 ml-1" /></Button></CardContent>

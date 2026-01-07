@@ -35,10 +35,22 @@ const translations = {
         answerError: "Failed to get an answer.",
         copied: "Copied!",
         copiedDescription: "Quote copied to clipboard.",
+    },
+    ar: {
+        generateNew: "اقتباس جديد",
+        askQuestion: "اطرح سؤالاً",
+        asking: "يسأل...",
+        generating: "جاري الإنشاء...",
+        questionPlaceholder: "اكتب سؤالك هنا...",
+        errorTitle: "خطأ",
+        quoteError: "فشل إنشاء الاقتباس.",
+        answerError: "فشل الحصول على إجابة.",
+        copied: "تم النسخ!",
+        copiedDescription: "تم نسخ الاقتباس إلى الحافظة.",
     }
 }
 
-export default function DailyQuote({ language = 'ti' }: { language?: 'ti' | 'en' }) {
+export default function DailyQuote({ language = 'ti' }: { language?: 'ti' | 'en' | 'ar' }) {
     const [quoteData, setQuoteData] = useState<GenerateQuoteOutput | null>(null);
     const [isLoadingQuote, setIsLoadingQuote] = useState(true);
     const [isLoadingAnswer, setIsLoadingAnswer] = useState(false);
@@ -47,14 +59,21 @@ export default function DailyQuote({ language = 'ti' }: { language?: 'ti' | 'en'
     const [answer, setAnswer] = useState<string | null>(null);
     const { toast } = useToast();
     const t = translations[language];
-    const langKey = language === 'ti' ? 'Tigrinya' : 'English';
+    
+    const getLangKey = () => {
+        switch (language) {
+            case 'ti': return 'Tigrinya';
+            case 'ar': return 'Arabic';
+            default: return 'English';
+        }
+    }
 
     const fetchQuote = async () => {
         setIsLoadingQuote(true);
         setAnswer(null);
         setQuoteData(null);
         try {
-            const result = await generateQuote({ language: langKey });
+            const result = await generateQuote({ language: getLangKey() });
             setQuoteData(result);
         } catch (error) {
             console.error("AI Error:", error);
@@ -70,7 +89,7 @@ export default function DailyQuote({ language = 'ti' }: { language?: 'ti' | 'en'
         setIsLoadingAnswer(true);
         setAnswer(null);
         try {
-            const result = await answerQuestion({ language: langKey, question });
+            const result = await answerQuestion({ language: getLangKey(), question });
             setAnswer(result.answer);
         } catch (error) {
             console.error("AI Error:", error);

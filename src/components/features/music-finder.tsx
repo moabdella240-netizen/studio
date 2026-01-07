@@ -32,6 +32,8 @@ const translations = {
     any: "ዝኾነ",
     tigrinya: "ትግርኛ",
     tigre: "ትግረ",
+    saho: "ሳሆ",
+    arabic: "ዓረብኛ",
     findMusic: "ሙዚቃ ድለ",
     finding: "ይድለ ኣሎ...",
     playlistTitle: "ናይ ሙዚቃ ዝርዝርካ",
@@ -57,6 +59,8 @@ const translations = {
     any: "Any",
     tigrinya: "Tigrinya",
     tigre: "Tigre",
+    saho: "Saho",
+    arabic: "Arabic",
     findMusic: "Find Music",
     finding: "Finding...",
     playlistTitle: "Your Playlist",
@@ -68,16 +72,43 @@ const translations = {
     listen: "Listen",
     favorite: "Favorite",
   },
+  ar: {
+    title: " مكتشف الموسيقى الإريترية",
+    description: "اكتشف الموسيقى حسب الفنان أو النوع أو اللغة أو الحالة المزاجية.",
+    artist: "الفنان",
+    artistPlaceholder: "مثال: هيلين ملس",
+    genre: "النوع",
+    genrePlaceholder: "مثال: غوايلا، بوب",
+    mood: "الحالة المزاجية",
+    moodPlaceholder: "مثال: حماسي، هادئ",
+    language: "اللغة",
+    selectLanguage: "اختر لغة",
+    any: "أي",
+    tigrinya: "التجرينية",
+    tigre: "التجرية",
+    saho: "الساهو",
+    arabic: "العربية",
+    findMusic: "ابحث عن موسيقى",
+    finding: "جاري البحث...",
+    playlistTitle: "قائمة التشغيل الخاصة بك",
+    initialMessage: "ستظهر توصيات الموسيقى الخاصة بك هنا.",
+    errorTitle: "خطأ",
+    errorMessage: "فشل في الحصول على توصيات الموسيقى. يرجى المحاولة مرة أخرى.",
+    preferenceError: "يرجى تحديد تفضيلاتك",
+    preferenceDescription: "أدخل تفضيلاً واحدًا على الأقل للحصول على توصيات الموسيقى.",
+    listen: "استمع",
+    favorite: "مفضل",
+  },
 };
 
 const musicFinderSchema = z.object({
   artist: z.string().optional(),
   genre: z.string().optional(),
-  language: z.enum(['Tigrinya', 'Tigre', 'Any']).optional(),
+  language: z.enum(['Tigrinya', 'Tigre', 'Saho', 'Arabic', 'Any']).optional(),
   mood: z.string().optional(),
 });
 
-export default function MusicFinder({ language = 'ti' }: { language?: 'ti' | 'en' }) {
+export default function MusicFinder({ language = 'ti' }: { language?: 'ti' | 'en' | 'ar' }) {
   const [recommendations, setRecommendations] = useState<FindEritreanMusicOutput | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
@@ -183,6 +214,8 @@ export default function MusicFinder({ language = 'ti' }: { language?: 'ti' | 'en
                           <SelectItem value="Any">{t.any}</SelectItem>
                           <SelectItem value="Tigrinya">{t.tigrinya}</SelectItem>
                           <SelectItem value="Tigre">{t.tigre}</SelectItem>
+                          <SelectItem value="Saho">{t.saho}</SelectItem>
+                          <SelectItem value="Arabic">{t.arabic}</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />

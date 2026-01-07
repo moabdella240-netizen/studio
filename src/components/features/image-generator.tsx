@@ -41,9 +41,22 @@ const translations = {
     errorMessage: "Failed to generate image. Please try a different prompt.",
     promptMinError: "Prompt must be at least 10 characters long.",
   },
+  ar: {
+    title: "إنشاء الصور بالذكاء الاصطناعي",
+    description: "صف الصورة التي تريد إنشاءها باللغة التي تريدها. كن مفصلاً قدر الإمكان.",
+    promptLabel: "موجه",
+    promptPlaceholder: "مثال: رائد فضاء يركب حصانًا على المريخ، إضاءة سينمائية",
+    generateButton: "أنشئ صورة",
+    generatingButton: "جاري الإنشاء...",
+    generatedImageTitle: "الصورة التي تم إنشاؤها",
+    initialMessage: "ستظهر صورتك التي تم إنشاؤها هنا.",
+    errorTitle: "خطأ",
+    errorMessage: "فشل في إنشاء الصورة. يرجى تجربة موجه مختلف.",
+    promptMinError: "يجب أن يتكون الموجه من 10 أحرف على الأقل.",
+  },
 };
 
-export default function ImageGenerator({ language = 'ti' }: { language?: 'ti' | 'en' }) {
+export default function ImageGenerator({ language = 'ti' }: { language?: 'ti' | 'en' | 'ar' }) {
   const t = translations[language];
 
   const imageSchema = z.object({

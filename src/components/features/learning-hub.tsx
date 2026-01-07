@@ -63,6 +63,30 @@ const translations = {
     errorMessage: "Failed to get suggestions. Please try again.",
     skillLevelRequired: "Skill level is required.",
     learningGoalRequired: "Learning goal is required.",
+  },
+  ar: {
+    personalizedSuggestions: "اقتراحات شخصية",
+    resourceLibrary: "مكتبة الموارد",
+    findYourPath: "ابحث عن طريقك",
+    description: "أخبرنا عن أهدافك التعليمية، وسيقترح الذكاء الاصطناعي موارد لك.",
+    learningGoal: "ماذا تريد أن تتعلم؟",
+    learningGoalPlaceholder: "مثال: إتقان React hooks",
+    skillLevel: "مستوى مهارتك",
+    selectLevel: "اختر مستواك",
+    beginner: "مبتدئ",
+    intermediate: "متوسط",
+    expert: "خبير",
+    getSuggestions: "احصل على اقتراحات",
+    generating: "جاري الإنشاء...",
+    recommendations: "توصياتك الشخصية",
+    suggestedResources: "الموارد المقترحة:",
+    reasoning: "السبب:",
+    libraryTitle: "مكتبة الموارد",
+    libraryDescription: "قائمة منسقة من المواد التعليمية عالية الجودة.",
+    errorTitle: "خطأ",
+    errorMessage: "فشل في الحصول على اقتراحات. يرجى المحاولة مرة أخرى.",
+    skillLevelRequired: "مستوى المهارة مطلوب.",
+    learningGoalRequired: "الهدف التعليمي مطلوب.",
   }
 };
 
@@ -79,10 +103,16 @@ const staticResources = {
     { title: "Python for Everybody", description: "A free online course for Python beginners.", category: "Programming" },
     { title: "Figma 101", description: "Learn the basics of UI/UX design with Figma.", category: "Design" },
     { title: "AWS Certified Cloud Practitioner", description: "Get started with cloud computing on AWS.", category: "Cloud" },
+  ],
+  ar: [
+    { title: "وثائق React الرسمية", description: "أفضل مكان لبدء تعلم React.", category: "تطوير الويب" },
+    { title: "Python للجميع", description: "دورة مجانية على الإنترنت للمبتدئين في Python.", category: "البرمجة" },
+    { title: "Figma 101", description: "تعلم أساسيات تصميم واجهة المستخدم/تجربة المستخدم باستخدام Figma.", category: "التصميم" },
+    { title: "AWS Certified Cloud Practitioner", description: "ابدأ مع الحوسبة السحابية على AWS.", category: "السحابة" },
   ]
 };
 
-export default function LearningHub({ language = 'ti' }: { language?: 'ti' | 'en' }) {
+export default function LearningHub({ language = 'ti' }: { language?: 'ti' | 'en' | 'ar' }) {
   const t = translations[language];
   const s = staticResources[language];
 

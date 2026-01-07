@@ -75,6 +75,34 @@ const translations = {
         cuisinePlaceholder: "Eritrean, Italian...",
         dietPlaceholder: "Vegetarian, Gluten-Free...",
     },
+    ar: {
+        title: "وصفات صحية ولذيذة",
+        description: "تناول طعامًا أفضل كل يوم مع وصفات ذكية ومغذية وسهلة الطهي.",
+        explore: "استكشف الوصفات",
+        random: "وصفة عشوائية",
+        generate: "أنشئ وصفة",
+        generating: "جاري الإنشاء...",
+        cuisine: "المطبخ",
+        diet: "النظام الغذائي",
+        difficulty: "الصعوبة",
+        maxTime: "أقصى وقت (بالدقائق)",
+        errorTitle: "خطأ",
+        errorMessage: "فشل في إنشاء الوصفة. يرجى المحاولة مرة أخرى.",
+        initialMessage: "ستظهر وصفتك اللذيذة هنا.",
+        ingredients: "المكونات",
+        instructions: "التعليمات",
+        nutrition: "حقائق غذائية",
+        calories: "سعرات حراريه",
+        protein: "بروتين",
+        carbs: "كربوهيدرات",
+        fat: "دهون",
+        any: "أي",
+        easy: "سهل",
+        medium: "متوسط",
+        hard: "صعب",
+        cuisinePlaceholder: "إريتري، إيطالي...",
+        dietPlaceholder: "نباتي، خالي من الغلوتين...",
+    },
 };
 
 const GenerateRecipeInputSchema = z.object({
@@ -85,7 +113,7 @@ const GenerateRecipeInputSchema = z.object({
 });
 
 
-export default function HealthyRecipes({ language = 'ti' }: { language?: 'ti' | 'en' }) {
+export default function HealthyRecipes({ language = 'ti' }: { language?: 'ti' | 'en' | 'ar' }) {
     const [recipe, setRecipe] = useState<GenerateRecipeOutput | null>(null);
     const [imageUrl, setImageUrl] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -169,7 +197,7 @@ export default function HealthyRecipes({ language = 'ti' }: { language?: 'ti' | 
                                 <FormField control={form.control} name="maxTime" render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>{t.maxTime}</FormLabel>
-                                        <FormControl><Input type="number" placeholder="ንኣብነት, 30" {...field} onChange={e => field.onChange(e.target.value === '' ? undefined : parseInt(e.target.value, 10))}/></FormControl>
+                                        <FormControl><Input type="number" placeholder={language === 'ar' ? 'مثال: 30' : 'ንኣብነት, 30'} {...field} onChange={e => field.onChange(e.target.value === '' ? undefined : parseInt(e.target.value, 10))}/></FormControl>
                                     </FormItem>
                                 )}/>
                             </CardContent>

@@ -89,6 +89,42 @@ const translations = {
     focusPlaceholder: "abs, chest, legs...",
     equipmentPlaceholder: "dumbbells, body-weight...",
   },
+  ar: {
+    title: "مدرب رياضي ذكي",
+    description: "احصل على خطط تمرين شخصية بمساعدة الذكاء الاصطناعي.",
+    generate: "أنشئ خطة",
+    generating: "جاري الإنشاء...",
+    goal: "الهدف",
+    workoutType: "نوع التمرين",
+    difficulty: "الصعوبة",
+    sessionTime: "مدة الجلسة (بالدقائق)",
+    focus: "تركيز على جزء من الجسم",
+    equipment: "المعدات",
+    errorTitle: "خطأ",
+    errorMessage: "فشل في إنشاء خطة التمرين. يرجى المحاولة مرة أخرى.",
+    initialMessage: "ستظهر خطة التمرين الخاصة بك هنا.",
+    warmUp: "الإحماء",
+    mainWorkout: "التمرين الرئيسي",
+    coolDown: "التهدئة",
+    safetyTips: "نصائح السلامة",
+    calories: "السعرات الحرارية",
+    startWorkout: "ابدأ التمرين",
+    randomPlan: "خطة عشوائية",
+    beginnerMode: "وضع المبتدئين",
+    weightLoss: "فقدان الوزن",
+    muscleGain: "اكتساب العضلات",
+    strength: "القوة",
+    beginnerFitness: "لياقة المبتدئين",
+    endurance: "التحمل",
+    gym: "صالة رياضية",
+    home: "المنزل",
+    outdoor: "في الهواء الطلق",
+    easy: "سهل",
+    medium: "متوسط",
+    advanced: "متقدم",
+    focusPlaceholder: "البطن، الصدر، الأرجل...",
+    equipmentPlaceholder: "الدمبل، وزن الجسم...",
+  },
 };
 
 const GenerateWorkoutInputClientSchema = z.object({
@@ -101,7 +137,7 @@ const GenerateWorkoutInputClientSchema = z.object({
 });
 
 
-export default function GymCoach({ language = 'ti' }: { language?: 'ti' | 'en' }) {
+export default function GymCoach({ language = 'ti' }: { language?: 'ti' | 'en' | 'ar' }) {
   const [workout, setWorkout] = useState<GenerateWorkoutOutput | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
@@ -266,20 +302,20 @@ export default function GymCoach({ language = 'ti' }: { language?: 'ti' | 'en' }
                 </CardHeader>
                 <CardContent className="space-y-6">
                     <div>
-                        <h3 className="text-xl font-semibold mb-2 flex items-center"><Zap className="mr-2 h-5 w-5 text-primary"/>{t.warmUp}</h3>
+                        <h3 className="text-xl font-semibold mb-2 flex items-center"><Zap className="mx-2 h-5 w-5 text-primary"/>{t.warmUp}</h3>
                         <ul className="list-disc list-inside space-y-1 text-muted-foreground">
                             {workout.warmUp.map((item, i) => <li key={i}>{item}</li>)}
                         </ul>
                     </div>
                     <Separator/>
                     <div>
-                        <h3 className="text-xl font-semibold mb-2 flex items-center"><Dumbbell className="mr-2 h-5 w-5 text-primary"/>{t.mainWorkout}</h3>
+                        <h3 className="text-xl font-semibold mb-2 flex items-center"><Dumbbell className="mx-2 h-5 w-5 text-primary"/>{t.mainWorkout}</h3>
                         <div className="space-y-4">
                             {workout.mainWorkout.map((ex, i) => (
                                 <div key={i} className="p-3 bg-muted/50 rounded-lg">
                                     <p className="font-semibold">{ex.name}</p>
                                     <p className="text-sm text-muted-foreground">
-                                        <Repeat className="inline h-3 w-3 mr-1.5"/>{ex.sets} sets x {ex.reps} reps, {ex.rest} rest
+                                        <Repeat className="inline h-3 w-3 mx-1.5"/>{ex.sets} sets x {ex.reps} reps, {ex.rest} rest
                                     </p>
                                 </div>
                             ))}
@@ -287,7 +323,7 @@ export default function GymCoach({ language = 'ti' }: { language?: 'ti' | 'en' }
                     </div>
                     <Separator/>
                     <div>
-                        <h3 className="text-xl font-semibold mb-2 flex items-center"><Wind className="mr-2 h-5 w-5 text-primary"/>{t.coolDown}</h3>
+                        <h3 className="text-xl font-semibold mb-2 flex items-center"><Wind className="mx-2 h-5 w-5 text-primary"/>{t.coolDown}</h3>
                          <ul className="list-disc list-inside space-y-1 text-muted-foreground">
                             {workout.coolDown.map((item, i) => <li key={i}>{item}</li>)}
                         </ul>

@@ -12,7 +12,7 @@ import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
 
 const GenerateBrainTeasersInputSchema = z.object({
-  language: z.string().describe('The language for the generated content (e.g., English, Tigrinya).'),
+  language: z.string().describe('The language for the generated content (e.g., English, Tigrinya, Arabic).'),
 });
 export type GenerateBrainTeasersInput = z.infer<typeof GenerateBrainTeasersInputSchema>;
 
