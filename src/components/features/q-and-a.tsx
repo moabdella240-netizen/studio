@@ -178,7 +178,7 @@ export default function QandA({ language = 'ti' }: { language?: 'ti' | 'en' | 'a
                       disabled={isThinking}
                       className="min-h-[40px] max-h-[150px]"
                       onKeyDown={(e) => {
-                        if (e.key === "Enter" && !e.shiftKey) {
+                        if (e.key === 'Enter' && !e.shiftKey) {
                           e.preventDefault();
                           form.handleSubmit(onSubmit)();
                         }
