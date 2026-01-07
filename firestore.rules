@@ -1,151 +1,159 @@
 /**
- * Core Philosophy: This ruleset enforces a strict user-ownership model. All user-generated content,
- * such as tasks and learning modules, is nested within that user's private data tree, making it
- * inaccessible to any other user. This path-based security approach is simple, performant, and
- * easy to reason about.
+ * This ruleset enforces a strict security model for the AnAi Hub application,
+ * prioritizing user data privacy while allowing for public access to educational materials.
  *
- * Data Structure: The data is organized into a main `/users/{userId}` collection which contains all
- * private user data. Each user document acts as a root for their own subcollections like `/tasks`
- * and `/learningModules`. Publicly accessible data, like `/educationalResources`, is stored in a
- * separate top-level collection.
+ * Core Philosophy:
+ * The security model is centered on user ownership. All personal data, including
+ * learning modules and tasks, is strictly confined to that user's data tree. Access
+ * is granted based on the authenticated user's ID matching the path of the document,
+ * preventing any user from accessing another user's private information.
+ *
+ * Data Structure:
+ * - /users/{userId}: The root for all user-specific data. This collection is not listable.
+ * - /users/{userId}/learningModules/{learningModuleId}: A subcollection for a user's private learning modules.
+ * - /users/{userId}/tasks/{taskId}: A subcollection for a user's private tasks.
+ * - /educationalResources/{resourceId}: A top-level collection for globally-available
+ *   educational content. This data is read-only for all authenticated users.
  *
  * Key Security Decisions:
- * - User Listing Disabled: To protect user privacy, it is not possible to list all documents in
- *   the `/users` collection. Clients can only fetch specific user documents they have the ID for
- *   (and are the owner of).
- * - Read-Only Public Data: The `/educationalResources` collection is globally readable by anyone,
- *   including unauthenticated users, to allow for public browsing. Writes to this collection are
- *   disabled entirely within these rules, making it effectively read-only. Content management for
- *   this collection should be handled by a trusted backend service or through the Firebase Console.
- * - Strict Ownership: All writes are gated behind an ownership check, ensuring users can only
- *   modify their own data.
- *
- * Denormalization for Authorization: Security is based on the document's path (`/users/{userId}/...`).
- * For subcollections like `tasks`, we also enforce that a `userId` field within the document data
- * matches the `userId` from the path. This provides a clear and robust link of ownership that doesn't
- * require extra database reads (`get()` calls) to verify.
- *
- * Structural Segregation: Private user data (like tasks) is structurally separated from public data
- * (educational resources) by placing them in different collections. This prevents accidental data
-* leakage and makes list queries on public data safe and efficient.
+ * - User Data Isolation: All paths under `/users/{userId}` are strictly controlled by the
+ *   user ID in the path. A user can only read or write their own data.
+ * - No User Listing: To protect user privacy, it is not possible to list all documents
+ *   in the top-level `/users` collection.
+ * - Public Read-Only Content: The `/educationalResources` collection is readable by any
+ *   authenticated user (including anonymous users) but cannot be modified by them.
+ *   This assumes content is managed by an administrative process.
+ * - Denormalization for Authorization: User-owned documents (like Tasks and LearningModules)
+ *   contain a `userId` field. The rules enforce that this field matches the owner's ID
+ *   on creation and is immutable, ensuring data integrity without costly `get()` calls.
  */
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Helper Functions for Reusability and Clarity
+    // Helper functions to abstract and simplify complex logic.
+    // These functions promote readability and reduce code duplication.
 
     /**
-     * Checks if the user is authenticated.
+     * Checks if a user is authenticated.
+     * This includes both signed-in and anonymous users.
      */
     function isSignedIn() {
       return request.auth != null;
     }
 
     /**
-     * Checks if the currently authenticated user's UID matches the provided userId.
-     * This is the primary function for verifying document ownership.
+     * Checks if the currently authenticated user is the owner of a document,
+     * based on the `userId` provided from the document path.
      */
     function isOwner(userId) {
       return isSignedIn() && request.auth.uid == userId;
     }
 
     /**
-     * Checks if the user is the owner AND the document already exists.
-     * Crucial for preventing updates or deletes on non-existent documents.
+     * Checks for ownership on an existing document.
+     * Crucial for update and delete operations to prevent modifying non-existent data.
      */
     function isExistingOwner(userId) {
       return isOwner(userId) && resource != null;
     }
 
     /**
-     * Validates that the user is creating their own user profile document.
-     * Enforces that the document's 'id' field matches the user's auth UID.
+     * On create, validates that the incoming document's `id` field
+     * matches the `userId` from the path. Enforces data consistency.
      */
-    function isCreatingOwnProfile(userId) {
-      return isOwner(userId) && request.resource.data.id == userId;
+    function hasCorrectIdOnCreate(userId) {
+      return request.resource.data.id == userId;
     }
 
     /**
-     * Ensures the user profile's ID field cannot be changed after creation.
+     * On create, validates that the incoming document's `userId` field
+     * matches the owning `userId` from the path. Enforces relational integrity.
      */
-    function isUpdatingOwnProfile() {
-      return request.resource.data.id == resource.data.id;
+    function hasCorrectOwnerOnCreate(userId) {
+      return request.resource.data.userId == userId;
     }
-
+    
     /**
-     * Validates a new subcollection document (e.g., Task, Module).
-     * Enforces that the internal 'userId' field matches the parent path's userId.
+     * On update, ensures the user's ID field is immutable.
+     * Prevents re-assigning ownership of a document.
      */
-    function isCreatingOwnSubcollectionDoc(userId) {
-      return isOwner(userId) && request.resource.data.userId == userId;
-    }
-
-    /**
-     * Ensures a subcollection document's 'userId' field cannot be changed after creation.
-     */
-    function isUpdatingOwnSubcollectionDoc() {
+    function isUserIdImmutable() {
       return request.resource.data.userId == resource.data.userId;
     }
 
     /**
-     * @description Controls access to user profile documents.
+     * On update, ensures the user profile's primary ID is immutable.
+     */
+    function isIdImmutable() {
+      return request.resource.data.id == resource.data.id;
+    }
+
+    /**
+     * @description Manages user profile documents.
      * @path /users/{userId}
-     * @allow (create) An authenticated user creating their own profile document for the first time.
-     * @deny (list) An authenticated user attempting to list all users in the system.
-     * @principle Restricts access to a user's own data tree and prevents enumeration of all users.
+     * @allow (get) An authenticated user reads their own profile: `auth.uid == 'user_abc'`, `get /users/user_abc`
+     * @allow (create) A new user creates their own profile document: `auth.uid == 'user_xyz'`, `create /users/user_xyz`
+     * @deny (list) No user can list all user profiles in the database.
+     * @deny (update) A user tries to update another user's profile: `auth.uid == 'user_123'`, `update /users/user_456`
+     * @principle Restricts access to a user's own data tree and enforces self-creation of profiles.
      */
     match /users/{userId} {
       allow get: if isOwner(userId);
-      allow list: if false;
-      allow create: if isCreatingOwnProfile(userId);
-      allow update: if isExistingOwner(userId) && isUpdatingOwnProfile();
+      allow list: if false; // Explicitly deny listing all users for privacy.
+      allow create: if isOwner(userId) && hasCorrectIdOnCreate(userId);
+      allow update: if isExistingOwner(userId) && isIdImmutable();
       allow delete: if isExistingOwner(userId);
 
       /**
-       * @description Controls access to a user's private tasks.
-       * @path /users/{userId}/tasks/{taskId}
-       * @allow (create) An authenticated user creating a task for themselves.
-       * @deny (get) An authenticated user trying to read another user's tasks.
-       * @principle Enforces document ownership for all operations within a user's private subcollection.
+       * @description Manages user-specific learning modules.
+       * @path /users/{userId}/learningModules/{learningModuleId}
+       * @allow (create) An authenticated user creates a learning module for themselves: `auth.uid == 'user_abc'`, `create /users/user_abc/learningModules/module_1`
+       * @allow (list) An authenticated user lists their own learning modules: `auth.uid == 'user_abc'`, `list /users/user_abc/learningModules`
+       * @deny (get) A user tries to read another user's module: `auth.uid == 'user_123'`, `get /users/user_456/learningModules/module_1`
+       * @principle Enforces strict document ownership within a user's private subcollection.
        */
-      match /tasks/{taskId} {
-        allow get, list: if isOwner(userId);
-        allow create: if isCreatingOwnSubcollectionDoc(userId);
-        allow update: if isExistingOwner(userId) && isUpdatingOwnSubcollectionDoc();
+      match /learningModules/{learningModuleId} {
+        allow get: if isOwner(userId);
+        allow list: if isOwner(userId);
+        allow create: if isOwner(userId) && hasCorrectOwnerOnCreate(userId);
+        allow update: if isExistingOwner(userId) && isUserIdImmutable();
         allow delete: if isExistingOwner(userId);
       }
 
       /**
-       * @description Controls access to a user's personalized learning modules.
-       * @path /users/{userId}/learningModules/{moduleId}
-       * @allow (update) The document owner updating their own learning module.
-       * @deny (delete) Any user other than the owner trying to delete a module.
-       * @principle Enforces document ownership for all operations within a user's private subcollection.
+       * @description Manages user-specific tasks.
+       * @path /users/{userId}/tasks/{taskId}
+       * @allow (create) An authenticated user creates a task for themselves: `auth.uid == 'user_abc'`, `create /users/user_abc/tasks/task_1`
+       * @allow (list) An authenticated user lists their own tasks: `auth.uid == 'user_abc'`, `list /users/user_abc/tasks`
+       * @deny (get) A user tries to read another user's task: `auth.uid == 'user_123'`, `get /users/user_456/tasks/task_1`
+       * @principle Enforces strict document ownership within a user's private subcollection.
        */
-      match /learningModules/{moduleId} {
-        allow get, list: if isOwner(userId);
-        allow create: if isCreatingOwnSubcollectionDoc(userId);
-        allow update: if isExistingOwner(userId) && isUpdatingOwnSubcollectionDoc();
+      match /tasks/{taskId} {
+        allow get: if isOwner(userId);
+        allow list: if isOwner(userId);
+        allow create: if isOwner(userId) && hasCorrectOwnerOnCreate(userId);
+        allow update: if isExistingOwner(userId) && isUserIdImmutable();
         allow delete: if isExistingOwner(userId);
       }
     }
 
     /**
-     * @description Controls access to the public collection of educational resources.
-     * @path /educationalResources/{resourceId}
-     * @allow (get) Any user (authenticated or not) reading a specific resource.
-     * @deny (create) Any user attempting to create a new educational resource.
-     * @principle Provides public read access while restricting writes to trusted server-side processes.
+     * @description Stores global educational resources, readable by all authenticated users.
+     * @path /educationalResources/{educationalResourceId}
+     * @allow (get) Any authenticated user can read a resource: `auth.uid != null`, `get /educationalResources/res_123`
+     * @allow (list) Any authenticated user can list all resources: `auth.uid != null`, `list /educationalResources`
+     * @deny (create) No user can create a new resource through the client SDK.
+     * @deny (update) No user can update an existing resource.
+     * @deny (delete) No user can delete an existing resource.
+     * @principle Provides public read access for signed-in users while prohibiting all client-side writes, securing the data for admin-only management.
      */
-    match /educationalResources/{resourceId} {
-      allow get: if true;
-      allow list: if true;
-      // CRITICAL: Cannot implement owner-only writes. The 'EducationalResource' entity is missing an 'ownerId' or 'authorId' field.
-      // Writes are disabled to prevent unauthorized data modification. Manage this collection from a trusted backend or the Firebase Console.
-      allow create: if false; // TODO: Add owner validation once the schema is updated with an ownership field.
-      allow update: if false; // TODO: Add owner validation once the schema is updated with an ownership field.
-      allow delete: if false; // TODO: Add owner validation once the schema is updated with an ownership field.
+    match /educationalResources/{educationalResourceId} {
+      allow get: if isSignedIn();
+      allow list: if isSignedIn();
+      allow create: if false; // Writes are disabled; managed by backend/admin process.
+      allow update: if false;
+      allow delete: if false;
     }
   }
 }

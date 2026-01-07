@@ -12,17 +12,12 @@
         },
         "username": {
           "type": "string",
-          "description": "The user's username."
+          "description": "The username of the user."
         },
         "email": {
           "type": "string",
-          "description": "The user's email address.",
+          "description": "The email address of the user.",
           "format": "email"
-        },
-        "profilePictureUrl": {
-          "type": "string",
-          "description": "URL to the user's profile picture.",
-          "format": "uri"
         },
         "preferredLanguage": {
           "type": "string",
@@ -32,14 +27,45 @@
       "required": [
         "id",
         "username",
-        "email"
+        "email",
+        "preferredLanguage"
+      ]
+    },
+    "LearningModule": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "LearningModule",
+      "type": "object",
+      "description": "Represents a personalized learning module.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the learning module."
+        },
+        "title": {
+          "type": "string",
+          "description": "The title of the learning module."
+        },
+        "description": {
+          "type": "string",
+          "description": "A description of the learning module's content."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to User. (Relationship: User 1:N LearningModule)"
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "description",
+        "userId"
       ]
     },
     "EducationalResource": {
       "$schema": "http://json-schema.org/draft-07/schema#",
       "title": "EducationalResource",
       "type": "object",
-      "description": "Represents an educational resource available in the database.",
+      "description": "Represents an educational resource in the database.",
       "properties": {
         "id": {
           "type": "string",
@@ -49,13 +75,9 @@
           "type": "string",
           "description": "The title of the educational resource."
         },
-        "description": {
-          "type": "string",
-          "description": "A description of the educational resource."
-        },
         "url": {
           "type": "string",
-          "description": "URL to the educational resource.",
+          "description": "The URL of the educational resource.",
           "format": "uri"
         },
         "category": {
@@ -74,22 +96,19 @@
         "id",
         "title",
         "url",
-        "category"
+        "category",
+        "tags"
       ]
     },
     "Task": {
       "$schema": "http://json-schema.org/draft-07/schema#",
       "title": "Task",
       "type": "object",
-      "description": "Represents a task managed by the user within the app.",
+      "description": "Represents a task managed by the user.",
       "properties": {
         "id": {
           "type": "string",
           "description": "Unique identifier for the task."
-        },
-        "userId": {
-          "type": "string",
-          "description": "Reference to User. (Relationship: User 1:N Task)"
         },
         "title": {
           "type": "string",
@@ -107,62 +126,26 @@
         "completed": {
           "type": "boolean",
           "description": "Indicates whether the task is completed."
-        }
-      },
-      "required": [
-        "id",
-        "userId",
-        "title",
-        "dueDate",
-        "completed"
-      ]
-    },
-    "PersonalizedLearningModule": {
-      "$schema": "http://json-schema.org/draft-07/schema#",
-      "title": "PersonalizedLearningModule",
-      "type": "object",
-      "description": "Represents a personalized learning module tailored to the user.",
-      "properties": {
-        "id": {
-          "type": "string",
-          "description": "Unique identifier for the learning module."
         },
         "userId": {
           "type": "string",
-          "description": "Reference to User. (Relationship: User 1:N PersonalizedLearningModule)"
-        },
-        "title": {
-          "type": "string",
-          "description": "The title of the learning module."
-        },
-        "content": {
-          "type": "string",
-          "description": "The content of the learning module."
-        },
-        "contentType": {
-          "type": "string",
-          "description": "The content type of the learning module (e.g., text, video, interactive exercise)."
-        },
-        "lastAccessed": {
-          "type": "string",
-          "description": "The last accessed date of the learning module.",
-          "format": "date-time"
+          "description": "Reference to User. (Relationship: User 1:N Task)"
         }
       },
       "required": [
         "id",
-        "userId",
         "title",
-        "content",
-        "contentType"
+        "description",
+        "dueDate",
+        "completed",
+        "userId"
       ]
     }
   },
   "auth": {
     "providers": [
       "password",
-      "anonymous",
-      "google.com"
+      "anonymous"
     ]
   },
   "firestore": {
@@ -174,11 +157,31 @@
           "schema": {
             "$ref": "#/backend/entities/User"
           },
-          "description": "Stores user profile information.  Uses path-based ownership for simple security rules.",
+          "description": "Stores user profile information. Path-based ownership ensures only the user can access their own profile.",
           "params": [
             {
               "name": "userId",
-              "description": "The unique identifier for the user."
+              "description": "The unique identifier of the user."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/learningModules/{learningModuleId}",
+        "definition": {
+          "entityName": "LearningModule",
+          "schema": {
+            "$ref": "#/backend/entities/LearningModule"
+          },
+          "description": "Stores learning modules specific to a user. Path-based ownership guarantees that only the user can manage their own learning modules.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier of the user."
+            },
+            {
+              "name": "learningModuleId",
+              "description": "The unique identifier of the learning module."
             }
           ]
         }
@@ -190,56 +193,36 @@
           "schema": {
             "$ref": "#/backend/entities/Task"
           },
-          "description": "Stores tasks associated with a specific user. Uses path-based ownership for simple security rules.",
+          "description": "Stores tasks specific to a user. Path-based ownership ensures only the user can manage their own tasks.",
           "params": [
             {
               "name": "userId",
-              "description": "The unique identifier for the user."
+              "description": "The unique identifier of the user."
             },
             {
               "name": "taskId",
-              "description": "The unique identifier for the task."
+              "description": "The unique identifier of the task."
             }
           ]
         }
       },
       {
-        "path": "/users/{userId}/learningModules/{moduleId}",
-        "definition": {
-          "entityName": "PersonalizedLearningModule",
-          "schema": {
-            "$ref": "#/backend/entities/PersonalizedLearningModule"
-          },
-          "description": "Stores personalized learning modules associated with a specific user. Uses path-based ownership for simple security rules.",
-          "params": [
-            {
-              "name": "userId",
-              "description": "The unique identifier for the user."
-            },
-            {
-              "name": "moduleId",
-              "description": "The unique identifier for the learning module."
-            }
-          ]
-        }
-      },
-      {
-        "path": "/educationalResources/{resourceId}",
+        "path": "/educationalResources/{educationalResourceId}",
         "definition": {
           "entityName": "EducationalResource",
           "schema": {
             "$ref": "#/backend/entities/EducationalResource"
           },
-          "description": "Stores educational resources available in the application.",
+          "description": "Stores global educational resources. No public read/write access is enabled, access is role-based and should be handled by admin. The resources themselves are globally available for all users of the app to utilize.",
           "params": [
             {
-              "name": "resourceId",
-              "description": "The unique identifier for the educational resource."
+              "name": "educationalResourceId",
+              "description": "The unique identifier of the educational resource."
             }
           ]
         }
       }
     ],
-    "reasoning": "The Firestore structure is designed to securely manage user data, educational resources, tasks, and personalized learning modules, prioritizing authorization independence, clarity, and scalability. User-specific data is stored under the `/users/{userId}` path, ensuring clear ownership and simplified security rules. Tasks and personalized learning modules are stored as subcollections under users, maintaining a hierarchical structure that reflects the user's ownership. The educational resources are stored in the root collection for global accessibility. This design achieves authorization independence by relying on path-based ownership for user-specific data, eliminating the need for `get()` calls in security rules. QAPs (Rules are not Filters) are supported by segregating data based on ownership and using dedicated collections. For example, listing tasks is always scoped to a specific user, preventing unauthorized access. The structure facilitates simple, robust, and easily debuggable security rules by aligning with the core design principles."
+    "reasoning": "The Firestore data structure is designed to ensure security, scalability, and debuggability, following the principles of Authorization Independence, Clarity of Intent, DBAC, and QAPs. Authorization independence is achieved through denormalization, avoiding `get()` calls in security rules. Structural segregation ensures that each collection has a homogeneous security posture. Access modeling uses consistent patterns for authorization (Path-Based ownership). Invariants are maintained by enforcing ownership, timestamps, and data consistency.\n\nUser data is stored under `/users/{userId}` for private data, ensuring that each user can only access their own data. Learning Modules and Tasks are stored as subcollections under the user's document to represent the one-to-many relationship, using path-based ownership. Educational Resources are stored in a top-level collection, as they are global and not user-specific. Because these resources are global, no read/write access is given to the general public. This is in line with the structural segregation principle to maintain a homogeneous security posture for each collection.\n\nThis structure supports QAPs by using path-based ownership for user-specific data. This allows for secure list operations within each user's data scope. Global data (educational resources) are secured at the collection level, enforcing role-based access control."
   }
 }
