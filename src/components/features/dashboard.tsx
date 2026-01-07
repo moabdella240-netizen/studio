@@ -61,7 +61,7 @@ const translations = {
     localResources: "ከባቢያዊ ጸጋታትን ሓገዝን",
     recommendations: "ንዓኻ ዝተመደበ",
     chat: "ትርጉምን ቻትን",
-    imageGenerator: "ምسሊ ምፍጣር",
+    imageGenerator: "ምስሊ ምፍጣር",
   },
   en: {
     askAssistant: "Ask AI Assistant",
@@ -146,11 +146,11 @@ const FeatureDialog = ({ featureKey, language, children }: { featureKey: Feature
     return (
       <Sheet>
         <SheetTrigger asChild>{children}</SheetTrigger>
-        <SheetContent side="bottom" className="h-[90vh]">
-          <SheetHeader>
+        <SheetContent side="bottom" className="h-[90vh] p-0 flex flex-col">
+          <SheetHeader className="p-6">
             <SheetTitle>{title}</SheetTitle>
           </SheetHeader>
-          <div className="py-4 overflow-auto h-full">
+          <div className="overflow-auto flex-grow px-6 pb-6">
             <Component language={language} />
           </div>
         </SheetContent>
@@ -165,7 +165,7 @@ const FeatureDialog = ({ featureKey, language, children }: { featureKey: Feature
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
         </DialogHeader>
-        <div className="overflow-auto flex-grow">
+        <div className="overflow-auto flex-grow pr-1">
           <Component language={language} />
         </div>
       </DialogContent>
@@ -192,13 +192,13 @@ export default function Dashboard({ language = 'ti' }: { language?: 'ti' | 'en' 
           />
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-background/70 to-transparent" />
-        <div className="absolute bottom-6 left-6 text-white">
+        <div className="absolute bottom-6 left-6 text-white p-4 rounded-lg bg-black/30 backdrop-blur-sm">
           <h2 className="text-4xl font-bold font-headline drop-shadow-md">{t.empoweringMinds}</h2>
         </div>
       </div>
 
       {/* Main Action Panel */}
-      <Card className="border-0 shadow-lg bg-gradient-to-br from-card to-background/30 dark:from-card dark:to-background/30">
+      <Card className="border-ring/20 shadow-lg bg-gradient-to-br from-card to-background/30">
         <CardHeader className="text-center pb-4">
             <h1 className="text-5xl font-bold font-headline text-primary">መምህረይ</h1>
             <CardDescription className="text-lg text-foreground/70">
@@ -207,22 +207,22 @@ export default function Dashboard({ language = 'ti' }: { language?: 'ti' | 'en' 
         </CardHeader>
         <CardContent className="flex flex-wrap items-center justify-center gap-3">
             <FeatureDialog featureKey="assistant" language={language}>
-                <Button variant="outline" size="lg" className="border-primary/50 text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/20"><Mic className="mr-2"/>{t.askAssistant}</Button>
+                <Button size="lg" className="transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/30"><Mic className="mr-2"/>{t.askAssistant}</Button>
             </FeatureDialog>
             <FeatureDialog featureKey="quote" language={language}>
-                <Button variant="outline" size="lg" className="border-primary/50 text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/20"><Sparkles className="mr-2"/>{t.quoteAnswer}</Button>
+                <Button size="lg" className="transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/30"><Sparkles className="mr-2"/>{t.quoteAnswer}</Button>
             </FeatureDialog>
             <FeatureDialog featureKey="teasers" language={language}>
-                <Button variant="outline" size="lg" className="border-primary/50 text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/20"><Brain className="mr-2"/>{t.brainTeasers}</Button>
+                <Button size="lg" className="transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/30"><Brain className="mr-2"/>{t.brainTeasers}</Button>
             </FeatureDialog>
             <FeatureDialog featureKey="recipes" language={language}>
-                 <Button variant="outline" size="lg" className="border-primary/50 text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/20"><Soup className="mr-2"/>{t.healthyRecipes}</Button>
+                 <Button size="lg" className="transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/30"><Soup className="mr-2"/>{t.healthyRecipes}</Button>
             </FeatureDialog>
              <FeatureDialog featureKey="music" language={language}>
-                <Button variant="outline" size="lg" className="border-primary/50 text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/20"><Music className="mr-2"/>{t.musicFinder}</Button>
+                <Button size="lg" className="transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/30"><Music className="mr-2"/>{t.musicFinder}</Button>
             </FeatureDialog>
             <FeatureDialog featureKey="coach" language={language}>
-                <Button variant="outline" size="lg" className="border-primary/50 text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/20"><Dumbbell className="mr-2"/>{t.gymCoach}</Button>
+                <Button size="lg" className="transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/30"><Dumbbell className="mr-2"/>{t.gymCoach}</Button>
             </FeatureDialog>
         </CardContent>
       </Card>
@@ -232,7 +232,7 @@ export default function Dashboard({ language = 'ti' }: { language?: 'ti' | 'en' 
         <h2 className="text-3xl font-bold font-headline mb-4 text-center">{t.recommendations}</h2>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
              <Card className="hover:shadow-xl hover:-translate-y-1 transition-transform duration-300 group"><CardContent className="p-6 text-center"><p className="font-semibold text-lg">{language === 'ar' ? 'اقتباس اليوم' : 'ዕለታዊ ጥቕሲ'}</p><p className="text-sm text-muted-foreground group-hover:text-primary transition-colors">{language === 'ar' ? 'كلمة حكمة اليوم' : 'ናይ ሎሚ መሪሕ ቃል'}</p></CardContent></Card>
-             <Card className="hover:shadow-xl hover:-translate-y-1 transition-transform duration-300 group"><CardContent className="p-6 text-center"><p className="font-semibold text-lg">{language === 'ar' ? 'لغز اليوم' : 'ናይ ሎሚ ሕንቅልሕንቅליተይ'}</p><p className="text-sm text-muted-foreground group-hover:text-primary transition-colors">{language === 'ar' ? 'تحدى عقلك' : 'ኣእምሮኻ ፈትን'}</p></CardContent></Card>
+             <Card className="hover:shadow-xl hover:-translate-y-1 transition-transform duration-300 group"><CardContent className="p-6 text-center"><p className="font-semibold text-lg">{language === 'ar' ? 'لغز اليوم' : 'ናይ ሎሚ ሕንቅልሕንቅሊተይ'}</p><p className="text-sm text-muted-foreground group-hover:text-primary transition-colors">{language === 'ar' ? 'تحدى عقلك' : 'ኣእምሮኻ ፈትን'}</p></CardContent></Card>
              <Card className="hover:shadow-xl hover:-translate-y-1 transition-transform duration-300 group"><CardContent className="p-6 text-center"><p className="font-semibold text-lg">{language === 'ar' ? 'أغنية شائعة' : 'ኣዝዩ ዝስማዕ ዘሎ ደርፊ'}</p><p className="text-sm text-muted-foreground group-hover:text-primary transition-colors">{language === 'ar' ? 'استمع إلى موسيقى جديدة' : 'ሓድሽ ሙዚቃ ስማዕ'}</p></CardContent></Card>
              <Card className="hover:shadow-xl hover:-translate-y-1 transition-transform duration-300 group"><CardContent className="p-6 text-center"><p className="font-semibold text-lg">{language === 'ar' ? 'نصيحة تعليمية' : 'ምኽሪ ንትምህርቲ'}</p><p className="text-sm text-muted-foreground group-hover:text-primary transition-colors">{language === 'ar' ? 'طور مهاراتك باستمرار' : 'ቀጻሊ ክእለትካ ኣማዕብል'}</p></CardContent></Card>
         </div>

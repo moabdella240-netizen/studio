@@ -205,20 +205,18 @@ export default function AppShell() {
     if (!isMounted) return null;
 
     const content = (
-      <div className="py-4 h-full overflow-auto">
-        <FeatureRenderer feature={feature} language={language} />
-      </div>
+      <FeatureRenderer feature={feature} language={language} />
     );
 
     if (isMobile) {
       return (
         <Sheet>
           <SheetTrigger asChild>{trigger}</SheetTrigger>
-          <SheetContent side="left" className="w-full">
-            <SheetHeader>
+          <SheetContent side="left" className="w-full p-0 flex flex-col">
+            <SheetHeader className="p-6">
               <SheetTitle>{feature.label}</SheetTitle>
             </SheetHeader>
-            {content}
+            <div className="overflow-auto flex-grow px-6 pb-6">{content}</div>
           </SheetContent>
         </Sheet>
       );
@@ -231,7 +229,7 @@ export default function AppShell() {
           <DialogHeader>
             <DialogTitle>{feature.label}</DialogTitle>
           </DialogHeader>
-          <div className="overflow-auto flex-grow">{content}</div>
+          <div className="overflow-auto flex-grow pr-1">{content}</div>
         </DialogContent>
       </Dialog>
     );
@@ -328,5 +326,3 @@ export default function AppShell() {
     </SidebarProvider>
   );
 }
-
-    
