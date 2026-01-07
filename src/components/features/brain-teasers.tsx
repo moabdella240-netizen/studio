@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -12,17 +13,17 @@ import { Separator } from "../ui/separator";
 
 const translations = {
     ti: {
-        title: "ሕንቅልሕንቅሊተይን ናይ ህይወት ብልሃትን",
-        description: "ኣእምሮኻ ፈትን፣ ሓድሽ ነገር ድማ ተምሃር።",
-        generate: "ሓደስቲ ሕንቅልሕንቅሊተይ ፍጠር",
+        title: "ሕንቅልሕንቅሊተይን ብልሃትን",
+        description: "ኣእምሮኻ ፈትን፣ ሓድሽ ነገር ድማ ተመሃር።",
+        generate: "ሓደስቲ ፍጠር",
         loading: "ይስራሕ ኣሎ...",
-        footballTitle: "ሕቶታት ብዛዕባ ኩዕሶ እግሪ",
+        footballTitle: "ሕቶታት ኩዕሶ እግሪ",
         lifeTitle: "ናይ ህይወት ሕንቅልሕንቅሊተይ",
-        lifehacksTitle: "ተግባራዊ ናይ ህይወት ብልሓት",
+        lifehacksTitle: "ተግባራዊ ብልሃት",
         showAnswer: "መልሲ ርአ",
-        errorTitle: "ጌጋ ተፈጥሩ",
-        errorMessage: "ሕንቅልሕንቅሊተይ ምፍጣር ኣይተኻእለን። በጃኻ ደጊምካ ፈትን።",
-        initialMessage: "ሓድሽ ሕንቅልሕንቅሊተይን ናይ ህይወት ብልሓትን ንምርካብ 'ሓደስቲ ፍጠር' ዝብል ቁልፊ ጠውቕ።"
+        errorTitle: "ጌጋ ኣጋጢሙ",
+        errorMessage: "ሕንቅልሕንቅሊተይ ክንፈጥር ኣይከኣልናን። በጃኻ ደጊምካ ፈትን።",
+        initialMessage: "ሓድሽ ሕንቅልሕንቅሊተይን ናይ ህይወት ብልሃትን ንምርካብ 'ሓደስቲ ፍጠር' ዝብል ቁልፊ ጠውቕ።"
     },
     en: {
         title: "Brain Teasers & Lifehacks",

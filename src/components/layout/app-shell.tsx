@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useCallback } from "react";
@@ -87,8 +88,8 @@ const translations = {
     learning: "ማእከል ትምህርቲ",
     music: "ሙዚቃ ድለ",
     teasers: "ሕንቅልሕንቅሊተይ",
-    recipes: "ጥዕና ዝሰመዖም መግቢታት",
-    coach: "AI ናይ ስፖርት ኣ教练",
+    recipes: "ጥዕና ዝሓለወ መግቢ",
+    coach: "AI ናይ ስፖርት ኣማኻሪ",
     browser: "መረብ ሓበሬታ",
     tasks: "መቆጻጸሪ ዕማማት",
     voice: "ሓጋዚ ድምጺ",

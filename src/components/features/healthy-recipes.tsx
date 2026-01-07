@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -29,10 +30,10 @@ const translations = {
         diet: "ዓይነት ኣመጋግባ",
         difficulty: "ጽፍሒ ምድላው",
         maxTime: "ዝለዓለ ግዜ (ደቓይቕ)",
-        errorTitle: "ጌጋ ተፈጥሩ",
-        errorMessage: "መግቢ ምፍጣር ኣይተኻእለን። በጃኻ ደጊምካ ፈትን።",
-        initialMessage: "ኣብዚ መግቢታትካ ክትሪኢ ኢኻ።",
-        ingredients: "እታዎት",
+        errorTitle: "ጌጋ ኣጋጢሙ",
+        errorMessage: "መግቢ ክንፈጥር ኣይከኣልናን። በጃኻ ደጊምካ ፈትን።",
+        initialMessage: "ዝተመርጸ መግቢ ኣብዚ ክርአ እዩ።",
+        ingredients: "ግብኣታት",
         instructions: "ኣሰራርሓ",
         nutrition: "ኣመጋግባዊ ትሕዝቶ",
         calories: "ካሎሪ",

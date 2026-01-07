@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect } from "react";
@@ -11,14 +12,14 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 const translations = {
     ti: {
-        generateNew: "ሓዱሽ ጥቕሲ",
-        askQuestion: "ሕቶታት ሕተት",
+        generateNew: "ሓዱሽ ጥቕሲ ፍጠር",
+        askQuestion: "ሕቶ sorce",
         asking: "ይሓትት ኣሎ...",
         generating: "ይፈጥር ኣሎ...",
         questionPlaceholder: "ሕቶኻ ኣብዚ ጸሓፍ...",
-        errorTitle: "ጌጋ ተፈጥሩ",
-        quoteError: "ጥቕሲ ምፍጣር ኣይተኻእለን።",
-        answerError: "መልሲ ምሃብ ኣይተኻእለን።",
+        errorTitle: "ጌጋ ኣጋጢሙ",
+        quoteError: "ጥቕሲ ክንፈጥር ኣይከኣልናን።",
+        answerError: "መልሲ ክንረክብ ኣይከኣልናን።",
     },
     en: {
         generateNew: "New Quote",

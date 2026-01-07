@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -17,7 +18,7 @@ import {z} from 'zod';
 
 const translations = {
   ti: {
-    title: 'AI ናይ ስፖርት ኣ教练',
+    title: 'AI ናይ ስፖርት ኣማኻሪ',
     description: 'ብናይ AI ሓገዝ፡ ንኣኻ ዝኸውን ናይ ስፖርት ውጥን ምረጽ።',
     generate: 'ውጥን ፍጠር',
     generating: 'ይስራሕ ኣሎ...',
@@ -27,13 +28,13 @@ const translations = {
     sessionTime: 'ግዜ (ደቓይቕ)',
     focus: 'ትኹረት',
     equipment: 'መሳርሒታት',
-    errorTitle: 'ጌጋ',
-    errorMessage: 'ውጥን ምፍጣር ኣይተኻእለን። ደጊምካ ፈትን።',
-    initialMessage: 'ንውጥን ስፖርትካ ኣብዚ ርአ።',
+    errorTitle: 'ጌጋ ኣጋጢሙ',
+    errorMessage: 'ውጥን ክንፈጥር ኣይከኣልናን። ደጊምካ ፈትን።',
+    initialMessage: 'ናይ ስፖርት ውጥንካ ኣብዚ ክርአ እዩ።',
     warmUp: 'ምድላው',
     mainWorkout: 'ዋና ስፖርት',
     coolDown: 'ምዝሕሓል',
-    safetyTips: 'ናይ ድሕነት ምኽርታት',
+    safetyTips: 'ናይ ድሕንነት ምኽርታት',
     calories: 'ካሎሪ',
     startWorkout: 'ስፖርት ጀምር',
     randomPlan: 'ዘይተመርጸ ውጥን',

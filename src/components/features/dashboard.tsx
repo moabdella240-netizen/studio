@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from "react";
@@ -44,13 +45,13 @@ const translations = {
   ti: {
     askAssistant: "ሓጋዚ AI ሕተት",
     quoteAnswer: "ጥቕስን መልስን",
-    brainTeasers: "ሕንቅልሕንቅሊተይን ብልሓትን",
+    brainTeasers: "ሕንቅልሕንቅሊተይን ብልሃትን",
     healthyRecipes: "ጥዕና ዝሰመዖም መግቢታት",
-    musicFinder: "ኤርትራዊ ሙዚቃ ድለ",
-    gymCoach: "AI ናይ ስፖርት ኣ教练",
+    musicFinder: "ሙዚቃ ኤርትራ ድለ",
+    gymCoach: "AI ናይ ስፖርት ኣማኻሪ",
     featureGridTitle: "መሳርሒታትካ ዳህስስ",
     learningHub: "ማእከል ትምህርትን ክእለትን",
-    iqTraining: "IQን ኣእምሮኻን ምፍታን",
+    iqTraining: "IQን ምህዞን ምፍታን",
     languageSupport: "ሓገዝ ቋንቋን ትርጉምን",
     productivityTools: "መሳርሒታት ፍርያምን ህይወትን",
     tryNow: "ሕጂ ፈትን →",
