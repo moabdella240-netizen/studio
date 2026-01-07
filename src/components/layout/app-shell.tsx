@@ -92,6 +92,7 @@ export default function AppShell() {
                   onClick={() => setActiveFeature(item.id)}
                   isActive={activeFeature === item.id}
                   tooltip={{ children: item.label }}
+                  className="[&[data-active=true]]:bg-sidebar-primary [&[data-active=true]]:text-sidebar-primary-foreground"
                 >
                   <item.icon />
                   <span>{item.label}</span>
@@ -116,7 +117,7 @@ export default function AppShell() {
         </SidebarFooter>
       </Sidebar>
       <SidebarInset>
-        <header className="flex items-center justify-between p-4 border-b bg-background/50 backdrop-blur-sm sticky top-0 z-10 h-16">
+        <header className="flex items-center justify-between p-4 border-b bg-transparent sticky top-0 z-10 h-16">
           <SidebarTrigger className="md:hidden"/>
           <h1 className="text-xl font-semibold font-headline hidden md:block">
             {navigationItems.find(item => item.id === activeFeature)?.label}
