@@ -13,6 +13,8 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
 } from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
+import { useFirestore } from '@/firebase';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -45,6 +47,7 @@ export default function LoginPage() {
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const router = useRouter();
   const { toast } = useToast();
+  const firestore = useFirestore();
 
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -78,10 +81,24 @@ export default function LoginPage() {
     try {
       const auth = getAuth();
       const provider = new GoogleAuthProvider();
-      await signInWithPopup(auth, provider);
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+
+      if (firestore) {
+        const userRef = doc(firestore, 'users', user.uid);
+        await setDoc(userRef, {
+          uid: user.uid,
+          displayName: user.displayName,
+          email: user.email,
+          photoURL: user.photoURL,
+          createdAt: new Date().toISOString(),
+        }, { merge: true });
+      }
+
       toast({ title: 'Success!', description: 'You have signed in with Google.' });
       router.push('/');
-    } catch (error: any) {
+    } catch (error: any)
+       {
       console.error(error);
       toast({
         variant: 'destructive',
