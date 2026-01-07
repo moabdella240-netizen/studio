@@ -25,6 +25,7 @@ import {
   SheetContent,
   SheetHeader,
   SheetTitle,
+  SheetTrigger,
 } from "@/components/ui/sheet";
 import {
   DropdownMenu,
@@ -327,3 +328,5 @@ export default function AppShell() {
     </SidebarProvider>
   );
 }
+
+    
