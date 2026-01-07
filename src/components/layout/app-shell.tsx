@@ -38,13 +38,13 @@ import {
   MessageSquare,
   Image as ImageIcon,
   BookOpen,
-  Globe,
   LayoutDashboard,
   Music,
   Brain,
   Soup,
   Dumbbell,
   UserCircle,
+  Globe,
 } from "lucide-react";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { useIsMobile } from "@/hooks/use-mobile";
