@@ -1,40 +1,138 @@
+
+'use client';
+
+import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import DailyQuote from "./daily-quote";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { useIsMobile } from "@/hooks/use-mobile";
+
+import MultilingualChat from "@/components/features/multilingual-chat";
+import ImageGenerator from "@/components/features/image-generator";
+import LearningHub from "@/components/features/learning-hub";
+import WebBrowser from "@/components/features/web-browser";
+import TaskManager from "@/components/features/task-manager";
+import VoiceAssistant from "@/components/features/voice-assistant";
+import MusicFinder from "@/components/features/music-finder";
+import BrainTeasers from "@/components/features/brain-teasers";
+
+import {
+  MessageSquare,
+  ImageIcon,
+  BookOpen,
+  Globe,
+  ListTodo,
+  Mic,
+  LayoutDashboard,
+  Music,
+  Brain,
+  Sparkles,
+  HeartPulse,
+  Users,
+  GraduationCap
+} from "lucide-react";
 
 const translations = {
   ti: {
-    title: "ንኤርትራዊ ፍልጠት ብኣእምሮኣዊ ቴክኖሎጂ ምዕባይ",
-    description: "ናይ AI ሓይሊ ዘለዎ፡ ንኹሉ መዳያዊ ፍርያት፡ ትምህርቲ፡ און ፈጠራን ዝኸውን መድረኽኩም።",
-    startLearning: "ምምሃር ጀምር",
-    tryAssistant: "AI ሓጋዚ ፈትን",
-    chatTitle: "ብብዙሕ ቋንቋ ዝሰርሕ ቻት",
-    chatDescription: "ምስ ናይና AI ብትግርኛ ተዛረብ።",
-    chatAction: "ናብ ቻት ባህሪ ኪድ እሞ ጀምር።",
-    imageTitle: "ምስሊ ምፍጣር",
-    imageDescription: "ሓሳባትካ ብቐሊሉ ናብ ምስሊ ቀይሮም።",
-    imageAction: "ንፈጥረት ናብ ምስሊ መፍጠሪ ኺድ።",
-    learningTitle: "ብሕታዊ ትምህርቲ",
-    learningDescription: "ብ AI ዝምራሕ፡ ንዕላማኻ ዝተዳለወ መንገድታት ትምህርቲ ርኸብ።",
-    learningAction: "ንሀብትታት መምሃሪ מאַcken ዳህסס።",
+    askAssistant: "ሓጋዚ AI ሕተት",
+    quoteAnswer: "ጥቕስታትን መልስታትን",
+    brainTeasers: "ሕንቅልሕንቅሊተይን ሜላታትን",
+    musicFinder: "ኤርትራዊ ሙዚቃ ድለ",
+    featureGridTitle: "AI መሳርሒታትካ ዳህስስ",
+    learningHub: "መምሃሪ ማእከል",
+    iqTraining: "IQን ኣእምሮኻን ምፍታን",
+    languageSupport: "ቋንቋን ትርጉምን ምትጋዝ",
+    productivityTools: "ፍርያትን ናብራን መሳርሒታት",
+    tryNow: "ሕጂ ፈትን",
+    empoweringMinds: "ንኤርትራዊ ኣእምሮ ምብቃዕ",
+    mentorship: "ምምሃርን ትምህርታዊ ምትጋዝን",
+    youthOpportunities: "ንመንእሰያት 契ፍታታትን ክእለታትን",
+    wellBeing: "ደሓን ምንባርን ኣወንታዊ ህይወትን",
+    localResources: "ከባቢያዊ ጸጋታትን ሓገዝን",
+    recommendations: "ንዓኻ ዝኸውን"
   },
   en: {
-    title: "Empowering Eritrean Knowledge with AI",
-    description: "Your all-in-one platform for AI-powered productivity, learning, and creativity.",
-    startLearning: "Start Learning",
-    tryAssistant: "Try AI Assistant",
-    chatTitle: "Multilingual AI Chat",
-    chatDescription: "Converse with our AI in Tigrinya.",
-    chatAction: "Go to the chat feature to start.",
-    imageTitle: "AI Image Generation",
-    imageDescription: "Turn your ideas into visuals with a simple prompt.",
-    imageAction: "Visit the image generator to create.",
-    learningTitle: "Personalized Learning",
-    learningDescription: "Get AI-driven learning paths tailored to your goals.",
-    learningAction: "Explore the learning hub for resources.",
+    askAssistant: "Ask AI Assistant",
+    quoteAnswer: "Quote & Answer",
+    brainTeasers: "Brain Teasers",
+    musicFinder: "Eritrean Music Finder",
+    featureGridTitle: "Explore Your AI Tools",
+    learningHub: "Learning & Skills Hub",
+    iqTraining: "IQ & Brain Training",
+    languageSupport: "Language & Translation Support",
+    productivityTools: "Productivity & Life Tools",
+    tryNow: "Try Now →",
+    empoweringMinds: "Empowering Eritrean Minds",
+    mentorship: "Mentorship & Education Support",
+    youthOpportunities: "Youth Opportunities & Skills",
+    wellBeing: "Well-Being & Positive Living",
+    localResources: "Local Resources & Help",
+    recommendations: "Recommended For You"
   }
+};
+
+const featureMap = {
+  'assistant': VoiceAssistant,
+  'quote': DailyQuote,
+  'teasers': BrainTeasers,
+  'music': MusicFinder,
+  'learning': LearningHub,
+  'chat': MultilingualChat,
+  'tasks': TaskManager,
+};
+
+type FeatureKey = keyof typeof featureMap;
+
+const FeatureDialog = ({ featureKey, language, children }: { featureKey: FeatureKey, language: 'ti' | 'en', children: React.ReactNode }) => {
+  const isMobile = useIsMobile();
+  const Component = featureMap[featureKey];
+  const t = translations[language];
+
+  const featureInfo = {
+    'assistant': { title: t.askAssistant },
+    'quote': { title: t.quoteAnswer },
+    'teasers': { title: t.brainTeasers },
+    'music': { title: t.musicFinder },
+    'learning': { title: t.learningHub },
+    'chat': { title: "Chat" },
+    'tasks': { title: "Tasks" },
+  };
+
+  const title = featureInfo[featureKey].title;
+
+  if (isMobile) {
+    return (
+      <Sheet>
+        <SheetTrigger asChild>{children}</SheetTrigger>
+        <SheetContent side="bottom" className="h-[90vh]">
+          <SheetHeader>
+            <SheetTitle>{title}</SheetTitle>
+          </SheetHeader>
+          <div className="py-4 overflow-auto h-full">
+            <Component language={language} />
+          </div>
+        </SheetContent>
+      </Sheet>
+    );
+  }
+
+  return (
+    <Dialog>
+      <DialogTrigger asChild>{children}</DialogTrigger>
+      <DialogContent className="max-w-4xl h-[80vh] flex flex-col">
+        <DialogHeader>
+          <DialogTitle>{title}</DialogTitle>
+        </DialogHeader>
+        <div className="overflow-auto flex-grow">
+          <Component language={language} />
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
 };
 
 
@@ -43,63 +141,114 @@ export default function Dashboard({ language = 'ti' }: { language?: 'ti' | 'en' 
   const t = translations[language];
 
   return (
-    <div className="space-y-8">
-      <Card className="overflow-hidden border-0 shadow-lg">
-        <div className="relative h-96 w-full">
-          {heroImage && (
-             <Image
-              src={heroImage.imageUrl}
-              alt={heroImage.description}
-              fill
-              className="object-cover"
-              data-ai-hint={heroImage.imageHint}
-            />
-          )}
-          <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
-          <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6">
-            <h1 className="text-5xl font-bold font-headline text-primary">{t.title}</h1>
-            <p className="mt-4 text-lg text-foreground max-w-2xl">
-              {t.description}
-            </p>
-            <div className="mt-6 flex gap-4">
-                <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 transition-all duration-300 hover:scale-105 hover:shadow-lg">{t.startLearning}</Button>
-                <Button size="lg" variant="outline" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-105 hover:shadow-lg">{t.tryAssistant}</Button>
-            </div>
-          </div>
-        </div>
+    <div className="space-y-12">
+      {/* Main Action Panel */}
+      <Card className="border-0 shadow-lg bg-gradient-to-br from-card to-background/50">
+        <CardHeader className="text-center">
+            <h1 className="text-5xl font-bold font-headline text-primary">AnAi Hub</h1>
+            <CardDescription className="text-lg">
+                {language === 'ti' ? "ንኤርትራዊ ፍልጠት ብኣእምሮኣዊ ቴክኖሎጂ ምዕባይ" : "Empowering Eritrean Knowledge with AI"}
+            </CardDescription>
+        </CardHeader>
+        <CardContent className="flex flex-wrap items-center justify-center gap-4">
+            <FeatureDialog featureKey="assistant" language={language}>
+                <Button variant="outline" size="lg" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-105 hover:shadow-lg"><Mic className="mr-2"/>{t.askAssistant}</Button>
+            </FeatureDialog>
+            <FeatureDialog featureKey="quote" language={language}>
+                <Button variant="outline" size="lg" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-105 hover:shadow-lg"><Sparkles className="mr-2"/>{t.quoteAnswer}</Button>
+            </FeatureDialog>
+            <FeatureDialog featureKey="teasers" language={language}>
+                <Button variant="outline" size="lg" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-1_05 hover:shadow-lg"><Brain className="mr-2"/>{t.brainTeasers}</Button>
+            </FeatureDialog>
+             <FeatureDialog featureKey="music" language={language}>
+                <Button variant="outline" size="lg" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-105 hover:shadow-lg"><Music className="mr-2"/>{t.musicFinder}</Button>
+            </FeatureDialog>
+        </CardContent>
       </Card>
       
-      <DailyQuote language={language} />
+      {/* Smart Recommendation Carousel Placeholder */}
+      <div>
+        <h2 className="text-3xl font-bold font-headline mb-4 text-center">{t.recommendations}</h2>
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+             <Card><CardContent className="p-6 text-center"><p>Quote of the Day</p></CardContent></Card>
+             <Card><CardContent className="p-6 text-center"><p>Today's Trick Question</p></CardContent></Card>
+             <Card><CardContent className="p-6 text-center"><p>Trending Eritrean Song</p></CardContent></Card>
+             <Card><CardContent className="p-6 text-center"><p>Learning Tip</p></CardContent></Card>
+        </div>
+      </div>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <Card className="hover:shadow-lg hover:-translate-y-1 transition-transform duration-300 border-border bg-card">
-          <CardHeader>
-            <CardTitle>{t.chatTitle}</CardTitle>
-            <CardDescription>{t.chatDescription}</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-muted-foreground">{t.chatAction}</p>
-          </CardContent>
-        </Card>
-        <Card className="hover:shadow-lg hover:-translate-y-1 transition-transform duration-300 border-border bg-card">
-          <CardHeader>
-            <CardTitle>{t.imageTitle}</CardTitle>
-            <CardDescription>{t.imageDescription}</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-muted-foreground">{t.imageAction}</p>
-          </CardContent>
-        </Card>
-        <Card className="hover:shadow-lg hover:-translate-y-1 transition-transform duration-300 border-border bg-card">
-          <CardHeader>
-            <CardTitle>{t.learningTitle}</CardTitle>
-            <CardDescription>{t.learningDescription}</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-muted-foreground">{t.learningAction}</p>
-          </CardContent>
-        </Card>
+      {/* AI Feature Grid */}
+       <div>
+            <h2 className="text-3xl font-bold font-headline mb-6 text-center">{t.featureGridTitle}</h2>
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-2">
+                <Card className="hover:shadow-lg hover:-translate-y-1 transition-transform duration-300 border-border bg-card">
+                    <CardHeader className="flex-row items-center gap-4">
+                        <div className="p-3 bg-primary/10 rounded-lg"><BookOpen className="h-8 w-8 text-primary"/></div>
+                        <div>
+                            <CardTitle>{t.learningHub}</CardTitle>
+                            <CardDescription>AI-driven learning paths</CardDescription>
+                        </div>
+                    </CardHeader>
+                    <CardContent><Button variant="link" className="p-0">{t.tryNow}</Button></CardContent>
+                </Card>
+                 <Card className="hover:shadow-lg hover:-translate-y-1 transition-transform duration-300 border-border bg-card">
+                    <CardHeader className="flex-row items-center gap-4">
+                         <div className="p-3 bg-primary/10 rounded-lg"><Brain className="h-8 w-8 text-primary"/></div>
+                        <div>
+                            <CardTitle>{t.iqTraining}</CardTitle>
+                            <CardDescription>Brain teasers and puzzles</CardDescription>
+                        </div>
+                    </CardHeader>
+                    <CardContent><Button variant="link" className="p-0">{t.tryNow}</Button></CardContent>
+                </Card>
+                <Card className="hover:shadow-lg hover:-translate-y-1 transition-transform duration-300 border-border bg-card">
+                    <CardHeader className="flex-row items-center gap-4">
+                         <div className="p-3 bg-primary/10 rounded-lg"><MessageSquare className="h-8 w-8 text-primary"/></div>
+                        <div>
+                            <CardTitle>{t.languageSupport}</CardTitle>
+                            <CardDescription>Translate and chat</CardDescription>
+                        </div>
+                    </CardHeader>
+                    <CardContent><Button variant="link" className="p-0">{t.tryNow}</Button></CardContent>
+                </Card>
+                 <Card className="hover:shadow-lg hover:-translate-y-1 transition-transform duration-300 border-border bg-card">
+                    <CardHeader className="flex-row items-center gap-4">
+                         <div className="p-3 bg-primary/10 rounded-lg"><ListTodo className="h-8 w-8 text-primary"/></div>
+                        <div>
+                            <CardTitle>{t.productivityTools}</CardTitle>
+                            <CardDescription>Manage your daily tasks</CardDescription>
+                        </div>
+                    </CardHeader>
+                    <CardContent><Button variant="link" className="p-0">{t.tryNow}</Button></CardContent>
+                </Card>
+            </div>
+      </div>
+
+       {/* Community & Culture Section */}
+      <div>
+        <h2 className="text-3xl font-bold font-headline mb-6 text-center">{t.empoweringMinds}</h2>
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <Card className="text-center p-6 bg-card hover:shadow-xl transition-shadow">
+            <GraduationCap className="mx-auto h-10 w-10 text-primary mb-3"/>
+            <CardTitle className="text-lg">{t.mentorship}</CardTitle>
+          </Card>
+           <Card className="text-center p-6 bg-card hover:shadow-xl transition-shadow">
+            <Users className="mx-auto h-10 w-10 text-primary mb-3"/>
+            <CardTitle className="text-lg">{t.youthOpportunities}</CardTitle>
+          </Card>
+           <Card className="text-center p-6 bg-card hover:shadow-xl transition-shadow">
+            <HeartPulse className="mx-auto h-10 w-10 text-primary mb-3"/>
+            <CardTitle className="text-lg">{t.wellBeing}</CardTitle>
+          </Card>
+           <Card className="text-center p-6 bg-card hover:shadow-xl transition-shadow">
+            <Globe className="mx-auto h-10 w-10 text-primary mb-3"/>
+            <CardTitle className="text-lg">{t.localResources}</CardTitle>
+          </Card>
+        </div>
       </div>
     </div>
   );
 }
+
+
+    

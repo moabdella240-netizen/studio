@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useCallback } from "react";
@@ -14,6 +15,20 @@ import {
   SidebarFooter,
 } from "@/components/ui/sidebar";
 import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import {
   MessageSquare,
   Image as ImageIcon,
   BookOpen,
@@ -27,6 +42,8 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { Button } from "@/components/ui/button";
 
 import Dashboard from "@/components/features/dashboard";
 import MultilingualChat from "@/components/features/multilingual-chat";
@@ -37,9 +54,8 @@ import TaskManager from "@/components/features/task-manager";
 import VoiceAssistant from "@/components/features/voice-assistant";
 import MusicFinder from "@/components/features/music-finder";
 import BrainTeasers from "@/components/features/brain-teasers";
-import { Button } from "@/components/ui/button";
 
-type Feature =
+type FeatureKey =
   | "dashboard"
   | "chat"
   | "image"
@@ -49,25 +65,21 @@ type Feature =
   | "browser"
   | "tasks"
   | "voice";
-
-const featureComponents: Record<Feature, React.ComponentType<{ language: 'ti' | 'en' }>> = {
-  dashboard: Dashboard,
-  chat: MultilingualChat,
-  image: ImageGenerator,
-  learning: LearningHub,
-  music: MusicFinder,
-  teasers: BrainTeasers,
-  browser: WebBrowser,
-  tasks: TaskManager,
-  voice: VoiceAssistant,
+  
+type Feature = {
+  id: FeatureKey;
+  label: string;
+  icon: React.ElementType;
+  component: React.ComponentType<{ language: 'ti' | 'en' }>;
 };
+
 
 const translations = {
   ti: {
     dashboard: "ዳሽቦርድ",
     chat: "ብብዙሕ ቋንቋ ዝሰርሕ ቻት",
     image: "ምስሊ ምፍጣር",
-    learning: "መምሃሪ ማእከል",
+    learning: "መምሃרי ማእከል",
     music: "ኤርትራዊ ሙዚቃ ድለ",
     teasers: "ሕንቅልሕንቅሊተይን ሜላታትን",
     browser: "መረብ ሓበሬታ",
@@ -95,28 +107,94 @@ const translations = {
 
 
 export default function AppShell() {
-  const [activeFeature, setActiveFeature] = useState<Feature>("dashboard");
+  const [activeFeatureKey, setActiveFeatureKey] = useState<FeatureKey>("dashboard");
   const [language, setLanguage] = useState<'ti' | 'en'>('ti');
+  const isMobile = useIsMobile();
 
-  const ActiveComponent = featureComponents[activeFeature];
-  const userAvatar = PlaceHolderImages.find(p => p.id === 'user-avatar');
   const currentTexts = translations[language];
+
+  const navigationItems: Feature[] = [
+    { id: "dashboard", label: currentTexts.dashboard, icon: LayoutDashboard, component: Dashboard },
+    { id: "chat", label: currentTexts.chat, icon: MessageSquare, component: MultilingualChat },
+    { id: "image", label: currentTexts.image, icon: ImageIcon, component: ImageGenerator },
+    { id: "learning", label: currentTexts.learning, icon: BookOpen, component: LearningHub },
+    { id: "music", label: currentTexts.music, icon: Music, component: MusicFinder },
+    { id: "teasers", label: currentTexts.teasers, icon: Brain, component: BrainTeasers },
+    { id: "browser", label: currentTexts.browser, icon: Globe, component: WebBrowser },
+    { id: "tasks", label: currentTexts.tasks, icon: ListTodo, component: TaskManager },
+    { id: "voice", label: currentTexts.voice, icon: Mic, component: VoiceAssistant },
+  ];
+
+  const ActiveComponent = navigationItems.find(item => item.id === activeFeatureKey)?.component || Dashboard;
+  const userAvatar = PlaceHolderImages.find(p => p.id === 'user-avatar');
 
   const toggleLanguage = useCallback(() => {
     setLanguage(prev => (prev === 'ti' ? 'en' : 'ti'));
   }, []);
+  
+  const renderFeature = (feature: Feature) => {
+    const Component = feature.component;
+    if (isMobile) {
+      return (
+        <Sheet>
+          <SheetTrigger asChild>
+            <SidebarMenuButton
+              tooltip={{ children: feature.label }}
+              className="w-full"
+            >
+              <feature.icon />
+              <span>{feature.label}</span>
+            </SidebarMenuButton>
+          </SheetTrigger>
+          <SheetContent side="left" className="w-full">
+            <SheetHeader>
+              <SheetTitle>{feature.label}</SheetTitle>
+            </SheetHeader>
+            <div className="py-4 h-full overflow-auto">
+              <Component language={language} />
+            </div>
+          </SheetContent>
+        </Sheet>
+      );
+    }
 
-  const navigationItems = [
-    { id: "dashboard", label: currentTexts.dashboard, icon: LayoutDashboard },
-    { id: "chat", label: currentTexts.chat, icon: MessageSquare },
-    { id: "image", label: currentTexts.image, icon: ImageIcon },
-    { id: "learning", label: currentTexts.learning, icon: BookOpen },
-    { id: "music", label: currentTexts.music, icon: Music },
-    { id: "teasers", label: currentTexts.teasers, icon: Brain },
-    { id: "browser", label: currentTexts.browser, icon: Globe },
-    { id: "tasks", label: currentTexts.tasks, icon: ListTodo },
-    { id: "voice", label: currentTexts.voice, icon: Mic },
-  ] as const;
+    if (feature.id === 'dashboard') {
+         return (
+             <SidebarMenuButton
+                onClick={() => setActiveFeatureKey(feature.id)}
+                isActive={activeFeatureKey === feature.id}
+                tooltip={{ children: feature.label }}
+                className="[&[data-active=true]]:bg-sidebar-primary [&[data-active=true]]:text-sidebar-primary-foreground"
+            >
+                <feature.icon />
+                <span>{feature.label}</span>
+            </SidebarMenuButton>
+         );
+    }
+    
+    return (
+        <Dialog>
+            <DialogTrigger asChild>
+                <SidebarMenuButton
+                    tooltip={{ children: feature.label }}
+                    className="w-full"
+                >
+                    <feature.icon />
+                    <span>{feature.label}</span>
+                </SidebarMenuButton>
+            </DialogTrigger>
+            <DialogContent className="max-w-4xl h-[80vh] flex flex-col">
+                 <DialogHeader>
+                    <DialogTitle>{feature.label}</DialogTitle>
+                </DialogHeader>
+                <div className="overflow-auto flex-grow">
+                    <Component language={language} />
+                </div>
+            </DialogContent>
+        </Dialog>
+    );
+  };
+
 
   return (
     <SidebarProvider>
@@ -134,15 +212,7 @@ export default function AppShell() {
           <SidebarMenu>
             {navigationItems.map((item) => (
               <SidebarMenuItem key={item.id}>
-                <SidebarMenuButton
-                  onClick={() => setActiveFeature(item.id)}
-                  isActive={activeFeature === item.id}
-                  tooltip={{ children: item.label }}
-                  className="[&[data-active=true]]:bg-sidebar-primary [&[data-active=true]]:text-sidebar-primary-foreground"
-                >
-                  <item.icon />
-                  <span>{item.label}</span>
-                </SidebarMenuButton>
+                {renderFeature(item)}
               </SidebarMenuItem>
             ))}
           </SidebarMenu>
@@ -166,7 +236,7 @@ export default function AppShell() {
         <header className="flex items-center justify-between p-4 border-b bg-transparent sticky top-0 z-10 h-16">
           <SidebarTrigger className="md:hidden"/>
           <h1 className="text-xl font-semibold font-headline hidden md:block text-primary">
-            {navigationItems.find(item => item.id === activeFeature)?.label}
+            {navigationItems.find(item => item.id === activeFeatureKey)?.label}
           </h1>
           <div className="flex-grow md:hidden"/>
           <h1 className="text-xl font-semibold font-headline md:hidden text-primary">
@@ -184,3 +254,5 @@ export default function AppShell() {
     </SidebarProvider>
   );
 }
+
+    
