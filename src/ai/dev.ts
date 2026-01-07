@@ -10,3 +10,4 @@ import '@/ai/flows/find-eritrean-music.ts';
 import '@/ai/flows/generate-brain-teasers.ts';
 import '@/ai/flows/generate-quote.ts';
 import '@/ai/flows/generate-recipe.ts';
+import '@/ai/flows/generate-workout.ts';

@@ -19,6 +19,8 @@ import VoiceAssistant from "@/components/features/voice-assistant";
 import MusicFinder from "@/components/features/music-finder";
 import BrainTeasers from "@/components/features/brain-teasers";
 import HealthyRecipes from "@/components/features/healthy-recipes";
+import GymCoach from "@/components/features/gym-coach";
+
 
 import {
   MessageSquare,
@@ -34,7 +36,8 @@ import {
   HeartPulse,
   Users,
   GraduationCap,
-  Soup
+  Soup,
+  Dumbbell
 } from "lucide-react";
 
 const translations = {
@@ -44,6 +47,7 @@ const translations = {
     brainTeasers: "ሕንቅልሕንቅሊተይን ብልሓትን",
     healthyRecipes: "ጥዕና ዝሰመዖም መግቢታት",
     musicFinder: "ኤርትራዊ ሙዚቃ ድለ",
+    gymCoach: "AI ናይ ስፖርት ኣ教练",
     featureGridTitle: "መሳርሒታትካ ዳህስስ",
     learningHub: "ማእከል ትምህርትን ክእለትን",
     iqTraining: "IQን ኣእምሮኻን ምፍታን",
@@ -63,6 +67,7 @@ const translations = {
     brainTeasers: "Brain Teasers",
     healthyRecipes: "Healthy Recipes",
     musicFinder: "Eritrean Music Finder",
+    gymCoach: "AI Gym Coach",
     featureGridTitle: "Explore Your AI Tools",
     learningHub: "Learning & Skills Hub",
     iqTraining: "IQ & Brain Training",
@@ -87,6 +92,7 @@ const featureMap = {
   'learning': LearningHub,
   'chat': MultilingualChat,
   'tasks': TaskManager,
+  'coach': GymCoach,
 };
 
 type FeatureKey = keyof typeof featureMap;
@@ -102,6 +108,7 @@ const FeatureDialog = ({ featureKey, language, children }: { featureKey: Feature
     'teasers': { title: t.brainTeasers },
     'recipes': { title: t.healthyRecipes },
     'music': { title: t.musicFinder },
+    'coach': { title: t.gymCoach },
     'learning': { title: t.learningHub },
     'chat': { title: "Chat" },
     'tasks': { title: "Tasks" },
@@ -170,6 +177,9 @@ export default function Dashboard({ language = 'ti' }: { language?: 'ti' | 'en' 
             </FeatureDialog>
              <FeatureDialog featureKey="music" language={language}>
                 <Button variant="outline" size="lg" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-105 hover:shadow-lg"><Music className="mr-2"/>{t.musicFinder}</Button>
+            </FeatureDialog>
+            <FeatureDialog featureKey="coach" language={language}>
+                <Button variant="outline" size="lg" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-105 hover:shadow-lg"><Dumbbell className="mr-2"/>{t.gymCoach}</Button>
             </FeatureDialog>
         </CardContent>
       </Card>
