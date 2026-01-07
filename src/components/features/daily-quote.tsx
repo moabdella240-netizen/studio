@@ -13,7 +13,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 const translations = {
     ti: {
         generateNew: "ሓዱሽ ጥቕሲ ፍጠር",
-        askQuestion: "ሕቶ sorce",
+        askQuestion: "ሕቶ ሕተት",
         asking: "ይሓትት ኣሎ...",
         generating: "ይፈጥር ኣሎ...",
         questionPlaceholder: "ሕቶኻ ኣብዚ ጸሓፍ...",
@@ -96,20 +96,20 @@ export default function DailyQuote({ language = 'ti' }: { language?: 'ti' | 'en'
         <Card className="w-full shadow-lg border-primary/20 bg-gradient-to-br from-background to-card">
             <CardContent className="p-6 space-y-6">
                 {isLoadingQuote ? (
-                    <div className="space-y-4">
+                    <div className="space-y-4 animate-fade-in-fast">
                         <Skeleton className="h-8 w-3/4" />
                         <Skeleton className="h-4 w-full" />
                         <Skeleton className="h-4 w-5/6" />
                     </div>
                 ) : quoteData ? (
-                    <div className="text-center space-y-4">
+                    <div className="text-center space-y-4 animate-fade-in">
                         <h2 className={`text-3xl font-headline text-primary`}>"{quoteData.quote}"</h2>
                         <p className="text-foreground/80">{quoteData.explanation}</p>
                     </div>
                 ) : null}
 
                 {answer && (
-                    <div className="p-4 bg-muted rounded-lg text-center">
+                    <div className="p-4 bg-muted rounded-lg text-center animate-fade-in">
                         <p>{answer}</p>
                     </div>
                 )}
@@ -136,7 +136,7 @@ export default function DailyQuote({ language = 'ti' }: { language?: 'ti' | 'en'
                 </div>
 
                 {showQuestion && (
-                    <form onSubmit={handleAskQuestion} className="flex gap-2 pt-4">
+                    <form onSubmit={handleAskQuestion} className="flex gap-2 pt-4 animate-fade-in-fast">
                         <Input
                             value={question}
                             onChange={(e) => setQuestion(e.target.value)}

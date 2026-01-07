@@ -165,22 +165,22 @@ export default function Dashboard({ language = 'ti' }: { language?: 'ti' | 'en' 
         </CardHeader>
         <CardContent className="flex flex-wrap items-center justify-center gap-4">
             <FeatureDialog featureKey="assistant" language={language}>
-                <Button variant="outline" size="lg" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-105 hover:shadow-lg"><Mic className="mr-2"/>{t.askAssistant}</Button>
+                <Button variant="outline" size="lg" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/20"><Mic className="mr-2"/>{t.askAssistant}</Button>
             </FeatureDialog>
             <FeatureDialog featureKey="quote" language={language}>
-                <Button variant="outline" size="lg" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-105 hover:shadow-lg"><Sparkles className="mr-2"/>{t.quoteAnswer}</Button>
+                <Button variant="outline" size="lg" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/20"><Sparkles className="mr-2"/>{t.quoteAnswer}</Button>
             </FeatureDialog>
             <FeatureDialog featureKey="teasers" language={language}>
-                <Button variant="outline" size="lg" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-105 hover:shadow-lg"><Brain className="mr-2"/>{t.brainTeasers}</Button>
+                <Button variant="outline" size="lg" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/20"><Brain className="mr-2"/>{t.brainTeasers}</Button>
             </FeatureDialog>
             <FeatureDialog featureKey="recipes" language={language}>
-                 <Button variant="outline" size="lg" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-105 hover:shadow-lg"><Soup className="mr-2"/>{t.healthyRecipes}</Button>
+                 <Button variant="outline" size="lg" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/20"><Soup className="mr-2"/>{t.healthyRecipes}</Button>
             </FeatureDialog>
              <FeatureDialog featureKey="music" language={language}>
-                <Button variant="outline" size="lg" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-105 hover:shadow-lg"><Music className="mr-2"/>{t.musicFinder}</Button>
+                <Button variant="outline" size="lg" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/20"><Music className="mr-2"/>{t.musicFinder}</Button>
             </FeatureDialog>
             <FeatureDialog featureKey="coach" language={language}>
-                <Button variant="outline" size="lg" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-105 hover:shadow-lg"><Dumbbell className="mr-2"/>{t.gymCoach}</Button>
+                <Button variant="outline" size="lg" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/20"><Dumbbell className="mr-2"/>{t.gymCoach}</Button>
             </FeatureDialog>
         </CardContent>
       </Card>
@@ -189,10 +189,10 @@ export default function Dashboard({ language = 'ti' }: { language?: 'ti' | 'en' 
       <div>
         <h2 className="text-3xl font-bold font-headline mb-4 text-center">{t.recommendations}</h2>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-             <Card><CardContent className="p-6 text-center"><p>Quote of the Day</p></CardContent></Card>
-             <Card><CardContent className="p-6 text-center"><p>Today's Trick Question</p></CardContent></Card>
-             <Card><CardContent className="p-6 text-center"><p>Trending Eritrean Song</p></CardContent></Card>
-             <Card><CardContent className="p-6 text-center"><p>Learning Tip</p></CardContent></Card>
+             <Card className="hover:shadow-lg hover:-translate-y-1 transition-transform duration-300"><CardContent className="p-6 text-center"><p>Quote of the Day</p></CardContent></Card>
+             <Card className="hover:shadow-lg hover:-translate-y-1 transition-transform duration-300"><CardContent className="p-6 text-center"><p>Today's Trick Question</p></CardContent></Card>
+             <Card className="hover:shadow-lg hover:-translate-y-1 transition-transform duration-300"><CardContent className="p-6 text-center"><p>Trending Eritrean Song</p></CardContent></Card>
+             <Card className="hover:shadow-lg hover:-translate-y-1 transition-transform duration-300"><CardContent className="p-6 text-center"><p>Learning Tip</p></CardContent></Card>
         </div>
       </div>
 
@@ -247,19 +247,19 @@ export default function Dashboard({ language = 'ti' }: { language?: 'ti' | 'en' 
       <div>
         <h2 className="text-3xl font-bold font-headline mb-6 text-center">{t.empoweringMinds}</h2>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          <Card className="text-center p-6 bg-card hover:shadow-xl transition-shadow">
+          <Card className="text-center p-6 bg-card hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
             <GraduationCap className="mx-auto h-10 w-10 text-primary mb-3"/>
             <CardTitle className="text-lg">{t.mentorship}</CardTitle>
           </Card>
-           <Card className="text-center p-6 bg-card hover:shadow-xl transition-shadow">
+           <Card className="text-center p-6 bg-card hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
             <Users className="mx-auto h-10 w-10 text-primary mb-3"/>
             <CardTitle className="text-lg">{t.youthOpportunities}</CardTitle>
           </Card>
-           <Card className="text-center p-6 bg-card hover:shadow-xl transition-shadow">
+           <Card className="text-center p-6 bg-card hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
             <HeartPulse className="mx-auto h-10 w-10 text-primary mb-3"/>
             <CardTitle className="text-lg">{t.wellBeing}</CardTitle>
           </Card>
-           <Card className="text-center p-6 bg-card hover:shadow-xl transition-shadow">
+           <Card className="text-center p-6 bg-card hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
             <Globe className="mx-auto h-10 w-10 text-primary mb-3"/>
             <CardTitle className="text-lg">{t.localResources}</CardTitle>
           </Card>

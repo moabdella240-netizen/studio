@@ -193,10 +193,10 @@ export default function HealthyRecipes({ language = 'ti' }: { language?: 'ti' | 
                                 <p>{t.initialMessage}</p>
                             </div>
                         ) : (
-                            <div className="space-y-6">
+                            <div className="space-y-6 animate-fade-in">
                                 <Card className="overflow-hidden">
                                     {imageUrl ? (
-                                        <div className="relative w-full h-64">
+                                        <div className="relative w-full h-64 animate-fade-in-fast">
                                             <Image src={imageUrl} alt={recipe.recipeName} layout="fill" objectFit="cover" />
                                         </div>
                                     ) : (
