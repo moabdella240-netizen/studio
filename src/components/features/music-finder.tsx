@@ -17,6 +17,59 @@ import { useToast } from "@/hooks/use-toast";
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 
+const translations = {
+  ti: {
+    title: "ኤርትራዊ ሙዚቃ ድለ",
+    description: "ብመሰረት ድምጻዊ፣ ጓይላ፣ ቋንቋ፣ ወይ ድማ ሙድ ሙዚቃ ድለ።",
+    artist: "ድምጻዊ",
+    artistPlaceholder: "ንኣብነት, ሄለን መለስ",
+    genre: "ዓይነት ሙዚቃ (ጓይላ)",
+    genrePlaceholder: "ንኣብነት, ጓይላ, ፖፕ",
+    mood: "ሙድ",
+    moodPlaceholder: "ንኣብነት, ወኻዒ, ህዱእ",
+    language: "ቋንቋ",
+    selectLanguage: "ቋንቋ ምረጽ",
+    any: "ዝኾነ",
+    tigrinya: "ትግርኛ",
+    tigre: "ትግረ",
+    findMusic: "ሙዚቃ ድለ",
+    finding: "ይድለ ኣሎ...",
+    playlistTitle: "ናይ ሙዚቃ ዝርዝርካ",
+    initialMessage: "ናይ ሙዚቃ ምኽሪታትካ ኣብዚ ክርአ እዩ።",
+    errorTitle: "ጌጋ ኣጋጢሙ",
+    errorMessage: "ናይ ሙዚቃ ምኽሪታት ክንረክብ ኣይከኣልናን። በጃኻ ደጊምካ ፈትን።",
+    preferenceError: "በጃኻ ምርጫኻ ኣነጽር",
+    preferenceDescription: "ናይ ሙዚቃ ምኽሪታት ንምርካብ እንተወሓደ ሓደ ምርጫ ኣመልክት።",
+    listen: "ስምዓዮ",
+    favorite: "ኣፍቅር",
+  },
+  en: {
+    title: "Eritrean Music Finder",
+    description: "Discover music by artist, genre, language, or mood.",
+    artist: "Artist",
+    artistPlaceholder: "e.g., Helen Meles",
+    genre: "Genre",
+    genrePlaceholder: "e.g., Guayla, Pop",
+    mood: "Mood",
+    moodPlaceholder: "e.g., Energetic, Relaxing",
+    language: "Language",
+    selectLanguage: "Select a language",
+    any: "Any",
+    tigrinya: "Tigrinya",
+    tigre: "Tigre",
+    findMusic: "Find Music",
+    finding: "Finding...",
+    playlistTitle: "Your Playlist",
+    initialMessage: "Your music recommendations will appear here.",
+    errorTitle: "Error",
+    errorMessage: "Failed to get music recommendations. Please try again.",
+    preferenceError: "Please specify your preferences",
+    preferenceDescription: "Enter at least one preference to get music recommendations.",
+    listen: "Listen",
+    favorite: "Favorite",
+  },
+};
+
 const musicFinderSchema = z.object({
   artist: z.string().optional(),
   genre: z.string().optional(),
@@ -24,10 +77,11 @@ const musicFinderSchema = z.object({
   mood: z.string().optional(),
 });
 
-export default function MusicFinder() {
+export default function MusicFinder({ language = 'ti' }: { language?: 'ti' | 'en' }) {
   const [recommendations, setRecommendations] = useState<FindEritreanMusicOutput | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const t = translations[language];
 
   const form = useForm<z.infer<typeof musicFinderSchema>>({
     resolver: zodResolver(musicFinderSchema),
@@ -46,8 +100,8 @@ export default function MusicFinder() {
       if (!values.artist && !values.genre && !values.mood && values.language === 'Any') {
         toast({
             variant: "destructive",
-            title: "Please specify your preferences",
-            description: "Enter at least one preference to get music recommendations.",
+            title: t.preferenceError,
+            description: t.preferenceDescription,
         });
         setIsLoading(false);
         return;
@@ -58,8 +112,8 @@ export default function MusicFinder() {
       console.error("AI Error:", error);
       toast({
         variant: "destructive",
-        title: "Error",
-        description: "Failed to get music recommendations. Please try again.",
+        title: t.errorTitle,
+        description: t.errorMessage,
       });
     } finally {
       setIsLoading(false);
@@ -73,8 +127,8 @@ export default function MusicFinder() {
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
               <CardHeader>
-                <CardTitle>Eritrean Music Finder</CardTitle>
-                <CardDescription>Discover music by artist, genre, language, or mood.</CardDescription>
+                <CardTitle>{t.title}</CardTitle>
+                <CardDescription>{t.description}</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                  <FormField
@@ -82,9 +136,9 @@ export default function MusicFinder() {
                   name="artist"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Artist</FormLabel>
+                      <FormLabel>{t.artist}</FormLabel>
                       <FormControl>
-                        <Input placeholder="e.g., Helen Meles" {...field} />
+                        <Input placeholder={t.artistPlaceholder} {...field} />
                       </FormControl>
                     </FormItem>
                   )}
@@ -94,9 +148,9 @@ export default function MusicFinder() {
                   name="genre"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Genre</FormLabel>
+                      <FormLabel>{t.genre}</FormLabel>
                       <FormControl>
-                        <Input placeholder="e.g., Guayla, Pop" {...field} />
+                        <Input placeholder={t.genrePlaceholder} {...field} />
                       </FormControl>
                     </FormItem>
                   )}
@@ -106,9 +160,9 @@ export default function MusicFinder() {
                   name="mood"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Mood</FormLabel>
+                      <FormLabel>{t.mood}</FormLabel>
                       <FormControl>
-                        <Input placeholder="e.g., Energetic, Relaxing" {...field} />
+                        <Input placeholder={t.moodPlaceholder} {...field} />
                       </FormControl>
                     </FormItem>
                   )}
@@ -118,17 +172,17 @@ export default function MusicFinder() {
                   name="language"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Language</FormLabel>
+                      <FormLabel>{t.language}</FormLabel>
                        <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder="Select a language" />
+                            <SelectValue placeholder={t.selectLanguage} />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="Any">Any</SelectItem>
-                          <SelectItem value="Tigrinya">Tigrinya</SelectItem>
-                          <SelectItem value="Tigre">Tigre</SelectItem>
+                          <SelectItem value="Any">{t.any}</SelectItem>
+                          <SelectItem value="Tigrinya">{t.tigrinya}</SelectItem>
+                          <SelectItem value="Tigre">{t.tigre}</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />
@@ -139,7 +193,7 @@ export default function MusicFinder() {
               <CardFooter>
                 <Button type="submit" disabled={isLoading} className="w-full">
                   {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Search className="mr-2 h-4 w-4" />}
-                  Find Music
+                  {isLoading ? t.finding : t.findMusic}
                 </Button>
               </CardFooter>
             </form>
@@ -150,7 +204,7 @@ export default function MusicFinder() {
       <div className="lg:col-span-2">
         <Card className="min-h-[60vh]">
           <CardHeader>
-            <CardTitle>{recommendations?.playlistTitle || "Your Playlist"}</CardTitle>
+            <CardTitle>{recommendations?.playlistTitle || t.playlistTitle}</CardTitle>
           </CardHeader>
           <CardContent>
             {isLoading && (
@@ -167,7 +221,7 @@ export default function MusicFinder() {
             {!isLoading && !recommendations && (
               <div className="text-center text-muted-foreground py-12">
                 <Music className="mx-auto h-12 w-12" />
-                <p className="mt-2">Your music recommendations will appear here.</p>
+                <p className="mt-2">{t.initialMessage}</p>
               </div>
             )}
             {recommendations && (
@@ -183,12 +237,12 @@ export default function MusicFinder() {
                         <div className="flex items-center gap-2">
                             <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-primary">
                                 <Heart className="h-4 w-4" />
-                                <span className="sr-only">Favorite</span>
+                                <span className="sr-only">{t.favorite}</span>
                             </Button>
                             <Button asChild variant="outline" size="sm">
                                 <Link href={song.youtubeUrl} target="_blank">
                                     <Youtube className="mr-2 h-4 w-4 text-red-600" />
-                                    Listen
+                                    {t.listen}
                                 </Link>
                             </Button>
                         </div>

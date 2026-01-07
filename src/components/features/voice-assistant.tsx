@@ -15,16 +15,43 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Mic, Bot, User, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
-const voiceSchema = z.object({
-  message: z.string().min(1, "Message cannot be empty."),
-});
+const translations = {
+  ti: {
+    title: "AI ሓጋዚ ድምጺ",
+    description: "ብዛዕባ ህይወት ወይ ፍታሕ ጸገማት ምኽሪ ሕተት። (ንዚ ሕጂ ብጽሑፍ)",
+    initialMessage: "ዝኾነ ነገር ሕተቱኒ...",
+    placeholder: "ምኽሪ ሕተት...",
+    askButton: "ሕተት",
+    thinking: "ይሓስብ ኣሎ...",
+    errorTitle: "ጌጋ ኣጋጢሙ",
+    errorMessage: "እቲ ሓጋዚ ሕጂ ኣይሰርሕን ኣሎ። በጃኻ ጸኒሕካ ፈትን።",
+    emptyMessage: "መልእኽቲ ባዶ ክኸውን ኣይክእልን።",
+  },
+  en: {
+    title: "AI Voice Assistant",
+    description: "Ask for lifestyle or problem-solving advice. (Text input for now)",
+    initialMessage: "Ask me anything...",
+    placeholder: "Ask for advice...",
+    askButton: "Ask",
+    thinking: "Thinking...",
+    errorTitle: "Error",
+    errorMessage: "The assistant is unavailable right now. Please try again later.",
+    emptyMessage: "Message cannot be empty.",
+  }
+};
 
 type ChatMessage = {
   role: "user" | "assistant";
   content: string;
 };
 
-export default function VoiceAssistant() {
+export default function VoiceAssistant({ language = 'ti' }: { language?: 'ti' | 'en' }) {
+  const t = translations[language];
+
+  const voiceSchema = z.object({
+    message: z.string().min(1, t.emptyMessage),
+  });
+
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isThinking, setIsThinking] = useState(false);
   const { toast } = useToast();
@@ -60,8 +87,8 @@ export default function VoiceAssistant() {
       console.error("AI Error:", error);
       toast({
         variant: "destructive",
-        title: "Error",
-        description: "The assistant is unavailable right now. Please try again later.",
+        title: t.errorTitle,
+        description: t.errorMessage,
       });
       setMessages((prev) => prev.slice(0, -1));
     } finally {
@@ -73,15 +100,15 @@ export default function VoiceAssistant() {
     <Card className="h-[70vh] flex flex-col max-w-3xl mx-auto">
       <CardHeader className="text-center">
         <Mic className="mx-auto h-12 w-12 text-primary mb-2" />
-        <CardTitle>AI Voice Assistant</CardTitle>
-        <CardDescription>Ask for lifestyle or problem-solving advice. (Text input for now)</CardDescription>
+        <CardTitle>{t.title}</CardTitle>
+        <CardDescription>{t.description}</CardDescription>
       </CardHeader>
       <CardContent className="flex-grow overflow-hidden">
         <ScrollArea className="h-full pr-4" ref={scrollAreaRef}>
           <div className="space-y-4">
             {messages.length === 0 && (
               <div className="flex items-center justify-center h-full text-muted-foreground">
-                <p>Ask me anything...</p>
+                <p>{t.initialMessage}</p>
               </div>
             )}
             {messages.map((message, index) => (
@@ -133,7 +160,7 @@ export default function VoiceAssistant() {
                 <FormItem className="flex-grow">
                   <FormControl>
                     <Textarea
-                      placeholder="Ask for advice..."
+                      placeholder={t.placeholder}
                       {...field}
                       disabled={isThinking}
                       className="min-h-[40px] max-h-[120px]"
@@ -152,7 +179,7 @@ export default function VoiceAssistant() {
               {isThinking ? (
                 <Loader2 className="w-4 h-4 animate-spin" />
               ) : (
-                "Ask"
+                t.askButton
               )}
             </Button>
           </form>

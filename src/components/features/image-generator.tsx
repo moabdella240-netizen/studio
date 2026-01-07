@@ -14,11 +14,42 @@ import Image from "next/image";
 import { Sparkles, Loader2, Image as ImageIcon } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
-const imageSchema = z.object({
-  prompt: z.string().min(10, "Prompt must be at least 10 characters long."),
-});
+const translations = {
+  ti: {
+    title: "AI ምስሊ ምፍጣር",
+    description: "ክትፈጥሮ እትደሊ ምስሊ ብትግርኛ ግለጽ። ክሳብ ዝከኣልካ መጠን ብዝርዝር ግለጾ።",
+    promptLabel: "መበገሲ ሓሳብ",
+    promptPlaceholder: "ንኣብነት, ኣብ ማርስ ፈረስ ዝጋልብ ዘሎ ጠፈርተኛ, ከም ፊልም ዝበለ መብራህቲ",
+    generateButton: "ምስሊ ፍጠር",
+    generatingButton: "ይስራሕ ኣሎ...",
+    generatedImageTitle: "ዝተፈጥረ ምስሊ",
+    initialMessage: "ዝፈጠርካዮ ምስሊ ኣብዚ ክርአ እዩ።",
+    errorTitle: "ጌጋ ኣጋጢሙ",
+    errorMessage: "ምስሊ ምፍጣር ኣይተኻእለን። በጃኻ ካልእ መበገሲ ሓሳብ ተጠቒምካ ፈትን።",
+    promptMinError: "መበገሲ ሓሳብ እንተወሓደ 10 ፊደላት ክህልዎ ኣለዎ።",
+  },
+  en: {
+    title: "AI Image Generation",
+    description: "Describe the image you want to create in Tigrinya. Be as detailed as possible.",
+    promptLabel: "Prompt",
+    promptPlaceholder: "e.g., An astronaut riding a horse on Mars, cinematic lighting",
+    generateButton: "Generate Image",
+    generatingButton: "Generating...",
+    generatedImageTitle: "Generated Image",
+    initialMessage: "Your generated image will appear here.",
+    errorTitle: "Error",
+    errorMessage: "Failed to generate image. Please try a different prompt.",
+    promptMinError: "Prompt must be at least 10 characters long.",
+  },
+};
 
-export default function ImageGenerator() {
+export default function ImageGenerator({ language = 'ti' }: { language?: 'ti' | 'en' }) {
+  const t = translations[language];
+
+  const imageSchema = z.object({
+    prompt: z.string().min(10, t.promptMinError),
+  });
+
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
@@ -40,8 +71,8 @@ export default function ImageGenerator() {
       console.error("AI Error:", error);
       toast({
         variant: "destructive",
-        title: "Error",
-        description: "Failed to generate image. Please try a different prompt.",
+        title: t.errorTitle,
+        description: t.errorMessage,
       });
     } finally {
       setIsLoading(false);
@@ -54,10 +85,8 @@ export default function ImageGenerator() {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col h-full">
             <CardHeader>
-              <CardTitle>AI Image Generation</CardTitle>
-              <CardDescription>
-                Describe the image you want to create in Tigrinya. Be as detailed as possible.
-              </CardDescription>
+              <CardTitle>{t.title}</CardTitle>
+              <CardDescription>{t.description}</CardDescription>
             </CardHeader>
             <CardContent className="flex-grow">
               <FormField
@@ -65,10 +94,10 @@ export default function ImageGenerator() {
                 name="prompt"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Prompt</FormLabel>
+                    <FormLabel>{t.promptLabel}</FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="e.g., An astronaut riding a horse on Mars, cinematic lighting"
+                        placeholder={t.promptPlaceholder}
                         className="min-h-[120px]"
                         {...field}
                       />
@@ -85,7 +114,7 @@ export default function ImageGenerator() {
                 ) : (
                   <Sparkles className="mr-2 h-4 w-4" />
                 )}
-                Generate Image
+                {isLoading ? t.generatingButton : t.generateButton}
               </Button>
             </CardFooter>
           </form>
@@ -94,7 +123,7 @@ export default function ImageGenerator() {
       
       <Card>
         <CardHeader>
-          <CardTitle>Generated Image</CardTitle>
+          <CardTitle>{t.generatedImageTitle}</CardTitle>
         </CardHeader>
         <CardContent className="flex items-center justify-center aspect-square">
           {isLoading ? (
@@ -106,7 +135,7 @@ export default function ImageGenerator() {
           ) : (
             <div className="text-center text-muted-foreground">
               <ImageIcon className="mx-auto h-12 w-12" />
-              <p>Your generated image will appear here.</p>
+              <p>{t.initialMessage}</p>
             </div>
           )}
         </CardContent>

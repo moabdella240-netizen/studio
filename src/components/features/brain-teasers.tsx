@@ -50,7 +50,7 @@ export default function BrainTeasers({ language = 'ti' }: { language?: 'ti' | 'e
         setIsLoading(true);
         setContent(null);
         try {
-            const result = await generateBrainTeasers({ language: language === 'ti' ? 'Tigrinya' : 'English' });
+            const result = await generateBrainTeasers({ language: 'Tigrinya' });
             setContent(result);
         } catch (error) {
             console.error("AI Error:", error);

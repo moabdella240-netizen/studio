@@ -14,17 +14,37 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Send, Bot, User, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
-const chatSchema = z.object({
-  message: z.string().min(1, "Message cannot be empty."),
-  targetLanguage: z.enum(["Tigrinya"]),
-});
-
-type ChatMessage = {
-  role: "user" | "assistant";
-  content: string;
+const translations = {
+  ti: {
+    title: "ትርጉምን ዕላልን",
+    initialMessage: "ብእንግሊዝኛ ጽሒፍካ ምዝርራብ ጀምር።",
+    placeholder: "መልእኽትኻ ብእንግሊዝኛ ኣብዚ ጸሓፍ...",
+    send: "ስደድ",
+    thinking: "ይሓስብ ኣሎ...",
+    errorTitle: "ጌጋ ኣጋጢሙ",
+    errorMessage: "ካብ AI መልሲ ክንረክብ ኣይከኣልናን። በጃኻ ደጊምካ ፈትን።",
+    emptyMessage: "መልእኽቲ ባዶ ክኸውን ኣይክእልን።",
+  },
+  en: {
+    title: "Multilingual Chat",
+    initialMessage: "Start a conversation by typing below.",
+    placeholder: "Type your message in English...",
+    send: "Send",
+    thinking: "Thinking...",
+    errorTitle: "Error",
+    errorMessage: "Failed to get a response from the AI. Please try again.",
+    emptyMessage: "Message cannot be empty.",
+  }
 };
 
-export default function MultilingualChat() {
+export default function MultilingualChat({ language = 'ti' }: { language?: 'ti' | 'en' }) {
+  const t = translations[language];
+
+  const chatSchema = z.object({
+    message: z.string().min(1, t.emptyMessage),
+    targetLanguage: z.enum(["Tigrinya"]),
+  });
+
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isThinking, setIsThinking] = useState(false);
   const { toast } = useToast();
@@ -61,8 +81,8 @@ export default function MultilingualChat() {
       console.error("AI Error:", error);
       toast({
         variant: "destructive",
-        title: "Error",
-        description: "Failed to get a response from the AI. Please try again.",
+        title: t.errorTitle,
+        description: t.errorMessage,
       });
       setMessages((prev) => prev.slice(0, -1));
     } finally {
@@ -73,14 +93,14 @@ export default function MultilingualChat() {
   return (
     <Card className="h-[70vh] flex flex-col">
       <CardHeader>
-        <CardTitle>Multilingual Chat</CardTitle>
+        <CardTitle>{t.title}</CardTitle>
       </CardHeader>
       <CardContent className="flex-grow overflow-hidden">
         <ScrollArea className="h-full pr-4" ref={scrollAreaRef}>
           <div className="space-y-4">
             {messages.length === 0 && (
               <div className="flex items-center justify-center h-full text-muted-foreground">
-                <p>Start a conversation by typing below.</p>
+                <p>{t.initialMessage}</p>
               </div>
             )}
             {messages.map((message, index) => (
@@ -131,7 +151,7 @@ export default function MultilingualChat() {
               render={({ field }) => (
                 <FormItem className="flex-grow">
                   <FormControl>
-                    <Input placeholder="Type your message in English..." {...field} disabled={isThinking} />
+                    <Input placeholder={t.placeholder} {...field} disabled={isThinking} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -143,7 +163,7 @@ export default function MultilingualChat() {
               ) : (
                 <Send className="w-4 h-4" />
               )}
-              <span className="sr-only">Send</span>
+              <span className="sr-only">{t.send}</span>
             </Button>
           </form>
         </Form>

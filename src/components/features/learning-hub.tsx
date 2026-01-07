@@ -15,26 +15,84 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Book, Lightbulb, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
-const learningSchema = z.object({
-  skillLevel: z.string().min(1, "Skill level is required."),
-  learningGoal: z.string().min(3, "Learning goal is required."),
-  preferredResourceType: z.string().optional(),
-});
-
-type Suggestions = {
-  suggestedResources: string[];
-  reasoning: string;
+const translations = {
+  ti: {
+    personalizedSuggestions: "ብሕታዊ ምኽሪታት",
+    resourceLibrary: "ቤተ-መጻሕፍቲ ጸጋታት",
+    findYourPath: "መንገድኻ ረኸብ",
+    description: "ብዛዕባ ናይ ትምህርቲ ሸቶታትካ ንገረና፡ AI ድማ ንዓኻ ዝኸውን ጸጋታት ከማክር እዩ።",
+    learningGoal: "እንታይ ክትመሃር ትደሊ?",
+    learningGoalPlaceholder: "ንኣብነት, React hooks ምፍላጥ",
+    skillLevel: "ደረጃ ክእለትካ",
+    selectLevel: "ደረጃኻ ምረጽ",
+    beginner: "ጀማሪ",
+    intermediate: "ማእከላይ",
+    expert: "ኪኢላ",
+    getSuggestions: "ምኽሪታት ርኸብ",
+    generating: "ይስራሕ ኣሎ...",
+    recommendations: "ብሕታዊ ምኽሪታትካ",
+    suggestedResources: "ዝተመኸሩ ጸጋታት:",
+    reasoning: "ምኽንያት:",
+    libraryTitle: "ቤተ-መጻሕፍቲ ጸጋታት",
+    libraryDescription: "ዝተመርጹ ናይ ላዕለዋይ ደረጃ መምሃሪ ጽሑፋት ዝርዝር።",
+    errorTitle: "ጌጋ ኣጋጢሙ",
+    errorMessage: "ምኽሪታት ክንረክብ ኣይከኣልናን። በጃኻ ደጊምካ ፈትን።",
+    skillLevelRequired: "ደረጃ ክእለትካ የድሊ።",
+    learningGoalRequired: "ናይ ትምህርቲ ሸቶኻ የድሊ።",
+  },
+  en: {
+    personalizedSuggestions: "Personalized Suggestions",
+    resourceLibrary: "Resource Library",
+    findYourPath: "Find Your Path",
+    description: "Tell us about your learning goals, and our AI will suggest resources for you.",
+    learningGoal: "What do you want to learn?",
+    learningGoalPlaceholder: "e.g., Master React hooks",
+    skillLevel: "Your Skill Level",
+    selectLevel: "Select your level",
+    beginner: "Beginner",
+    intermediate: "Intermediate",
+    expert: "Expert",
+    getSuggestions: "Get Suggestions",
+    generating: "Generating...",
+    recommendations: "Your Personalized Recommendations",
+    suggestedResources: "Suggested Resources:",
+    reasoning: "Reasoning:",
+    libraryTitle: "Resource Library",
+    libraryDescription: "A curated list of high-quality learning materials.",
+    errorTitle: "Error",
+    errorMessage: "Failed to get suggestions. Please try again.",
+    skillLevelRequired: "Skill level is required.",
+    learningGoalRequired: "Learning goal is required.",
+  }
 };
 
-const staticResources = [
-  { title: "Official React Docs", description: "The best place to start learning React.", category: "Web Development" },
-  { title: "Python for Everybody", description: "A free online course for Python beginners.", category: "Programming" },
-  { title: "Figma 101", description: "Learn the basics of UI/UX design with Figma.", category: "Design" },
-  { title: "AWS Certified Cloud Practitioner", description: "Get started with cloud computing on AWS.", category: "Cloud" },
-];
 
-export default function LearningHub() {
-  const [suggestions, setSuggestions] = useState<Suggestions | null>(null);
+const staticResources = {
+  ti: [
+    { title: "ወግዓዊ ሰነዳት React", description: "React ንምምሃር ዝበለጸ ቦታ።", category: "ምዕባለ ዌብ" },
+    { title: "Python ንኹሉ", description: "ንጀመርቲ Python ዝኸውን ናጻ অনলাইন ኮርስ።", category: "ፕሮግራሚንግ" },
+    { title: "Figma 101", description: "መሰረታዊ ነገራት UI/UX ዲዛይን ብ Figma ተመሃር።", category: "ዲዛይን" },
+    { title: "AWS Certified Cloud Practitioner", description: "ብ AWS ኣብ ክላውድ ኮምፒቲንግ ጀምር።", category: "ክላውድ" },
+  ],
+  en: [
+    { title: "Official React Docs", description: "The best place to start learning React.", category: "Web Development" },
+    { title: "Python for Everybody", description: "A free online course for Python beginners.", category: "Programming" },
+    { title: "Figma 101", description: "Learn the basics of UI/UX design with Figma.", category: "Design" },
+    { title: "AWS Certified Cloud Practitioner", description: "Get started with cloud computing on AWS.", category: "Cloud" },
+  ]
+};
+
+export default function LearningHub({ language = 'ti' }: { language?: 'ti' | 'en' }) {
+  const t = translations[language];
+  const s = staticResources[language];
+
+  const learningSchema = z.object({
+    skillLevel: z.string().min(1, t.skillLevelRequired),
+    learningGoal: z.string().min(3, t.learningGoalRequired),
+    preferredResourceType: z.string().optional(),
+  });
+
+  const [suggestions, setSuggestions] = useState<{ suggestedResources: string[]; reasoning: string; } | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
@@ -57,8 +115,8 @@ export default function LearningHub() {
       console.error("AI Error:", error);
       toast({
         variant: "destructive",
-        title: "Error",
-        description: "Failed to get suggestions. Please try again.",
+        title: t.errorTitle,
+        description: t.errorMessage,
       });
     } finally {
       setIsLoading(false);
@@ -68,14 +126,14 @@ export default function LearningHub() {
   return (
     <Tabs defaultValue="suggestions">
       <TabsList className="grid w-full grid-cols-2">
-        <TabsTrigger value="suggestions">Personalized Suggestions</TabsTrigger>
-        <TabsTrigger value="library">Resource Library</TabsTrigger>
+        <TabsTrigger value="suggestions">{t.personalizedSuggestions}</TabsTrigger>
+        <TabsTrigger value="library">{t.resourceLibrary}</TabsTrigger>
       </TabsList>
       <TabsContent value="suggestions">
         <Card>
           <CardHeader>
-            <CardTitle>Find Your Path</CardTitle>
-            <CardDescription>Tell us about your learning goals, and our AI will suggest resources for you.</CardDescription>
+            <CardTitle>{t.findYourPath}</CardTitle>
+            <CardDescription>{t.description}</CardDescription>
           </CardHeader>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -86,9 +144,9 @@ export default function LearningHub() {
                     name="learningGoal"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>What do you want to learn?</FormLabel>
+                        <FormLabel>{t.learningGoal}</FormLabel>
                         <FormControl>
-                          <Input placeholder="e.g., Master React hooks" {...field} />
+                          <Input placeholder={t.learningGoalPlaceholder} {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -99,17 +157,17 @@ export default function LearningHub() {
                     name="skillLevel"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Your Skill Level</FormLabel>
+                        <FormLabel>{t.skillLevel}</FormLabel>
                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                           <FormControl>
                             <SelectTrigger>
-                              <SelectValue placeholder="Select your level" />
+                              <SelectValue placeholder={t.selectLevel} />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            <SelectItem value="beginner">Beginner</SelectItem>
-                            <SelectItem value="intermediate">Intermediate</SelectItem>
-                            <SelectItem value="expert">Expert</SelectItem>
+                            <SelectItem value="beginner">{t.beginner}</SelectItem>
+                            <SelectItem value="intermediate">{t.intermediate}</SelectItem>
+                            <SelectItem value="expert">{t.expert}</SelectItem>
                           </SelectContent>
                         </Select>
                          <FormMessage />
@@ -121,7 +179,7 @@ export default function LearningHub() {
               <CardFooter>
                  <Button type="submit" disabled={isLoading}>
                   {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Lightbulb className="mr-2 h-4 w-4" />}
-                  Get Suggestions
+                  {isLoading ? t.generating : t.getSuggestions}
                 </Button>
               </CardFooter>
             </form>
@@ -131,7 +189,7 @@ export default function LearningHub() {
         {isLoading && (
           <Card className="mt-6">
             <CardHeader>
-              <CardTitle>Generating recommendations...</CardTitle>
+              <CardTitle>{t.generating}...</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <Skeleton className="h-4 w-full" />
@@ -144,16 +202,16 @@ export default function LearningHub() {
         {suggestions && (
           <Card className="mt-6">
             <CardHeader>
-              <CardTitle>Your Personalized Recommendations</CardTitle>
+              <CardTitle>{t.recommendations}</CardTitle>
             </CardHeader>
             <CardContent>
-              <h3 className="font-semibold mb-2">Suggested Resources:</h3>
+              <h3 className="font-semibold mb-2">{t.suggestedResources}</h3>
               <ul className="list-disc pl-5 space-y-2">
                 {suggestions.suggestedResources.map((res, i) => (
                   <li key={i}>{res}</li>
                 ))}
               </ul>
-              <h3 className="font-semibold mt-4 mb-2">Reasoning:</h3>
+              <h3 className="font-semibold mt-4 mb-2">{t.reasoning}</h3>
               <p className="text-muted-foreground">{suggestions.reasoning}</p>
             </CardContent>
           </Card>
@@ -163,11 +221,11 @@ export default function LearningHub() {
       <TabsContent value="library">
         <Card>
           <CardHeader>
-            <CardTitle>Resource Library</CardTitle>
-            <CardDescription>A curated list of high-quality learning materials.</CardDescription>
+            <CardTitle>{t.libraryTitle}</CardTitle>
+            <CardDescription>{t.libraryDescription}</CardDescription>
           </CardHeader>
           <CardContent className="grid gap-4 md:grid-cols-2">
-            {staticResources.map((res, i) => (
+            {s.map((res, i) => (
               <Card key={i}>
                 <CardHeader className="flex flex-row items-center gap-4">
                   <Book className="h-8 w-8 text-primary" />

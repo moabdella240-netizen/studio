@@ -90,7 +90,7 @@ type Feature = {
 const translations = {
   ti: {
     dashboard: "መበገሲ",
-    chat: "ቻት",
+    chat: "ትርጉምን ቻትን",
     image: "ምስሊ ምፍጣር",
     learning: "ማእከል ትምህርቲ",
     music: "ሙዚቃ ድለ",
@@ -99,7 +99,7 @@ const translations = {
     coach: "AI ናይ ስፖርት ኣማኻሪ",
     appName: "መምህረይ",
     portfolio: "ሥራይ",
-    quote: "ጥቕስን መልስን",
+    quote: "ዕለታዊ ጥቕስን መልስን",
     assistant: "ሓጋዚ AI",
   },
   en: {
@@ -247,6 +247,26 @@ export default function AppShell() {
                 {renderFeature(item)}
               </SidebarMenuItem>
             ))}
+            <SidebarMenuItem>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                   <SidebarMenuButton
+                    tooltip={{ children: '...' }}
+                    className="w-full"
+                    >
+                    <Sparkles />
+                    <span>ተጨማሪ</span>
+                  </SidebarMenuButton>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent side="right" align="start">
+                    {navigationItems.filter(item => !item.mainNav).map((item) => (
+                      <DropdownMenuItem key={item.id} asChild>
+                         {renderFeature(item)}
+                      </DropdownMenuItem>
+                    ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </SidebarMenuItem>
           </SidebarMenu>
         </SidebarContent>
         <SidebarFooter>
@@ -268,7 +288,7 @@ export default function AppShell() {
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" aria-label="Toggle Language">
                 <Globe className="h-5 w-5 text-primary" />
-                <span className="ml-2 md:hidden">{language === 'ti' ? 'English' : 'Tigrinya'}</span>
+                <span className="ml-2 md:hidden">{language === 'ti' ? 'English' : 'ትግርኛ'}</span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>

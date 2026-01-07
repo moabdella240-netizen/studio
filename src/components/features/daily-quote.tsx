@@ -20,6 +20,9 @@ const translations = {
         errorTitle: "ጌጋ ኣጋጢሙ",
         quoteError: "ጥቕሲ ክንፈጥር ኣይከኣልናን።",
         answerError: "መልሲ ክንረክብ ኣይከኣልናን።",
+        copied: "ተቐዲሑ!",
+        copiedDescription: "እቲ ጥቕሲ ኣብ መዝገብ ተቐዲሑ ኣሎ።",
+
     },
     en: {
         generateNew: "New Quote",
@@ -30,6 +33,8 @@ const translations = {
         errorTitle: "Error",
         quoteError: "Failed to generate a quote.",
         answerError: "Failed to get an answer.",
+        copied: "Copied!",
+        copiedDescription: "Quote copied to clipboard.",
     }
 }
 
@@ -48,7 +53,7 @@ export default function DailyQuote({ language = 'ti' }: { language?: 'ti' | 'en'
         setAnswer(null);
         setQuoteData(null);
         try {
-            const result = await generateQuote({ language: language === 'ti' ? 'Tigrinya' : 'English' });
+            const result = await generateQuote({ language: 'Tigrinya' });
             setQuoteData(result);
         } catch (error) {
             console.error("AI Error:", error);
@@ -64,7 +69,7 @@ export default function DailyQuote({ language = 'ti' }: { language?: 'ti' | 'en'
         setIsLoadingAnswer(true);
         setAnswer(null);
         try {
-            const result = await answerQuestion({ language: language === 'ti' ? 'Tigrinya' : 'English', question });
+            const result = await answerQuestion({ language: 'Tigrinya', question });
             setAnswer(result.answer);
         } catch (error) {
             console.error("AI Error:", error);
@@ -87,7 +92,7 @@ export default function DailyQuote({ language = 'ti' }: { language?: 'ti' | 'en'
                     .catch(err => console.error("Share failed", err));
             } else {
                 navigator.clipboard.writeText(text);
-                toast({ title: 'Copied!', description: 'Quote copied to clipboard.' });
+                toast({ title: t.copied, description: t.copiedDescription });
             }
         }
     };

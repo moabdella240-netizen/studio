@@ -39,6 +39,19 @@ const translations = {
     startWorkout: 'ስፖርት ጀምር',
     randomPlan: 'ዘይተመርጸ ውጥን',
     beginnerMode: 'ናይ መጀመርታ ደረጃ',
+    weightLoss: "ክብደት ምጉዳል",
+    muscleGain: "ጡንቻ ምህናጽ",
+    strength: "ሓይሊ ምውሳኽ",
+    beginnerFitness: "ናይ መጀመርታ ብቕዓት",
+    endurance: "ጽንዓት",
+    gym: "ጂም",
+    home: "ገዛ",
+    outdoor: "ግዳም",
+    easy: "ቀሊል",
+    medium: "ማእከላይ",
+    advanced: "ዕቡይ",
+    focusPlaceholder: "ሆድ, ኣፍልቢ, እግሪ...",
+    equipmentPlaceholder: "ዱምበልስ, ናይ ሰብነት ክብደት...",
   },
   en: {
     title: 'AI Gym Coach',
@@ -62,6 +75,19 @@ const translations = {
     startWorkout: 'Start Workout',
     randomPlan: 'Random Plan',
     beginnerMode: 'Beginner Mode',
+    weightLoss: "Weight Loss",
+    muscleGain: "Muscle Gain",
+    strength: "Strength",
+    beginnerFitness: "Beginner Fitness",
+    endurance: "Endurance",
+    gym: "Gym",
+    home: "Home",
+    outdoor: "Outdoor",
+    easy: "Easy",
+    medium: "Medium",
+    advanced: "Advanced",
+    focusPlaceholder: "abs, chest, legs...",
+    equipmentPlaceholder: "dumbbells, body-weight...",
   },
 };
 
@@ -146,11 +172,11 @@ export default function GymCoach({ language = 'ti' }: { language?: 'ti' | 'en' }
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl><SelectTrigger><SelectValue /></SelectTrigger></FormControl>
                         <SelectContent>
-                            <SelectItem value="weight loss">Weight Loss</SelectItem>
-                            <SelectItem value="muscle gain">Muscle Gain</SelectItem>
-                            <SelectItem value="strength">Strength</SelectItem>
-                            <SelectItem value="beginner fitness">Beginner Fitness</SelectItem>
-                            <SelectItem value="endurance">Endurance</SelectItem>
+                            <SelectItem value="weight loss">{t.weightLoss}</SelectItem>
+                            <SelectItem value="muscle gain">{t.muscleGain}</SelectItem>
+                            <SelectItem value="strength">{t.strength}</SelectItem>
+                            <SelectItem value="beginner fitness">{t.beginnerFitness}</SelectItem>
+                            <SelectItem value="endurance">{t.endurance}</SelectItem>
                         </SelectContent>
                     </Select>
                   </FormItem>
@@ -161,9 +187,9 @@ export default function GymCoach({ language = 'ti' }: { language?: 'ti' | 'en' }
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl><SelectTrigger><SelectValue /></SelectTrigger></FormControl>
                         <SelectContent>
-                            <SelectItem value="Gym">Gym</SelectItem>
-                            <SelectItem value="Home">Home</SelectItem>
-                            <SelectItem value="Outdoor">Outdoor</SelectItem>
+                            <SelectItem value="Gym">{t.gym}</SelectItem>
+                            <SelectItem value="Home">{t.home}</SelectItem>
+                            <SelectItem value="Outdoor">{t.outdoor}</SelectItem>
                         </SelectContent>
                     </Select>
                   </FormItem>
@@ -174,9 +200,9 @@ export default function GymCoach({ language = 'ti' }: { language?: 'ti' | 'en' }
                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                             <FormControl><SelectTrigger><SelectValue/></SelectTrigger></FormControl>
                             <SelectContent>
-                                <SelectItem value="Easy">Easy</SelectItem>
-                                <SelectItem value="Medium">Medium</SelectItem>
-                                <SelectItem value="Advanced">Advanced</SelectItem>
+                                <SelectItem value="Easy">{t.easy}</SelectItem>
+                                <SelectItem value="Medium">{t.medium}</SelectItem>
+                                <SelectItem value="Advanced">{t.advanced}</SelectItem>
                             </SelectContent>
                         </Select>
                     </FormItem>
@@ -190,13 +216,13 @@ export default function GymCoach({ language = 'ti' }: { language?: 'ti' | 'en' }
                 <FormField control={form.control} name="focus" render={({ field }) => (
                     <FormItem>
                         <FormLabel>{t.focus}</FormLabel>
-                        <FormControl><Input placeholder="abs, chest, legs..." {...field} /></FormControl>
+                        <FormControl><Input placeholder={t.focusPlaceholder} {...field} /></FormControl>
                     </FormItem>
                 )}/>
                 <FormField control={form.control} name="equipment" render={({ field }) => (
                     <FormItem>
                         <FormLabel>{t.equipment}</FormLabel>
-                        <FormControl><Input placeholder="dumbbells, body-weight..." {...field} /></FormControl>
+                        <FormControl><Input placeholder={t.equipmentPlaceholder} {...field} /></FormControl>
                     </FormItem>
                 )}/>
               </CardContent>
@@ -231,10 +257,10 @@ export default function GymCoach({ language = 'ti' }: { language?: 'ti' | 'en' }
                 <CardHeader>
                     <CardTitle className="font-headline text-3xl text-primary">{workout.planTitle}</CardTitle>
                     <div className="flex flex-wrap gap-x-4 gap-y-2 text-sm text-muted-foreground">
-                        <span>Goal: {workout.goal}</span>
-                        <span>Type: {workout.workoutType}</span>
-                        <span>Difficulty: {workout.difficulty}</span>
-                        <span>Time: {workout.sessionTime}</span>
+                        <span>{t.goal}: {workout.goal}</span>
+                        <span>{t.workoutType}: {workout.workoutType}</span>
+                        <span>{t.difficulty}: {workout.difficulty}</span>
+                        <span>{t.sessionTime}: {workout.sessionTime}</span>
                         {workout.caloriesEstimate && <span><Flame className="inline h-4 w-4 mr-1"/>{workout.caloriesEstimate}</span>}
                     </div>
                 </CardHeader>

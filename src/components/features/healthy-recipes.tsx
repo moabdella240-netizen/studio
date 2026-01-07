@@ -40,6 +40,12 @@ const translations = {
         protein: "ፕሮቲን",
         carbs: "ካርቦሃይድሬት",
         fat: "ስብሒ",
+        any: "ዝኾነ",
+        easy: "ቀሊል",
+        medium: "ማእከላይ",
+        hard: "ኸቢድ",
+        cuisinePlaceholder: "ኤርትራዊ, ጣልያናዊ...",
+        dietPlaceholder: "ቬጀቴርያን, ካብ ግሉተን ናጻ...",
     },
     en: {
         title: "Healthy & Delicious Recipes",
@@ -62,6 +68,12 @@ const translations = {
         protein: "Protein",
         carbs: "Carbs",
         fat: "Fat",
+        any: "Any",
+        easy: "Easy",
+        medium: "Medium",
+        hard: "Hard",
+        cuisinePlaceholder: "Eritrean, Italian...",
+        dietPlaceholder: "Vegetarian, Gluten-Free...",
     },
 };
 
@@ -132,24 +144,24 @@ export default function HealthyRecipes({ language = 'ti' }: { language?: 'ti' | 
                                 <FormField control={form.control} name="cuisine" render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>{t.cuisine}</FormLabel>
-                                        <FormControl><Input placeholder="Eritrean, Italian..." {...field} /></FormControl>
+                                        <FormControl><Input placeholder={t.cuisinePlaceholder} {...field} /></FormControl>
                                     </FormItem>
                                 )}/>
                                 <FormField control={form.control} name="diet" render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>{t.diet}</FormLabel>
-                                        <FormControl><Input placeholder="Vegetarian, Gluten-Free..." {...field} /></FormControl>
+                                        <FormControl><Input placeholder={t.dietPlaceholder} {...field} /></FormControl>
                                     </FormItem>
                                 )}/>
                                 <FormField control={form.control} name="difficulty" render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>{t.difficulty}</FormLabel>
                                         <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                            <FormControl><SelectTrigger><SelectValue placeholder="Any" /></SelectTrigger></FormControl>
+                                            <FormControl><SelectTrigger><SelectValue placeholder={t.any} /></SelectTrigger></FormControl>
                                             <SelectContent>
-                                                <SelectItem value="Easy">Easy</SelectItem>
-                                                <SelectItem value="Medium">Medium</SelectItem>
-                                                <SelectItem value="Hard">Hard</SelectItem>
+                                                <SelectItem value="Easy">{t.easy}</SelectItem>
+                                                <SelectItem value="Medium">{t.medium}</SelectItem>
+                                                <SelectItem value="Hard">{t.hard}</SelectItem>
                                             </SelectContent>
                                         </Select>
                                     </FormItem>
@@ -157,7 +169,7 @@ export default function HealthyRecipes({ language = 'ti' }: { language?: 'ti' | 
                                 <FormField control={form.control} name="maxTime" render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>{t.maxTime}</FormLabel>
-                                        <FormControl><Input type="number" placeholder="e.g., 30" {...field} onChange={e => field.onChange(e.target.value === '' ? undefined : parseInt(e.target.value, 10))}/></FormControl>
+                                        <FormControl><Input type="number" placeholder="ንኣብነት, 30" {...field} onChange={e => field.onChange(e.target.value === '' ? undefined : parseInt(e.target.value, 10))}/></FormControl>
                                     </FormItem>
                                 )}/>
                             </CardContent>
