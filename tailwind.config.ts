@@ -11,7 +11,7 @@ export default {
     extend: {
       fontFamily: {
         body: ['Noto Sans Ethiopic', 'sans-serif'],
-        headline: ['Playfair Display', 'serif'],
+        headline: ['Ethiopic Washra', 'serif'],
         code: ['monospace'],
       },
       colors: {
