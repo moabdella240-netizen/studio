@@ -10,7 +10,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        body: ['Noto Sans Ethiopic', 'Noto Sans Arabic', 'sans-serif'],
+        body: ['Abyssinica SIL', 'Noto Sans Arabic', 'sans-serif'],
         headline: ['Ethiopic Washra', 'serif'],
         code: ['monospace'],
       },
