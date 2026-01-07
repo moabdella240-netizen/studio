@@ -14,8 +14,6 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import MultilingualChat from "@/components/features/multilingual-chat";
 import ImageGenerator from "@/components/features/image-generator";
 import LearningHub from "@/components/features/learning-hub";
-import WebBrowser from "@/components/features/web-browser";
-import TaskManager from "@/components/features/task-manager";
 import VoiceAssistant from "@/components/features/voice-assistant";
 import MusicFinder from "@/components/features/music-finder";
 import BrainTeasers from "@/components/features/brain-teasers";
@@ -92,7 +90,6 @@ const featureMap = {
   'music': MusicFinder,
   'learning': LearningHub,
   'chat': MultilingualChat,
-  'tasks': TaskManager,
   'coach': GymCoach,
 };
 
@@ -112,7 +109,6 @@ const FeatureDialog = ({ featureKey, language, children }: { featureKey: Feature
     'coach': { title: t.gymCoach },
     'learning': { title: t.learningHub },
     'chat': { title: "Chat" },
-    'tasks': { title: "Tasks" },
   };
 
   const title = featureInfo[featureKey].title;

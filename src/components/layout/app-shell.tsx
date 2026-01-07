@@ -45,6 +45,8 @@ import {
   Dumbbell,
   UserCircle,
   Globe,
+  Mic,
+  Sparkles
 } from "lucide-react";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -59,10 +61,13 @@ import BrainTeasers from "@/components/features/brain-teasers";
 import HealthyRecipes from "@/components/features/healthy-recipes";
 import GymCoach from "@/components/features/gym-coach";
 import Portfolio from "@/components/features/portfolio";
+import DailyQuote from "@/components/features/daily-quote";
+import VoiceAssistant from "@/components/features/voice-assistant";
 
 
 type FeatureKey =
   | "dashboard"
+  | "portfolio"
   | "chat"
   | "image"
   | "learning"
@@ -70,13 +75,15 @@ type FeatureKey =
   | "teasers"
   | "recipes"
   | "coach"
-  | "portfolio";
+  | "quote"
+  | "assistant";
   
 type Feature = {
   id: FeatureKey;
   label: string;
   icon: React.ElementType;
   component: React.ComponentType<{ language: 'ti' | 'en' }>;
+  mainNav: boolean;
 };
 
 
@@ -92,6 +99,8 @@ const translations = {
     coach: "AI ናይ ስፖርት ኣማኻሪ",
     appName: "መምህረይ",
     portfolio: "ሥራይ",
+    quote: "ጥቕስን መልስን",
+    assistant: "ሓጋዚ AI",
   },
   en: {
     dashboard: "Dashboard",
@@ -104,6 +113,8 @@ const translations = {
     coach: "AI Gym Coach",
     appName: "Memhrey",
     portfolio: "Portfolio",
+    quote: "Quote & Answer",
+    assistant: "AI Assistant",
   },
 };
 
@@ -121,15 +132,17 @@ export default function AppShell() {
   const currentTexts = translations[language];
 
   const navigationItems: Feature[] = [
-    { id: "dashboard", label: currentTexts.dashboard, icon: LayoutDashboard, component: Dashboard },
-    { id: "portfolio", label: currentTexts.portfolio, icon: UserCircle, component: Portfolio },
-    { id: "chat", label: currentTexts.chat, icon: MessageSquare, component: MultilingualChat },
-    { id: "image", label: currentTexts.image, icon: ImageIcon, component: ImageGenerator },
-    { id: "learning", label: currentTexts.learning, icon: BookOpen, component: LearningHub },
-    { id: "music", label: currentTexts.music, icon: Music, component: MusicFinder },
-    { id: "teasers", label: currentTexts.teasers, icon: Brain, component: BrainTeasers },
-    { id: "recipes", label: currentTexts.recipes, icon: Soup, component: HealthyRecipes },
-    { id: "coach", label: currentTexts.coach, icon: Dumbbell, component: GymCoach },
+    { id: "dashboard", label: currentTexts.dashboard, icon: LayoutDashboard, component: Dashboard, mainNav: true },
+    { id: "portfolio", label: currentTexts.portfolio, icon: UserCircle, component: Portfolio, mainNav: true },
+    { id: "assistant", label: currentTexts.assistant, icon: Mic, component: VoiceAssistant, mainNav: false },
+    { id: "quote", label: currentTexts.quote, icon: Sparkles, component: DailyQuote, mainNav: false },
+    { id: "chat", label: currentTexts.chat, icon: MessageSquare, component: MultilingualChat, mainNav: false },
+    { id: "image", label: currentTexts.image, icon: ImageIcon, component: ImageGenerator, mainNav: false },
+    { id: "learning", label: currentTexts.learning, icon: BookOpen, component: LearningHub, mainNav: false },
+    { id: "music", label: currentTexts.music, icon: Music, component: MusicFinder, mainNav: false },
+    { id: "teasers", label: currentTexts.teasers, icon: Brain, component: BrainTeasers, mainNav: false },
+    { id: "recipes", label: currentTexts.recipes, icon: Soup, component: HealthyRecipes, mainNav: false },
+    { id: "coach", label: currentTexts.coach, icon: Dumbbell, component: GymCoach, mainNav: false },
   ];
 
   const ActiveComponent = navigationItems.find(item => item.id === activeFeatureKey)?.component || Dashboard;
@@ -177,7 +190,7 @@ export default function AppShell() {
       );
     }
 
-    if (feature.id === 'dashboard' || feature.id === 'portfolio') {
+    if (feature.mainNav) {
          return (
              <SidebarMenuButton
                 onClick={() => setActiveFeatureKey(feature.id)}
@@ -229,7 +242,7 @@ export default function AppShell() {
         </SidebarHeader>
         <SidebarContent>
           <SidebarMenu>
-            {navigationItems.map((item) => (
+            {navigationItems.filter(item => item.mainNav).map((item) => (
               <SidebarMenuItem key={item.id}>
                 {renderFeature(item)}
               </SidebarMenuItem>
