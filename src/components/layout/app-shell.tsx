@@ -19,14 +19,12 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import {
   Sheet,
   SheetContent,
   SheetHeader,
   SheetTitle,
-  SheetTrigger,
 } from "@/components/ui/sheet";
 import {
   DropdownMenu,
@@ -48,6 +46,7 @@ import {
   Mic,
   Sparkles,
   HelpCircle,
+  ToyBrick,
 } from "lucide-react";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -65,12 +64,14 @@ import Portfolio from "@/components/features/portfolio";
 import DailyQuote from "@/components/features/daily-quote";
 import VoiceAssistant from "@/components/features/voice-assistant";
 import QandA from "@/components/features/q-and-a";
+import LanguageLearningGames from "@/components/features/language-learning-games";
 
 
 type FeatureKey =
   | "dashboard"
   | "portfolio"
   | "q-and-a"
+  | "language-learning"
   | "chat"
   | "image"
   | "learning"
@@ -96,6 +97,7 @@ const translations = {
     chat: "ትርጉምን ቻትን",
     image: "ምስሊ ምፍጣር",
     learning: "ማእከል ትምህርቲ",
+    "language-learning": "ጸወታታት ቋንቋ ምምሃር",
     music: "ሙዚቃ ድለ",
     teasers: "ሕንቅልሕንቅሊተይ",
     recipes: "ጥዕና ዝሓለወ መግቢ",
@@ -113,6 +115,7 @@ const translations = {
     chat: "Multilingual Chat",
     image: "Image Generation",
     learning: "Learning Hub",
+    "language-learning": "Language Learning Games",
     music: "Eritrean Music Finder",
     teasers: "Brain Teasers",
     recipes: "Healthy Recipes",
@@ -130,6 +133,7 @@ const translations = {
     chat: "الدردشة والترجمة",
     image: "إنشاء الصور",
     learning: "مركز التعلم",
+    "language-learning": "ألعاب تعلم اللغة",
     music: "البحث عن موسيقى",
     teasers: "ألغاز وألعاب ذهنية",
     recipes: "وصفات صحية",
@@ -177,6 +181,7 @@ export default function AppShell() {
   const navigationItems: Feature[] = [
     { id: "dashboard", label: currentTexts.dashboard, icon: LayoutDashboard, component: Dashboard, mainNav: true },
     { id: "q-and-a", label: currentTexts["q-and-a"], icon: HelpCircle, component: QandA, mainNav: true },
+    { id: "language-learning", label: currentTexts["language-learning"], icon: ToyBrick, component: LanguageLearningGames, mainNav: true },
     { id: "portfolio", label: currentTexts.portfolio, icon: UserCircle, component: Portfolio, mainNav: true },
     { id: "assistant", label: currentTexts.assistant, icon: Mic, component: VoiceAssistant, mainNav: false },
     { id: "quote", label: currentTexts.quote, icon: Sparkles, component: DailyQuote, mainNav: false },
@@ -195,14 +200,13 @@ export default function AppShell() {
     setLanguage(lang);
   };
   
-  const renderFeatureInModal = (feature: Feature) => {
+ const renderFeature = (feature: Feature, trigger: React.ReactNode) => {
     if (!isMounted) return null;
 
-    const trigger = (
-      <SidebarMenuButton tooltip={{ children: feature.label }} className="w-full">
-        <feature.icon />
-        <span>{feature.label}</span>
-      </SidebarMenuButton>
+    const content = (
+      <div className="py-4 h-full overflow-auto">
+        <FeatureRenderer feature={feature} language={language} />
+      </div>
     );
 
     if (isMobile) {
@@ -213,9 +217,7 @@ export default function AppShell() {
             <SheetHeader>
               <SheetTitle>{feature.label}</SheetTitle>
             </SheetHeader>
-            <div className="py-4 h-full overflow-auto">
-              <FeatureRenderer feature={feature} language={language} />
-            </div>
+            {content}
           </SheetContent>
         </Sheet>
       );
@@ -228,9 +230,7 @@ export default function AppShell() {
           <DialogHeader>
             <DialogTitle>{feature.label}</DialogTitle>
           </DialogHeader>
-          <div className="overflow-auto flex-grow">
-            <FeatureRenderer feature={feature} language={language} />
-          </div>
+          <div className="overflow-auto flex-grow">{content}</div>
         </DialogContent>
       </Dialog>
     );
@@ -278,7 +278,12 @@ export default function AppShell() {
                 <DropdownMenuContent side="right" align="start">
                     {navigationItems.filter(item => !item.mainNav).map((item) => (
                       <DropdownMenuItem key={item.id} asChild onSelect={(e) => e.preventDefault()}>
-                         {renderFeatureInModal(item)}
+                         {renderFeature(item, 
+                          <button className="w-full text-left flex items-center gap-2 relative cursor-default select-none rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
+                            <item.icon className="size-4" />
+                            <span>{item.label}</span>
+                          </button>
+                        )}
                       </DropdownMenuItem>
                     ))}
                 </DropdownMenuContent>
@@ -322,5 +327,3 @@ export default function AppShell() {
     </SidebarProvider>
   );
 }
-
-    
