@@ -180,6 +180,23 @@ export default function Dashboard({ language = 'ti' }: { language?: 'ti' | 'en' 
 
   return (
     <div className="space-y-12 animate-fade-in-slow">
+       <div className="relative w-full h-64 rounded-xl overflow-hidden shadow-lg">
+        {heroImage && (
+          <Image
+            src={heroImage.imageUrl}
+            alt={heroImage.description}
+            data-ai-hint={heroImage.imageHint}
+            fill
+            className="object-cover"
+            priority
+          />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-background/70 to-transparent" />
+        <div className="absolute bottom-6 left-6 text-white">
+          <h2 className="text-4xl font-bold font-headline drop-shadow-md">{t.empoweringMinds}</h2>
+        </div>
+      </div>
+
       {/* Main Action Panel */}
       <Card className="border-0 shadow-lg bg-gradient-to-br from-card to-background/30 dark:from-card dark:to-background/30">
         <CardHeader className="text-center pb-4">
