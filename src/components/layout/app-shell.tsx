@@ -39,7 +39,8 @@ import {
   Music,
   Brain,
   Soup,
-  Dumbbell
+  Dumbbell,
+  UserCircle
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -58,6 +59,8 @@ import MusicFinder from "@/components/features/music-finder";
 import BrainTeasers from "@/components/features/brain-teasers";
 import HealthyRecipes from "@/components/features/healthy-recipes";
 import GymCoach from "@/components/features/gym-coach";
+import Portfolio from "@/components/features/portfolio";
+
 
 type FeatureKey =
   | "dashboard"
@@ -70,7 +73,8 @@ type FeatureKey =
   | "coach"
   | "browser"
   | "tasks"
-  | "voice";
+  | "voice"
+  | "portfolio";
   
 type Feature = {
   id: FeatureKey;
@@ -91,11 +95,12 @@ const translations = {
     recipes: "ጥዕና ዝሓለወ መግቢ",
     coach: "AI ናይ ስፖርት ኣማኻሪ",
     browser: "መረብ ሓበሬታ",
-    tasks: "መቆጻጸרי ዕማማት",
+    tasks: "መቆጻጸሪ ዕማማት",
     voice: "ሓጋዚ ድምጺ",
     user: "ተጠቃሚ",
     freePlan: "ነጻ ኣገልግሎት",
     appName: "መምህረይ",
+    portfolio: "ሥራይ"
   },
   en: {
     dashboard: "Dashboard",
@@ -112,6 +117,7 @@ const translations = {
     user: "User",
     freePlan: "Free Plan",
     appName: "Memhrey",
+    portfolio: "Portfolio"
   },
 };
 
@@ -125,6 +131,7 @@ export default function AppShell() {
 
   const navigationItems: Feature[] = [
     { id: "dashboard", label: currentTexts.dashboard, icon: LayoutDashboard, component: Dashboard },
+    { id: "portfolio", label: currentTexts.portfolio, icon: UserCircle, component: Portfolio },
     { id: "chat", label: currentTexts.chat, icon: MessageSquare, component: MultilingualChat },
     { id: "image", label: currentTexts.image, icon: ImageIcon, component: ImageGenerator },
     { id: "learning", label: currentTexts.learning, icon: BookOpen, component: LearningHub },
@@ -170,7 +177,7 @@ export default function AppShell() {
       );
     }
 
-    if (feature.id === 'dashboard') {
+    if (feature.id === 'dashboard' || feature.id === 'portfolio') {
          return (
              <SidebarMenuButton
                 onClick={() => setActiveFeatureKey(feature.id)}
@@ -255,8 +262,9 @@ export default function AppShell() {
             {currentTexts.appName}
           </h1>
            <div className="flex-grow hidden md:block"/>
-           <Button variant="ghost" size="icon" onClick={toggleLanguage} aria-label="Toggle Language">
+           <Button variant="ghost" onClick={toggleLanguage} aria-label="Toggle Language">
             <Globe className="h-5 w-5 text-primary" />
+             <span className="ml-2 md:hidden">{language === 'ti' ? 'English' : 'Tigrinya'}</span>
           </Button>
         </header>
         <main className="p-4 md:p-6">

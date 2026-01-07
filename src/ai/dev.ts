@@ -11,3 +11,4 @@ import '@/ai/flows/generate-brain-teasers.ts';
 import '@/ai/flows/generate-quote.ts';
 import '@/ai/flows/generate-recipe.ts';
 import '@/ai/flows/generate-workout.ts';
+import '@/ai/flows/get-portfolio-data.ts';
