@@ -1,0 +1,24 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+
+    // Collection: users
+    // Description: Stores public information for each user.
+    match /users/{userId} {
+      // Who can read a user document?
+      // - Any authenticated user can read any user's profile.
+      // - The owner of the document can read their own profile.
+      allow read: if request.auth != null || isOwner(userId);
+
+      // Who can write to a user document?
+      // - Only the owner of the document can create or update their own profile.
+      allow write: if isOwner(userId);
+    }
+  }
+}
