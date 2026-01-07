@@ -145,6 +145,18 @@ const translations = {
 };
 
 
+const FeatureRenderer = ({
+  feature,
+  language,
+}: {
+  feature: Feature;
+  language: 'ti' | 'en' | 'ar';
+}) => {
+  const Component = feature.component;
+  return <Component language={language} />;
+};
+
+
 export default function AppShell() {
   const [activeFeatureKey, setActiveFeatureKey] = useState<FeatureKey>("dashboard");
   const [language, setLanguage] = useState<'ti' | 'en' | 'ar'>('ti');
@@ -183,79 +195,44 @@ export default function AppShell() {
     setLanguage(lang);
   };
   
-  const renderFeature = (feature: Feature) => {
-    const Component = feature.component;
-    if (!isMounted) {
-      return (
-         <SidebarMenuButton
-              tooltip={{ children: feature.label }}
-              className="w-full"
-              disabled
-          >
-              <feature.icon />
-              <span>{feature.label}</span>
-          </SidebarMenuButton>
-      );
-    }
-    
+  const renderFeatureInModal = (feature: Feature) => {
+    if (!isMounted) return null;
+
+    const trigger = (
+      <SidebarMenuButton tooltip={{ children: feature.label }} className="w-full">
+        <feature.icon />
+        <span>{feature.label}</span>
+      </SidebarMenuButton>
+    );
+
     if (isMobile) {
       return (
         <Sheet>
-          <SheetTrigger asChild>
-            <SidebarMenuButton
-              tooltip={{ children: feature.label }}
-              className="w-full"
-            >
-              <feature.icon />
-              <span>{feature.label}</span>
-            </SidebarMenuButton>
-          </SheetTrigger>
+          <SheetTrigger asChild>{trigger}</SheetTrigger>
           <SheetContent side="left" className="w-full">
             <SheetHeader>
               <SheetTitle>{feature.label}</SheetTitle>
             </SheetHeader>
             <div className="py-4 h-full overflow-auto">
-              <Component language={language} />
+              <FeatureRenderer feature={feature} language={language} />
             </div>
           </SheetContent>
         </Sheet>
       );
     }
 
-    if (feature.mainNav) {
-         return (
-             <SidebarMenuButton
-                onClick={() => setActiveFeatureKey(feature.id)}
-                isActive={activeFeatureKey === feature.id}
-                tooltip={{ children: feature.label }}
-                className="[&[data-active=true]]:bg-sidebar-primary [&[data-active=true]]:text-sidebar-primary-foreground"
-            >
-                <feature.icon />
-                <span>{feature.label}</span>
-            </SidebarMenuButton>
-         );
-    }
-    
     return (
-        <Dialog>
-            <DialogTrigger asChild>
-                <SidebarMenuButton
-                    tooltip={{ children: feature.label }}
-                    className="w-full"
-                >
-                    <feature.icon />
-                    <span>{feature.label}</span>
-                </SidebarMenuButton>
-            </DialogTrigger>
-            <DialogContent className="max-w-4xl h-[80vh] flex flex-col">
-                 <DialogHeader>
-                    <DialogTitle>{feature.label}</DialogTitle>
-                </DialogHeader>
-                <div className="overflow-auto flex-grow">
-                    <Component language={language} />
-                </div>
-            </DialogContent>
-        </Dialog>
+      <Dialog>
+        <DialogTrigger asChild>{trigger}</DialogTrigger>
+        <DialogContent className="max-w-4xl h-[80vh] flex flex-col">
+          <DialogHeader>
+            <DialogTitle>{feature.label}</DialogTitle>
+          </DialogHeader>
+          <div className="overflow-auto flex-grow">
+            <FeatureRenderer feature={feature} language={language} />
+          </div>
+        </DialogContent>
+      </Dialog>
     );
   };
 
@@ -276,7 +253,15 @@ export default function AppShell() {
           <SidebarMenu>
             {navigationItems.filter(item => item.mainNav).map((item) => (
               <SidebarMenuItem key={item.id}>
-                {renderFeature(item)}
+                <SidebarMenuButton
+                    onClick={() => setActiveFeatureKey(item.id)}
+                    isActive={activeFeatureKey === item.id}
+                    tooltip={{ children: item.label }}
+                    className="[&[data-active=true]]:bg-sidebar-primary [&[data-active=true]]:text-sidebar-primary-foreground"
+                >
+                    <item.icon />
+                    <span>{item.label}</span>
+                </SidebarMenuButton>
               </SidebarMenuItem>
             ))}
             <SidebarMenuItem>
@@ -292,8 +277,8 @@ export default function AppShell() {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent side="right" align="start">
                     {navigationItems.filter(item => !item.mainNav).map((item) => (
-                      <DropdownMenuItem key={item.id} asChild>
-                         {renderFeature(item)}
+                      <DropdownMenuItem key={item.id} asChild onSelect={(e) => e.preventDefault()}>
+                         {renderFeatureInModal(item)}
                       </DropdownMenuItem>
                     ))}
                 </DropdownMenuContent>
@@ -337,3 +322,5 @@ export default function AppShell() {
     </SidebarProvider>
   );
 }
+
+    
