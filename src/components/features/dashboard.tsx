@@ -54,14 +54,14 @@ const translations = {
     languageSupport: "ሓገዝ ቋንቋን ትርጉምን",
     productivityTools: "መሳርሒታት ፍርያምን ህይወትን",
     tryNow: "ሕጂ ፈትን",
-    empoweringMinds: "ንኤርትራዊ ኣእምሮ ምብቃዕ",
+    empoweringMinds: "ንኤርትራዊ ጽቡቕ ዕድል ንምፍጣር",
     mentorship: "ምምሃርን ትምህርታዊ ምትሕግጋዝን",
     youthOpportunities: "ንመንእሰያት ዕድላትን ክእለታትን",
     wellBeing: "ጥዕናን ኣወንታዊ ህይወትን",
     localResources: "ከባቢያዊ ጸጋታትን ሓገዝን",
     recommendations: "ንዓኻ ዝተመደበ",
     chat: "ትርጉምን ቻትን",
-    imageGenerator: "ምስሊ ምፍጣር",
+    imageGenerator: "ምسሊ ምፍጣር",
   },
   en: {
     askAssistant: "Ask AI Assistant",
@@ -232,7 +232,7 @@ export default function Dashboard({ language = 'ti' }: { language?: 'ti' | 'en' 
         <h2 className="text-3xl font-bold font-headline mb-4 text-center">{t.recommendations}</h2>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
              <Card className="hover:shadow-xl hover:-translate-y-1 transition-transform duration-300 group"><CardContent className="p-6 text-center"><p className="font-semibold text-lg">{language === 'ar' ? 'اقتباس اليوم' : 'ዕለታዊ ጥቕሲ'}</p><p className="text-sm text-muted-foreground group-hover:text-primary transition-colors">{language === 'ar' ? 'كلمة حكمة اليوم' : 'ናይ ሎሚ መሪሕ ቃል'}</p></CardContent></Card>
-             <Card className="hover:shadow-xl hover:-translate-y-1 transition-transform duration-300 group"><CardContent className="p-6 text-center"><p className="font-semibold text-lg">{language === 'ar' ? 'لغز اليوم' : 'ናይ ሎሚ ሕንቅልሕንቅሊተይ'}</p><p className="text-sm text-muted-foreground group-hover:text-primary transition-colors">{language === 'ar' ? 'تحدى عقلك' : 'ኣእምሮኻ ፈትን'}</p></CardContent></Card>
+             <Card className="hover:shadow-xl hover:-translate-y-1 transition-transform duration-300 group"><CardContent className="p-6 text-center"><p className="font-semibold text-lg">{language === 'ar' ? 'لغز اليوم' : 'ናይ ሎሚ ሕንቅልሕንቅליተይ'}</p><p className="text-sm text-muted-foreground group-hover:text-primary transition-colors">{language === 'ar' ? 'تحدى عقلك' : 'ኣእምሮኻ ፈትን'}</p></CardContent></Card>
              <Card className="hover:shadow-xl hover:-translate-y-1 transition-transform duration-300 group"><CardContent className="p-6 text-center"><p className="font-semibold text-lg">{language === 'ar' ? 'أغنية شائعة' : 'ኣዝዩ ዝስማዕ ዘሎ ደርፊ'}</p><p className="text-sm text-muted-foreground group-hover:text-primary transition-colors">{language === 'ar' ? 'استمع إلى موسيقى جديدة' : 'ሓድሽ ሙዚቃ ስማዕ'}</p></CardContent></Card>
              <Card className="hover:shadow-xl hover:-translate-y-1 transition-transform duration-300 group"><CardContent className="p-6 text-center"><p className="font-semibold text-lg">{language === 'ar' ? 'نصيحة تعليمية' : 'ምኽሪ ንትምህርቲ'}</p><p className="text-sm text-muted-foreground group-hover:text-primary transition-colors">{language === 'ar' ? 'طور مهاراتك باستمرار' : 'ቀጻሊ ክእለትካ ኣማዕብል'}</p></CardContent></Card>
         </div>
