@@ -1,0 +1,138 @@
+import os
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
+from langchain_openai import ChatOpenAI
+from langchain.prompts import ChatPromptTemplate
+
+# Initialize App
+app = FastAPI()
+
+# SECURITY: Use environment variables for keys
+os.environ["OPENAI_API_KEY"] = "YOUR_OPENAI_API_KEY"
+
+# Define the AI Model
+llm = ChatOpenAI(model="gpt-4", temperature=0.1) # Low temp for factual accuracy
+
+# Define the Medical Persona
+system_prompt = """
+You are a highly empathetic and professional medical AI assistant.
+Your goal is to gather symptoms and suggest potential causes, BUT you must:
+1. ALWAYS state that you are an AI, not a doctor.
+2. If the user mentions severe symptoms (chest pain, trouble breathing, heavy bleeding), tell them to call emergency services immediately.
+3. Provide answers based on general medical knowledge but advise them to see a professional.
+4. Keep answers concise and easy to understand.
+"""
+
+prompt_template = ChatPromptTemplate.from_messages([
+    ("system", system_prompt),
+    ("user", "{user_input}")
+])
+
+# Create the chain
+chain = prompt_template | llm
+
+# Data Model
+class UserQuery(BaseModel):
+    text: str
+
+@app.post("/chat")
+async def chat_endpoint(query: UserQuery):
+    try:
+        # Emergency Keyword Filter (Regex is faster than LLM for this)
+        emergencies = ["suicide", "kill myself", "chest pain", "can't breathe", "stroke"]
+        if any(e in query.text.lower() for e in emergencies):
+            return {"response": "⚠️ CRITICAL: Please call your local emergency number (911) immediately or go to the nearest hospital."}
+
+        # Generate AI Response
+        response = chain.invoke({"user_input": query.text})
+        return {"response": response.content}
+    
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)import streamlit as st
+from openai import OpenAI
+
+# --- PAGE CONFIGURATION ---
+st.set_page_config(
+    page_title="MediBot - AI Assistant",
+    page_icon="🩺",
+    layout="centered"
+)
+
+# --- SIDEBAR (API KEY) ---
+with st.sidebar:
+    st.title("⚙️ Settings")
+    st.info("This is a demo Medical AI. Do not use for real emergencies.")
+    
+    # Securely get API Key from user input or secrets
+    api_key = st.text_input("Enter OpenAI API Key", type="password")
+    
+    st.markdown("---")
+    st.markdown("### ⚠️ Disclaimer")
+    st.caption(
+        "I am an AI, not a doctor. My advice is for informational purposes only. "
+        "In case of emergency, call 911 immediately."
+    )
+
+# --- MAIN APP LOGIC ---
+st.title("🩺 MediBot: Symptom Checker")
+st.write("Describe your symptoms below, and I will provide potential causes and advice.")
+
+# Initialize Chat History
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+
+# Display Chat History
+for message in st.session_state.messages:
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
+
+# --- AI PROCESSING ---
+if prompt := st.chat_input("I have a headache and fever..."):
+    
+    # 1. check for API Key
+    if not api_key:
+        st.error("Please enter your OpenAI API Key in the sidebar to continue.")
+        st.stop()
+
+    # 2. Add user message to state
+    st.session_state.messages.append({"role": "user", "content": prompt})
+    with st.chat_message("user"):
+        st.markdown(prompt)
+
+    # 3. Define the Medical Persona (System Prompt)
+    system_prompt = """
+    You are a helpful and cautious medical AI assistant. 
+    Your goal is to help users understand their symptoms.
+    
+    STRICT RULES:
+    1. You are NOT a doctor. Start strictly medical answers with "I am an AI, not a doctor."
+    2. If the user mentions chest pain, difficulty breathing, stroke symptoms, or severe bleeding, 
+       IMMEDIATELY tell them to call Emergency Services (911) and stop the diagnosis.
+    3. Keep answers concise, empathetic, and structured (use bullet points).
+    4. Always advise the user to consult a professional.
+    """
+
+    # 4. Generate Response
+    client = OpenAI(api_key=api_key)
+    
+    try:
+        with st.chat_message("assistant"):
+            stream = client.chat.completions.create(
+                model="gpt-4", # Or gpt-3.5-turbo for lower cost
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    *st.session_state.messages
+                ],
+                stream=True,
+            )
+            response = st.write_stream(stream)
+            
+        # 5. Save AI response to state
+        st.session_state.messages.append({"role": "assistant", "content": response})
+
+    except Exception as e:
+        st.error(f"An error occurred: {e}")
